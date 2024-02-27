@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/02/26 22:50:06 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/02/27 03:08:27 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,31 @@ void print_list(t_token *lst)
     return ;
 }
 
+int taille_mot(char *str, int i)
+{
+    int j;
+
+    j = 0;
+    while(str[i] != ' ' && str[i] != '>' && str[i] != '<' && str[i] != '|' && str[i] != '\0')
+    {
+        j++;
+        i++;
+    }
+    return (j);
+}   
+
+int    alloc_token(t_token *tok, char *longchev, char *str, int i)
+{
+    if (str[i + 1] == longchev[0])
+    {
+        ft_stock(&tok, ft_lstnew(longchev, ft_tokenizer(longchev)));
+        return (1);
+    }
+    ft_stock(&tok, ft_lstnew(&longchev[1], ft_tokenizer(&longchev[1])));  
+    return (0);
+}
+
+
 void    find_token(char *str)
 {
     int i;
@@ -137,29 +162,12 @@ void    find_token(char *str)
     tok = NULL;
     // word = malloc(sizeof(char) * 100);
     i = 0;
-    j = 0;
     while(str[i])
     {
         if (str[i] == '<')
-        {
-            if (str[i + 1] == '<')
-            {
-                ft_stock(&tok, ft_lstnew("<<", ft_tokenizer("<<")));
-                i++;
-            }
-            else if (str[i + 1] != '<')
-                ft_stock(&tok, ft_lstnew("<", ft_tokenizer("<")));  
-        }
+            i += alloc_token(tok, "<<", str, i);
         else if (str[i] == '>')
-        {
-            if (str[i + 1] == '>')
-            {
-                ft_stock(&tok, ft_lstnew(">>", ft_tokenizer(">>")));
-                i++;
-            }   
-            else if (str[i + 1] != '>')
-                ft_stock(&tok, ft_lstnew(">", ft_tokenizer(">")));             
-        }
+            i += alloc_token(tok, ">>", str, i);
         else if (str[i] == '|')
             ft_stock(&tok, ft_lstnew("|", ft_tokenizer("|")));
         else if (str[i] == ' ')
@@ -167,14 +175,10 @@ void    find_token(char *str)
         else
         {
             j = 0;
-            word = malloc(sizeof(char) * 100);
-            while(str[i] != ' ' && str[i] != '>' && str[i] != '<' && str[i] != '|' && str[i] != '\0')
-            {
-                word[j] = str[i];
-                j++;
-                i++;
-            }    
-            word[j] != '\0';
+            word = malloc(taille_mot(str, i) + 1);
+            while (strchr(" \t><|\0", str[i]) == 0) // ft_
+                word[j++] = str[i++];
+            word[j] = '\0';
             ft_stock(&tok, ft_lstnew(word, ft_tokenizer(word)));
             i--;
         }
@@ -182,15 +186,30 @@ void    find_token(char *str)
     }
     print_list(tok);
     ft_syntax(tok);
+    // while(tok)
+    // {
+    //     t_token *tmp;
+    //     tmp = tok;
+    //     printf("WORD : %s TYPE : %d\n", tok->str, tok->type);
+    //     tok = tok->next;
+    //     free(tmp);
+    // }
     return ;
 }   
 
 int main(int argc, char **argv, char **envp)
 {
     t_token lst;
-    int i;
 
-    i = 0;
-    find_token(argv[1]);
+    while (1)
+    {
+        char *input = readline("> ");
+        if (!input)
+            break;
+        if (!*input)
+            continue;
+        add_history(input);
+        find_token(input);
+    }
     return (0);
 }

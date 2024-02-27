@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/02/26 22:52:59 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/02/27 02:28:22 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ enum
 # include <stdlib.h>
 # include <string.h>
 # include <fcntl.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
 int ft_syntax(t_token *tok);
 int ft_syntax_pipe(t_token *tok);

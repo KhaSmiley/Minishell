@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:38 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/02/26 22:50:16 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/02/27 02:44:35 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,18 @@ int ft_syntax_pipe(t_token *tok)
     t_token *tmp;
     
     if (!tok)
-        return (-1);
+        return (12);
     tmp = tok;
-    if (tmp->type == GREATER || tmp->type == LESS || tmp->type == DGREATER || tmp->type == DLESS)
-        return (-1);
-    else if (tmp->type == PIPE)
-        return (-1);
+    if (tmp->type == PIPE)
+        return (35);
     else if (tmp->type == WORD)
     {
+        // if (tmp->next)
         tmp = tmp->next;
+        // else if (tmp->next == NULL)
+        //     return (1);
         if (ft_syntax_word(tmp))
-            return (-1);
+            return (59);
     }
     else
         return (0);
@@ -38,17 +39,17 @@ int ft_syntax_redir(t_token *tok)
     t_token *tmp;
 
     if(!tok)
-        return (-1);
+        return (112);
     tmp = tok;
     if (tmp->type == GREATER || tmp->type == LESS || tmp->type == DGREATER || tmp->type == DLESS)
-        return (-1);
+        return (1543);
     else if (tmp->type == PIPE)
-        return (-1);
+        return (13252);
     else if (tmp->type == WORD)
     {
         tmp = tmp->next;
         if (ft_syntax_word(tmp))
-            return (-1);
+            return (154354);
     }
     else
         return (0);
@@ -57,47 +58,66 @@ int ft_syntax_redir(t_token *tok)
 int ft_syntax_word(t_token *tok)
 {
     t_token *tmp;
+    int error;
 
-    if (!tok)
-        return (0);
     tmp = tok;
-    while (tmp->type == WORD)
+    while (tmp && tmp->type == WORD)
         tmp = tmp->next;
+    if (!tmp)
+        return (0);
     if (tmp->type == GREATER || tmp->type == LESS || tmp->type == DGREATER || tmp->type == DLESS)
     {
         tmp = tmp->next;
-        if(ft_syntax_redir(tmp))
-            return (-1);
+        error = ft_syntax_redir(tmp);
+        if (error)
+            return (error);
     }
     else if (tmp->type == PIPE)
     {
         tmp = tmp->next;
-        if (ft_syntax_pipe(tmp))
-            return (-1);
+        error = ft_syntax_pipe(tmp);
+        if (error)
+            return (error);
     }
-    else
-        return (0);
+    return (0);
 }
+
+/*
+    if tab[0] == PIPE
+
+    if tab[i] == PIPE && tab[i + 1] == PIPE
+
+    if tab[dernier] == PIPE ou CHEVRON
+    
+    if tab[i] == CHEVRON && tab[i + 1] == CHEVRON ou PIPE
+
+
+    OK
+    tab[i] == PIPE && tab[i + 1] == CHEVRON
+*/
 
 int ft_syntax(t_token *tok)
 {
     t_token *tmp;
 
+    int error;
     tmp = tok;
     if (tmp->type == GREATER || tmp->type == LESS || tmp->type == DGREATER || tmp->type == DLESS)
     {
         tmp = tmp->next;
-        if (ft_syntax_redir(tmp))
-            return (printf("syntax error"), -1);
-        else
-            return (0);            
+        error = ft_syntax_redir(tmp);
+        if (error)
+            return (printf("Syntax Error [%i]\n", error), -1);
+        return (0);            
     }
     else if (tmp->type == PIPE)
         return (printf("syntax error near unexpected token '|'\n"), -1);
     else if (tmp->type == WORD)
     {
         tmp = tmp->next;
-        if (ft_syntax_word(tmp));
-            return (printf("Syntax Error\n"), -1);
+        error = ft_syntax_word(tmp);
+        if (error)
+            return (printf("Syntax Error [%i]\n", error), -1);
     }
+    return (0);
 }
