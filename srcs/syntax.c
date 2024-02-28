@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:38 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/02/27 02:44:35 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/02/28 17:28:24 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,11 @@ int ft_syntax_pipe(t_token *tok)
         return (35);
     else if (tmp->type == WORD)
     {
-        // if (tmp->next)
         tmp = tmp->next;
-        // else if (tmp->next == NULL)
-        //     return (1);
         if (ft_syntax_word(tmp))
             return (59);
     }
-    else
-        return (0);
+    return (0);
 }
 
 int ft_syntax_redir(t_token *tok)
@@ -51,8 +47,7 @@ int ft_syntax_redir(t_token *tok)
         if (ft_syntax_word(tmp))
             return (154354);
     }
-    else
-        return (0);
+    return (0);
 }
 
 int ft_syntax_word(t_token *tok)
@@ -102,22 +97,24 @@ int ft_syntax(t_token *tok)
 
     int error;
     tmp = tok;
-    if (tmp->type == GREATER || tmp->type == LESS || tmp->type == DGREATER || tmp->type == DLESS)
+    if ((tmp->type == GREATER || tmp->type == LESS || tmp->type == DGREATER || tmp->type == DLESS))
     {
+        if (tmp->next == NULL)
+            return (ft_printf("syntax error near unexpected token `newline'\n"), -1);
         tmp = tmp->next;
         error = ft_syntax_redir(tmp);
         if (error)
-            return (printf("Syntax Error [%i]\n", error), -1);
+            return (ft_printf("Syntax Error [%i]\n", error), -1);
         return (0);            
     }
     else if (tmp->type == PIPE)
-        return (printf("syntax error near unexpected token '|'\n"), -1);
+        return (ft_printf("syntax error near unexpected token '|'\n"), -1);
     else if (tmp->type == WORD)
     {
         tmp = tmp->next;
         error = ft_syntax_word(tmp);
         if (error)
-            return (printf("Syntax Error [%i]\n", error), -1);
+            return (ft_printf("Syntax Error [%i]\n", error), -1);
     }
     return (0);
 }
