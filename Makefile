@@ -8,6 +8,7 @@ DIR_OBJS		=	.objs
 
 SRCS_NAMES		=	minishell.c \
 					lst_utils.c \
+					quotes.c \
 					syntax.c 
 
 OBJS_NAMES		=	${SRCS_NAMES:.c=.o}

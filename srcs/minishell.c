@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/02/28 17:29:49 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/01 02:55:17 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int    alloc_token(t_token **tok, char *longchev, char *str, int i)
 }
 
 
-void    find_token(char *str)
+    void    find_token(char *str)
 {
     int i;
     int j;
@@ -104,7 +104,11 @@ int main(int argc, char **argv, char **envp)
         if (!*input)
             continue;
         add_history(input);
-        find_token(input);
-    }
+        // find_token(input);
+    	if (ft_check_open_d_quotes(input) || ft_check_open_s_quotes(input))
+			printf("open\n");
+		else
+			printf("close\n");
+	}
     return (0);
 }

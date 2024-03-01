@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/02/28 17:27:22 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/01 02:55:40 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,11 @@ void					print_list(t_token *lst);
 t_token					*ft_lstnew(char *content, int type);
 void					ft_stock(t_token **lst, t_token *new_link);
 t_token					*ft_lstlast(t_token *lst);
+
+/* quotes.c */
+
+int						ft_check_open_d_quotes(char *str);
+int						ft_check_open_s_quotes(char *str);
 
 /* syntax.c */
 
