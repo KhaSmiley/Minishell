@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/01 05:36:50 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/02 02:46:25 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int    alloc_token(t_token **tok, char *longchev, char *str, int i)
 }
 
 
-    void    find_token(char *str)
+t_token    *find_token(char *str)
 {
     int i;
     int j;
@@ -88,27 +88,23 @@ int    alloc_token(t_token **tok, char *longchev, char *str, int i)
     }
     print_list(tok);
     ft_syntax(tok);
-    return ;
+    return(tok);
 }   
 
-// int main(int argc, char **argv, char **envp)
-// {
-//     (void)argc;
-//     (void)argv;
-//     (void)envp;
-//     while (1)
-//     {
-//         char *input = readline("> ");
-//         if (!input)
-//             break;
-//         if (!*input)
-//             continue;
-//         add_history(input);
-//         // find_token(input);
-//     	if (ft_check_open_d_quotes(input) || ft_check_open_s_quotes(input))
-// 			printf("open\n");
-// 		else
-// 			printf("close\n");
-// 	}
-//     return (0);
-// }
+int main(int argc, char **argv, char **envp)
+{
+    (void)argc;
+    (void)argv;
+    (void)envp;
+    while (1)
+    {
+        char *input = readline("> ");
+        if (!input)
+            break;
+        if (!*input)
+            continue;
+        add_history(input);
+        find_token(input);
+    }
+    return (0);
+}

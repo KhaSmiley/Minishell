@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 05:31:16 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/01 06:11:40 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/02 01:23:48 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,18 @@ char *ft_find_var(char *var, char **envp_cpy)
     char *stock;
 
     i = 0;
+    // int j = 0;
     while (envp_cpy[i])
     {
         if (ft_strncmp(envp_cpy[i], var, ft_strlen(var)) == 0)
         {
-            stock = ft_substr(envp_cpy[i], ft_strlen_from_char(envp_cpy[i], '=') + 1, ft_strlen(envp_cpy[i]) - ft_strlen(var) - 1);
-            if (!stock)
-                return (NULL);
-            return (stock);
+            if (envp_cpy[i][ft_strlen(var)] == '=')
+            {
+                stock = ft_substr(envp_cpy[i], ft_strlen_from_char(envp_cpy[i], '=') + 1, ft_strlen(envp_cpy[i]) - ft_strlen(var) - 1);
+                if (!stock)
+                    return (NULL);
+                return (stock);
+            }    
         }
         i++;
     }
@@ -74,27 +78,21 @@ char **ft_cpy_envp(char **envp)
     return (envp_cpy);
 }
 
-void ft_expand(char **argv, char **envp)
+void ft_expand(char **envp)
 {
     int i;
     char **envp_cpy;
-    char *stock;
+    // char *stock;
     
     i = 0;
     envp_cpy = ft_cpy_envp(envp);
-    stock = malloc(sizeof(char) * 100);
-    if (!stock)
-        return(free_tab(envp_cpy));
-    stock = ft_find_var(argv[1], envp);
-    printf("%s\n", stock);
-    free(stock);
     free_tab(envp_cpy);
 }
 
-int main(int argc, char **argv, char **envp)
-{
-    (void)argc;
-    (void)argv;
-    ft_expand(argv, envp);
-    return (0);
-}
+// int main(int argc, char **argv, char **envp)
+// {
+//     (void)argv;
+//     if (argc > 2)
+//         ft_expand(argv, envp);
+//     return (0);
+// }
