@@ -85,6 +85,7 @@ void					ft_stock(t_token **lst, t_token *new_link);
 t_token					*ft_lstlast(t_token *lst);
 
 /* quotes.c */
+# define TRUE 5
 
 void					del_char(char *address, char char_to_del);
 int						remove_quotes(char *str);
