@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/02 02:46:25 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/02 04:08:19 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int     ft_tokenizer(char *token)
         return (SPACE);
     else
         return (WORD);
-} 
+}
 
 int word_size(char *str, int i)
 {
@@ -41,7 +41,7 @@ int word_size(char *str, int i)
         i++;
     }
     return (j);
-}   
+}
 
 int    alloc_token(t_token **tok, char *longchev, char *str, int i)
 {
@@ -50,18 +50,18 @@ int    alloc_token(t_token **tok, char *longchev, char *str, int i)
         ft_stock(tok, ft_lstnew(longchev, ft_tokenizer(longchev)));
         return (1);
     }
-    ft_stock(tok, ft_lstnew(&longchev[1], ft_tokenizer(&longchev[1])));  
+    ft_stock(tok, ft_lstnew(&longchev[1], ft_tokenizer(&longchev[1])));
     return (0);
 }
 
 
-t_token    *find_token(char *str)
+void    find_token(char *str)
 {
     int i;
     int j;
     char *word;
     t_token *tok;
-    
+
     tok = NULL;
     i = 0;
     while(str[i])
@@ -89,7 +89,7 @@ t_token    *find_token(char *str)
     print_list(tok);
     ft_syntax(tok);
     return(tok);
-}   
+}
 
 int main(int argc, char **argv, char **envp)
 {
@@ -104,7 +104,11 @@ int main(int argc, char **argv, char **envp)
         if (!*input)
             continue;
         add_history(input);
-        find_token(input);
-    }
+        // find_token(input);
+    	if (ft_check_open_d_quotes(input) || ft_check_open_s_quotes(input))
+			printf("open\n");
+		else
+			printf("close\n");
+	}
     return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/02 02:48:38 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/02 04:09:50 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ void					ft_stock(t_token **lst, t_token *new_link);
 t_token					*ft_lstlast(t_token *lst);
 
 /* quotes.c */
-# define TRUE 5
 
 int						ft_check_open_d_quotes(char *str);
 int						ft_check_open_s_quotes(char *str);
