@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/02 04:09:50 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/02 04:34:46 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ t_token					*ft_lstlast(t_token *lst);
 
 /* quotes.c */
 
-int						ft_check_open_d_quotes(char *str);
-int						ft_check_open_s_quotes(char *str);
+// int						ft_check_open_d_quotes(char *str);
+// int						ft_check_open_s_quotes(char *str);
 
 /* syntax.c */
 

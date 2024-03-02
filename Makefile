@@ -9,8 +9,8 @@ DIR_OBJS		=	.objs
 SRCS_NAMES		=	expand.c \
 					minishell.c \
 					lst_utils.c \
-					quotes.c \
-					syntax.c 
+					syntax.c \
+					quotes.c
 
 OBJS_NAMES		=	${SRCS_NAMES:.c=.o}
 
@@ -32,13 +32,13 @@ CFLAGS			=	-g3 -Wall -Werror -Wextra
 
 all:	${NAME}
 
-$(NAME): $(DIR_OBJS) $(OBJS) 
+$(NAME): $(DIR_OBJS) $(OBJS)
 	make -C libft
 	$(CC) $(CFLAGS) ${INC} $(CDFLAGS) $(OBJS) $(LIB) -lreadline -o $(NAME)
-	@echo "\033[31;7mminishell\033[0m"
+	@ echo "MINISHELL"  | toilet -f future -F border --gay
 
 $(OBJS) : $(DIR_OBJS)/%.o : $(DIR_SRCS)/%.c
-	$(CC) $(CFLAGS) $(CDFLAGS) $(INC) -c $< -o $@ 
+	$(CC) $(CFLAGS) $(CDFLAGS) $(INC) -c $< -o $@
 
 $(DIR_OBJS):
 	mkdir -p $(DIR_OBJS)

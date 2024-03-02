@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/02 04:08:19 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/02 04:11:51 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ void    find_token(char *str)
     }
     print_list(tok);
     ft_syntax(tok);
-    return(tok);
 }
 
 int main(int argc, char **argv, char **envp)
@@ -104,11 +103,7 @@ int main(int argc, char **argv, char **envp)
         if (!*input)
             continue;
         add_history(input);
-        // find_token(input);
-    	if (ft_check_open_d_quotes(input) || ft_check_open_s_quotes(input))
-			printf("open\n");
-		else
-			printf("close\n");
+        find_token(input);
 	}
     return (0);
 }
