@@ -5,157 +5,125 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/02 04:34:56 by lbarry            #+#    #+#             */
-/*   Updated: 2024/03/02 06:58:31 by lbarry           ###   ########.fr       */
+/*   Created: 2024/03/03 23:15:53 by lbarry            #+#    #+#             */
+/*   Updated: 2024/03/03 23:52:25 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include "../include/minishell.h"
 
-int	ft_strlen(const char *str)
+char	*ft_strchr(const char *s, int c)
 {
-	int	l;
+	int				i;
+	unsigned char	d;
+	char			*str;
 
-	l = 0;
-	while (str[l] != '\0')
-		l++;
-	return (l);
+	i = 0;
+	d = (unsigned char)c;
+	str = (char *)s;
+	while (str[i])
+	{
+		if (str[i] == d)
+			return (&str[i]);
+		i++;
+	}
+	if (str[i] == d)
+		return (&str[i]);
+	return (0);
 }
 
-int	find_start_quotes(char *str, char c)
+// del char " or ' from string and move rest of string forwards in memory
+void	del_char(char *address, char char_to_del)
 {
+	while (*address != '\0' && *address != char_to_del)
+		address++;
+	if (*address == char_to_del)
+	{
+		while (*address != '\0')
+		{
+			// seg fault- adress protected - try mallocing string first
+			*address = *(address + 1);
+			address++;
+		}
+	}
+}
+
+int	remove_quotes(char *str, char quote)
+{
+	int	in_quotes;
 	int	i;
 
 	i = 0;
-	while (str[i] != '\0')
+	in_quotes = 0;
+	// scan whole string for quotes
+	while (str[i])
 	{
-		if (str[i] == c)
-			return (i);
+		if (str[i] == quote && !in_quotes)
+		{
+			in_quotes = 1;
+			// if quotes are found remove them
+			del_char(&str[i], quote);
+			// i-- if not we skip a char, since delchar deleted a char, new char at old adress
+			i--;
+		}
+		else if (str[i] == quote && in_quotes)
+		{
+			in_quotes = 0;
+			del_char(&str[i], quote);
+			i--;
+		}
 		i++;
 	}
-	return (-1);
+	return (0);
 }
 
-int	find_end_quotes(char *str, char c)
-{
-	int	strlen;
-
-	strlen = ft_strlen(str) - 1;
-	while (strlen)
-	{
-		if (str[strlen] == c)
-			return (strlen);
-		strlen--;
-	}
-	return (-1);
-}
-int	count_quotes_inside(char *str, char c, int start, int end)
+int	count_quotes(char *str, char c)
 {
 	int	i;
 	int	count;
 
-	i = start + 1;
+	i = 0;
 	count = 0;
-	printf("start: %d\n", start);
-	printf("end: %d\n", end);
-	while (i < end)
+	while (str[i])
 	{
 		if (str[i] == c)
 			count++;
-		printf("%c\n", str[i]);
 		i++;
 	}
-	printf("count: %d\n", count);
 	return (count);
 }
+// exit syntax error if quotes are not closed
+// then remove quotes if " found within ""
+// same for ' within ''
+// don't delete " within '' and vice versa
 
-size_t	ft_strlcpy(char *dest, const char *src, char c, size_t size)
+int	manage_quotes(char *str)
 {
-	unsigned int	i;
-	unsigned int	j;
+	int	quote_count;
 
-	i = 0;
-	j = 0;
-	if (size > 0)
-	{
-		while (src[i] != '\0' && i < size - 1)
-		{
-			if (src[i] == c)
-				i++;
-			else
-			{
-				dest[j] = src[i];
-				i++;
-				j++;
-			}
-		}
-		dest[j] = '\0';
-	}
-
-	return (ft_strlen(src));
-}
-char	*ft_strdup(const char *s, char c)
-{
-	int		i;
-	char	*copy;
-
-	i = ft_strlen(s);
-	copy = (char *)malloc(i + 1);
-	if (!copy)
-		return (NULL);
-	ft_strlcpy(copy, s, c, (i + 1));
-	return (copy);
-}
-
-void	delete_quotes(char *str, char c)
-{
-	char	*new_str;
-	int		i;
-
-	i = 0;
-	printf("string before: %s\n", str);
-	new_str = ft_strdup(str, c);
-	printf("string after: %s\n", new_str);
-}
-
-int	manage_double_quotes(char *input)
-{
-	int		start_d_quotes;
-	int		end_d_quotes;
-	int		quote_count;
-	char	*new_str = NULL;
-
-	start_d_quotes = find_start_quotes(input, '\"');
-	printf("start_d_quotes: %d\n", start_d_quotes);
-	end_d_quotes = find_end_quotes(input, '\"');
-	printf("end_d_quotes: %d\n", end_d_quotes);
-
-	quote_count = count_quotes_inside(input, '\"', start_d_quotes, end_d_quotes);
+	quote_count = count_quotes(str, '\"');
 	if (quote_count % 2 != 0)
 	{
 		printf("Error: quotes open\n");
-		new_str = NULL;
-		return (1);
+		return (quote_count);
 	}
-	else if (quote_count > 0 && quote_count % 2 == 0)
-		delete_quotes(input, '\"');
-	return (0);
+	else
+	{
+		remove_quotes(str, '\"');
+		//printf("string after: %s\n", str);
+	}
+	return (quote_count);
 }
 
-int	manage_quotes(char *input)
+int	main(void)
 {
-	manage_double_quotes(input);
-	// manage_single_quotes(input);
-	return (0);
-}
+	char	*input;
 
-int	main(int argc, char **argv)
-{
-	char	*input = NULL;
+	input = "\"\"hello world\"\"";
+	printf("%s\n", input);
+	// printf("%d\n", manage_quotes(input));
+	del_char(input, '\"');
+	printf("%s\n", input);
 
-	if (argc == 2)
-		input = argv[1];
-	manage_quotes(input);
 	return (0);
 }
