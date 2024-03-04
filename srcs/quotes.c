@@ -6,31 +6,11 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 23:15:53 by lbarry            #+#    #+#             */
-/*   Updated: 2024/03/03 23:52:25 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/04 16:41:37 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-char	*ft_strchr(const char *s, int c)
-{
-	int				i;
-	unsigned char	d;
-	char			*str;
-
-	i = 0;
-	d = (unsigned char)c;
-	str = (char *)s;
-	while (str[i])
-	{
-		if (str[i] == d)
-			return (&str[i]);
-		i++;
-	}
-	if (str[i] == d)
-		return (&str[i]);
-	return (0);
-}
 
 // del char " or ' from string and move rest of string forwards in memory
 void	del_char(char *address, char char_to_del)
@@ -96,34 +76,60 @@ int	count_quotes(char *str, char c)
 // then remove quotes if " found within ""
 // same for ' within ''
 // don't delete " within '' and vice versa
-
-int	manage_quotes(char *str)
+int	in_d_quotes(char *str)
 {
-	int	quote_count;
+	int	d_quotes;
 
-	quote_count = count_quotes(str, '\"');
-	if (quote_count % 2 != 0)
+	d_quotes = count_quotes(str, '\"');
+	printf("d_quotes: %d\n", d_quotes);
+	if (d_quotes % 2 != 0)
 	{
 		printf("Error: quotes open\n");
-		return (quote_count);
+		// free and exit syntax error
+		exit(-1);
 	}
 	else
 	{
+		printf("string before: %s\n", str);
 		remove_quotes(str, '\"');
-		//printf("string after: %s\n", str);
+		printf("string after: %s\n", str);
 	}
-	return (quote_count);
+	return (1);
 }
 
-int	main(void)
+int	in_s_quotes(char *str)
 {
-	char	*input;
+	int	s_quotes;
 
-	input = "\"\"hello world\"\"";
-	printf("%s\n", input);
-	// printf("%d\n", manage_quotes(input));
-	del_char(input, '\"');
-	printf("%s\n", input);
+	s_quotes = count_quotes(str, '\'');
+	printf("s_quotes: %d\n", s_quotes);
+	if (s_quotes % 2 != 0)
+	{
+		printf("Error: quotes open\n");
+		// free and exit sytax error
+		exit(-1);
+	}
+	else
+	{
+		printf("string before: %s\n", str);
+		remove_quotes(str, '\'');
+		printf("string after: %s\n", str);
+	}
+	return (1);
+}
 
-	return (0);
+int	manage_quotes(char *str)
+{
+	// strchr if d_quotes comes first, in_d_quotes
+	if (!ft_strchr(str, '\"') && !ft_strchr(str, '\''))
+		return (printf("no quotes\n"), 0);
+	else if (!ft_strchr(str, '\"'))
+		in_s_quotes(str);
+	else if (!ft_strchr(str, '\''))
+		in_d_quotes(str);
+	else if (ft_strchr(str, '\"') < ft_strchr(str, '\''))
+		in_d_quotes(str);
+	else
+		in_s_quotes(str);
+	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/02 04:11:51 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/04 17:45:58 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int     ft_tokenizer(char *token)
     else if (ft_strcmp(token, "|") == 0)
         return (PIPE);
     else if (ft_strcmp(token, " ") == 0)
-        return (SPACE);
+        return (WHITE_SPACE);
     else
         return (WORD);
 }
@@ -73,12 +73,12 @@ void    find_token(char *str)
         else if (str[i] == '|')
             ft_stock(&tok, ft_lstnew("|", ft_tokenizer("|")));
         else if (str[i] == ' ')
-            ft_tokenizer(" ");
+            ft_stock(&tok, ft_lstnew(" ", ft_tokenizer(" ")));
         else
         {
             j = 0;
             word = malloc(word_size(str, i) + 1);
-            while (ft_strchr(" \t><|\0", str[i]) == 0) // ft_
+            while (ft_strchr(" \t><|\0", str[i]) == 0)
                 word[j++] = str[i++];
             word[j] = '\0';
             ft_stock(&tok, ft_lstnew(word, ft_tokenizer(word)));
@@ -103,6 +103,7 @@ int main(int argc, char **argv, char **envp)
         if (!*input)
             continue;
         add_history(input);
+		manage_quotes(input);
         find_token(input);
 	}
     return (0);

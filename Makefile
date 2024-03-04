@@ -35,7 +35,7 @@ all:	${NAME}
 $(NAME): $(DIR_OBJS) $(OBJS)
 	make -C libft
 	$(CC) $(CFLAGS) ${INC} $(CDFLAGS) $(OBJS) $(LIB) -lreadline -o $(NAME)
-	@ echo "MINISHELL"  | toilet -f future -F border --gay
+	@ echo "HEY KHALID"  | toilet -f future -F border --gay
 
 $(OBJS) : $(DIR_OBJS)/%.o : $(DIR_SRCS)/%.c
 	$(CC) $(CFLAGS) $(CDFLAGS) $(INC) -c $< -o $@

@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/02 04:34:46 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/04 17:43:37 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ enum
 	LESS,
 	DLESS,
 	PIPE,
-	SPACE,
-	WORD
+	WHITE_SPACE,
+	WORD,
 };
 
 # include "../libft/libft.h"
@@ -63,8 +63,14 @@ t_token					*ft_lstlast(t_token *lst);
 
 /* quotes.c */
 
-// int						ft_check_open_d_quotes(char *str);
-// int						ft_check_open_s_quotes(char *str);
+// int					ft_check_open_d_quotes(char *str);
+// int					ft_check_open_s_quotes(char *str);
+void					del_char(char *address, char char_to_del);
+int						remove_quotes(char *str, char quote);
+int						count_quotes(char *str, char c);
+int						manage_quotes(char *str);
+int						in_d_quotes(char *str);
+int						in_s_quotes(char *str);
 
 /* syntax.c */
 

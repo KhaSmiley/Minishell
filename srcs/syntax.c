@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:38 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/02/28 17:28:24 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/04 17:27:39 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int ft_syntax_pipe(t_token *tok)
 {
     t_token *tmp;
-    
+
     if (!tok)
         return (12);
     tmp = tok;
@@ -83,7 +83,7 @@ int ft_syntax_word(t_token *tok)
     if tab[i] == PIPE && tab[i + 1] == PIPE
 
     if tab[dernier] == PIPE ou CHEVRON
-    
+
     if tab[i] == CHEVRON && tab[i + 1] == CHEVRON ou PIPE
 
 
@@ -97,7 +97,9 @@ int ft_syntax(t_token *tok)
 
     int error;
     tmp = tok;
-    if ((tmp->type == GREATER || tmp->type == LESS || tmp->type == DGREATER || tmp->type == DLESS))
+	if (!tmp)
+		return (ft_printf("Message\n"), -1);
+	if ((tmp->type == GREATER || tmp->type == LESS || tmp->type == DGREATER || tmp->type == DLESS))
     {
         if (tmp->next == NULL)
             return (ft_printf("syntax error near unexpected token `newline'\n"), -1);
@@ -105,7 +107,7 @@ int ft_syntax(t_token *tok)
         error = ft_syntax_redir(tmp);
         if (error)
             return (ft_printf("Syntax Error [%i]\n", error), -1);
-        return (0);            
+        return (0);
     }
     else if (tmp->type == PIPE)
         return (ft_printf("syntax error near unexpected token '|'\n"), -1);
