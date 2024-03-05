@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 03:40:10 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/02/28 17:28:11 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/04 17:45:21 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,7 @@ t_token	*ft_lstnew(char *content, int type)
 void print_list(t_token *lst)
 {
     if (!lst)
-    {
-		ft_printf("EMPTY LIST\n");
 		return ;
-	
-	}
     while(lst)
     {
         ft_printf("WORD : %s TYPE : %d\n", lst->str, lst->type);
