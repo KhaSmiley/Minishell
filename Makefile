@@ -10,7 +10,8 @@ SRCS_NAMES		=	expand.c \
 					minishell.c \
 					lst_utils.c \
 					syntax.c \
-					quotes.c
+					quotes.c \
+					tokens.c
 
 OBJS_NAMES		=	${SRCS_NAMES:.c=.o}
 

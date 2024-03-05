@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/04 17:43:37 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/05 01:19:48 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,11 @@ typedef struct s_token
 	struct s_token		*next;
 }						t_token;
 
+typedef struct s_input
+{
+	int	dollar_flag;
+}				t_input;
+
 enum
 {
 	GREATER,
@@ -30,6 +35,7 @@ enum
 	DLESS,
 	PIPE,
 	WHITE_SPACE,
+	DOLLAR,
 	WORD,
 };
 
@@ -63,14 +69,12 @@ t_token					*ft_lstlast(t_token *lst);
 
 /* quotes.c */
 
-// int					ft_check_open_d_quotes(char *str);
-// int					ft_check_open_s_quotes(char *str);
 void					del_char(char *address, char char_to_del);
-int						remove_quotes(char *str, char quote);
+int						remove_quotes(char *str, char quote, t_input *flags);
 int						count_quotes(char *str, char c);
-int						manage_quotes(char *str);
-int						in_d_quotes(char *str);
-int						in_s_quotes(char *str);
+int						manage_quotes(char *str, t_input *flags);
+int						in_d_quotes(char *str, t_input *flags);
+int						in_s_quotes(char *str, t_input *flags);
 
 /* syntax.c */
 
@@ -78,5 +82,9 @@ int						ft_syntax(t_token *tok);
 int						ft_syntax_pipe(t_token *tok);
 int						ft_syntax_redir(t_token *tok);
 int						ft_syntax_word(t_token *tok);
+int						ft_tokenizer(char *token);
+int						word_size(char *str, int i);
+int						alloc_token(t_token **tok, char *longchev, char *str, int i);
+void					find_token(char *str);
 
 #endif
