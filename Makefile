@@ -7,6 +7,8 @@ DIR_SRCS		=	srcs
 DIR_OBJS		=	.objs
 
 SRCS_NAMES		=	expand.c \
+					expand_utils.c \
+					expand_utils_two.c \
 					minishell.c \
 					lst_utils.c \
 					syntax.c \
@@ -37,6 +39,8 @@ $(NAME): $(DIR_OBJS) $(OBJS)
 	make -C libft
 	$(CC) $(CFLAGS) ${INC} $(CDFLAGS) $(OBJS) $(LIB) -lreadline -o $(NAME)
 	@ echo "HEY KHALID"  | toilet -f future -F border --gay
+	@ echo "HEY LAURA"  | toilet -f future -F border --gay
+
 
 $(OBJS) : $(DIR_OBJS)/%.o : $(DIR_SRCS)/%.c
 	$(CC) $(CFLAGS) $(CDFLAGS) $(INC) -c $< -o $@
