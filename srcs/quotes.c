@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 23:15:53 by lbarry            #+#    #+#             */
-/*   Updated: 2024/03/05 01:29:04 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/06 21:43:22 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ int	in_d_quotes(char *str, t_input *flags)
 		// free and exit syntax error
 		return (-1);
 	}
+	// flag $
+	// stock expand qui suit sd
 	else
 	{
 		printf("string before: %s\n", str);

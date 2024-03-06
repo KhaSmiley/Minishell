@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 05:31:16 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/06 05:31:39 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/06 21:43:21 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ t_env	*ft_create_env(t_token *tok, char *str, int i, char **envp_cpy)
 	return (tok->env);
 }
 
-// Trying to check for word with $ and expand it, 
+// Trying to check for word with $ and expand it,
 // the reason i wanna do it before deleting quotes is
 // echo test"$USER"test the value to expend is USER but becomes USERTEST without quotes)
 
