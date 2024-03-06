@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 23:15:53 by lbarry            #+#    #+#             */
-/*   Updated: 2024/03/05 01:29:04 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/06 22:02:32 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ int	in_s_quotes(char *str, t_input *flags)
 		// free and exit sytax error
 		return (-1);
 	}
+
 	else
 	{
 		printf("string before: %s\n", str);
@@ -129,6 +130,11 @@ int	in_s_quotes(char *str, t_input *flags)
 
 int	manage_quotes(char *str, t_input *flags)
 {
+	// check quotes open
+
+	// $ stock expands
+
+	// remove quotes
 	if (!ft_strchr(str, '\"') && !ft_strchr(str, '\''))
 		return (printf("no quotes\n"), 0);
 	else if (!ft_strchr(str, '\"'))
