@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 23:15:53 by lbarry            #+#    #+#             */
-/*   Updated: 2024/03/06 22:02:32 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/08 02:33:13 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,16 +131,23 @@ int	in_s_quotes(char *str, t_input *flags)
 int	manage_quotes(char *str, t_input *flags)
 {
 	// check quotes open
-
 	// $ stock expands
-
 	// remove quotes
+
 	if (!ft_strchr(str, '\"') && !ft_strchr(str, '\''))
 		return (printf("no quotes\n"), 0);
+	// check if quotes open
+
+	// only single 	quotes
 	else if (!ft_strchr(str, '\"'))
 		in_s_quotes(str, flags);
+
+	// only double quotes
 	else if (!ft_strchr(str, '\''))
 		in_d_quotes(str, flags);
+
+	// when both- loop and go to each func while inside then come back if closed and continue
+	// echo "" '' "" BONJOUR
 	else if (ft_strchr(str, '\"') < ft_strchr(str, '\''))
 		in_d_quotes(str, flags);
 	else
