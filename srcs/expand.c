@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 05:31:16 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/06 05:31:39 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/08 21:50:47 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,32 +38,39 @@ char	*ft_find_value(char *key, char **envp_cpy)
 		}
 		i++;
 	}
-	return (ft_printf("$%s doesn't exist", key), NULL);
+	return (ft_printf("$%s doesn't exist", key), NULL);	
 }
 
 // Trying to create a new env list with the key and value found for each word with $ in it
 // so i can use it later to replace the word with the value if necessary (quote handling)
 
-t_env	*ft_create_env(t_token *tok, char *str, int i, char **envp_cpy)
+int	ft_create_env(t_token *tok, char *str, char **envp_cpy)
 {
 	char	*key;
 	char	*value;
 	int		count;
+	int i;
 
+	i = 0;
     count = 1;
 	while (str[i])
 	{
+		key = NULL;
+		value = NULL;
 		if (str[i] == '$')
 		{
-			i++;
 			key = ft_find_key(str, count);
             value = ft_find_value(key, envp_cpy);
             ft_stock_env(&tok->env, ft_lstnew_env(key, value));
+			if(!tok->env)
+				return (1);
+			free(key);
+        	free(value);
             count++;
         }
 		i++;
 	}
-	return (tok->env);
+	return (0);
 }
 
 // Trying to check for word with $ and expand it, 
@@ -73,16 +80,18 @@ t_env	*ft_create_env(t_token *tok, char *str, int i, char **envp_cpy)
 void	ft_expand_str(t_token *tok, char **envp_cpy)
 {
 	int i;
-
+	
 	while (tok)
 	{
-		i = 0;
-		if (tok->type == WORD && tok->str[i] == '$')
+		tok->env = NULL;
+		if (tok->type == WORD)
 		{
-			tok->env = ft_create_env(tok, tok->str, i, envp_cpy);
+			i = 0;
+			if (tok->str[i] == '$')
+			{
+				ft_create_env(tok, tok->str, envp_cpy);
+			}
 		}
 		tok = tok->next;
 	}
-	// print_list(tok);
-	// print_list_env(tok);
 }

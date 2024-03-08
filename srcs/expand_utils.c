@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 22:14:19 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/06 05:23:35 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/08 21:37:50 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ void	ft_stock_env(t_env **lst, t_env *new_link)
 {
 	if (!lst || !new_link)
 		return ;
-	if (!*lst)
+	if (!*lst && new_link)
 		*lst = new_link;
-	else
+	else if (new_link)
 		(ft_lstlast_env(*lst))->next = new_link;
 }
 
@@ -50,12 +50,24 @@ t_env	*ft_lstnew_env(char *key, char *value)
 
 void print_list_env(t_token *lst)
 {
-	printf("PRINTING ENV LIST\n");
 	if (!lst)
 		return ;
 	while(lst)
 	{
-		ft_printf("KEY : %s VALUE : %s\n", lst->env->key, lst->env->value);
+		if (lst->env)
+		{
+			t_env *env_ptr = lst->env;
+			while (env_ptr)
+			{
+				if (env_ptr->key && env_ptr->value)
+				{	
+					ft_printf("KEY : %s VALUE : %s\n", env_ptr->key, env_ptr->value);
+					env_ptr = env_ptr->next;
+				}
+				else
+					break ;
+			}
+		}
 		lst = lst->next;
 	}
 	return ;
