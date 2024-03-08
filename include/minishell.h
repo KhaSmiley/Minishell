@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/06 05:25:24 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/08 02:16:48 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,6 @@ typedef struct s_token
 	struct s_token		*next;
 	struct s_env		*env;
 }						t_token;
-
-typedef struct s_input
-{
-	int					dollar_flag;
-}						t_input;
 
 enum
 {
@@ -88,11 +83,11 @@ t_token					*ft_lstlast(t_token *lst);
 /* quotes.c */
 
 void					del_char(char *address, char char_to_del);
-int						remove_quotes(char *str, char quote, t_input *flags);
+int						remove_quotes(char *str, char quote);
 int						count_quotes(char *str, char c);
-int						manage_quotes(char *str, t_input *flags);
-int						in_d_quotes(char *str, t_input *flags);
-int						in_s_quotes(char *str, t_input *flags);
+int						manage_quotes(char *str);
+int						in_d_quotes(char *str);
+int						in_s_quotes(char *str);
 
 /* syntax.c */
 

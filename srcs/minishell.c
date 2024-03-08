@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/06 04:46:11 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/08 02:25:38 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int main(int argc, char **argv, char **envp)
     (void)argc;
     (void)argv;
     (void)envp;
-	// static t_input	quote_flags = {0};
     t_token *tok;
     char **envp_cpy;
 
@@ -30,9 +29,9 @@ int main(int argc, char **argv, char **envp)
             continue;
         add_history(input);
         tok = find_token(input);
-		// manage_quotes(input, &quote_flags);  
+		manage_quotes(input);
         envp_cpy = ft_envp_copy(envp);
-        ft_expand_str(tok, envp_cpy);
+        // ft_expand_str(tok, envp_cpy);
 	}
     return (0);
 }
