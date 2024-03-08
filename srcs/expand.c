@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 05:31:16 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/08 22:15:26 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/08 23:43:57 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,19 @@
 // value is the string after the = in the env list
 // ex : USER=kboulkri, key is USER and value is kboulkri
 
+void	check_quotes_for_env(char *quote_char, char *word, int i_word)
+{
+	if (!*quote_char)
+		*quote_char = word[i_word];
+	else if (*quote_char == word[i_word])
+		*quote_char = '\0';
+}
 
 char	*ft_find_value(char *key, char **envp_cpy)
 {
 	int		i;
 	char	*stock;
+
 	i = 0;
 	while (envp_cpy[i])
 	{
@@ -38,7 +46,7 @@ char	*ft_find_value(char *key, char **envp_cpy)
 		}
 		i++;
 	}
-	return (ft_printf("$%s doesn't exist", key), NULL);	
+	return (ft_printf("$%s doesn't exist", key), NULL);
 }
 
 // Trying to create a new env list with the key and value found for each word with $ in it
@@ -49,25 +57,32 @@ int	ft_create_env(t_token *tok, char *str, char **envp_cpy)
 	char	*key;
 	char	*value;
 	int		count;
-	int i;
+	char	flag_quote;
+	int		i;
 
 	i = 0;
-    count = 1;
+	count = 1;
+	flag_quote = '\0';
 	while (str[i])
 	{
 		key = NULL;
 		value = NULL;
-		if (str[i] == '$')
+		if (str[i] == '\'' || str[i] == '\"')
+			check_quotes_for_env(&flag_quote, str, i);
+		else if (str[i] == '$')
 		{
-			key = ft_find_key(str, count);
-            value = ft_find_value(key, envp_cpy);
-            ft_stock_env(&tok->env, ft_lstnew_env(key, value));
-			if(!tok->env)
-				return (1);
-			free(key);
-        	free(value);
-            count++;
-        }
+			if (flag_quote == '\'')
+				ft_stock_env(&tok->env, ft_lstnew_env(NULL, NULL));
+			else
+			{
+				key = ft_find_key(str, count);
+				value = ft_find_value(key, envp_cpy);
+				ft_stock_env(&tok->env, ft_lstnew_env(key, value));
+				if (!tok->env)
+					return (1);
+				count++;
+			}
+		}
 		i++;
 	}
 	return (0);
@@ -79,8 +94,8 @@ int	ft_create_env(t_token *tok, char *str, char **envp_cpy)
 
 void	ft_expand_str(t_token *tok, char **envp_cpy)
 {
-	int i;
-	
+	int	i;
+
 	while (tok)
 	{
 		tok->env = NULL;

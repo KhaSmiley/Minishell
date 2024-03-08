@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/08 22:15:42 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/08 22:51:10 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int main(int argc, char **argv, char **envp)
 		// manage_quotes(input, &quote_flags);  
         envp_cpy = ft_envp_copy(envp);
         ft_expand_str(tok, envp_cpy);
+        print_list_env(tok);
 	}
     return (0);
 }

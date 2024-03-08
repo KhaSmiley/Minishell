@@ -6,16 +6,14 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/08 22:14:47 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/08 23:40:16 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-typedef struct s_token	t_token;
-
-// struct for the token list and a new struct to add the key + value for each $ found in word
+// typedef struct s_token	t_token;
 
 typedef struct s_env
 {
@@ -55,13 +53,13 @@ enum
 /* expand.c */
 
 char					*ft_find_value(char *key, char **envp_cpy);
-int					ft_create_env(t_token *tok, char *str,
-							char **envp_cpy);
+int						ft_create_env(t_token *tok, char *str, char **envp_cpy);
 void					ft_expand_str(t_token *tok, char **envp_cpy);
+void	check_quotes_for_env(char *quote_char, char *word, int i_word);
 
 /* expand_new.c */
 
-t_env	*ft_create_env_new(t_token *tok, char *str);
+t_env					*ft_create_env_new(t_token *tok, char *str);
 void					ft_expand_dollar(t_token *tok_word);
 
 /* expand_utils.c */
