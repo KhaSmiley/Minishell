@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 05:31:16 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/08 22:02:56 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/08 22:15:26 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	ft_create_env(t_token *tok, char *str, char **envp_cpy)
 	return (0);
 }
 
-// Trying to check for word with $ and expand it, 
+// Trying to check for word with $ and expand it,
 // the reason i wanna do it before deleting quotes is
 // echo test"$USER"test the value to expend is USER but becomes USERTEST without quotes)
 

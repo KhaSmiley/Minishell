@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 23:15:53 by lbarry            #+#    #+#             */
-/*   Updated: 2024/03/08 22:04:28 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/08 22:15:38 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ int	in_d_quotes(char *str)
 		// free and exit syntax error
 		return (-1);
 	}
+	// flag $
+	// stock expand qui suit sd
 	else
 	{
 		printf("string before: %s\n", str);
