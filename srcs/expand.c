@@ -6,93 +6,92 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 05:31:16 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/02 01:23:48 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/08 22:15:26 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void free_tab(char **tab)
-{
-    int i;
+// Trying to find the value with the key
+// value is the string after the = in the env list
+// ex : USER=kboulkri, key is USER and value is kboulkri
 
-    i = 0;
-    while (tab[i])
-    {
-        free(tab[i]);
-        i++;
-    }
-    free(tab);
+
+char	*ft_find_value(char *key, char **envp_cpy)
+{
+	int		i;
+	char	*stock;
+	i = 0;
+	while (envp_cpy[i])
+	{
+		if (ft_strncmp(envp_cpy[i], key, ft_strlen(key)) == 0)
+		{
+			if (envp_cpy[i][ft_strlen(key)] == '=')
+			{
+				stock = ft_substr(envp_cpy[i], ft_strlen_from_char(envp_cpy[i],
+							'=') + 1, ft_strlen(envp_cpy[i]) - ft_strlen(key)
+						- 1);
+				if (!stock)
+					return (NULL);
+				return (stock);
+			}
+		}
+		i++;
+	}
+	return (ft_printf("$%s doesn't exist", key), NULL);	
 }
 
-int ft_strlen_from_char(char *str, char c)
+// Trying to create a new env list with the key and value found for each word with $ in it
+// so i can use it later to replace the word with the value if necessary (quote handling)
+
+int	ft_create_env(t_token *tok, char *str, char **envp_cpy)
 {
-    int i;
+	char	*key;
+	char	*value;
+	int		count;
+	int i;
 
-    i = 0;
-    while (str[i] && str[i] != c)
-        i++;
-    return (i);
-}
-
-char *ft_find_var(char *var, char **envp_cpy)
-{
-    int i;
-    char *stock;
-
-    i = 0;
-    // int j = 0;
-    while (envp_cpy[i])
-    {
-        if (ft_strncmp(envp_cpy[i], var, ft_strlen(var)) == 0)
-        {
-            if (envp_cpy[i][ft_strlen(var)] == '=')
-            {
-                stock = ft_substr(envp_cpy[i], ft_strlen_from_char(envp_cpy[i], '=') + 1, ft_strlen(envp_cpy[i]) - ft_strlen(var) - 1);
-                if (!stock)
-                    return (NULL);
-                return (stock);
-            }    
+	i = 0;
+    count = 1;
+	while (str[i])
+	{
+		key = NULL;
+		value = NULL;
+		if (str[i] == '$')
+		{
+			key = ft_find_key(str, count);
+            value = ft_find_value(key, envp_cpy);
+            ft_stock_env(&tok->env, ft_lstnew_env(key, value));
+			if(!tok->env)
+				return (1);
+			free(key);
+        	free(value);
+            count++;
         }
-        i++;
-    }
-    return (ft_printf("$%s doesn't exist", var), NULL);
+		i++;
+	}
+	return (0);
 }
 
-char **ft_cpy_envp(char **envp)
+// Trying to check for word with $ and expand it,
+// the reason i wanna do it before deleting quotes is
+// echo test"$USER"test the value to expend is USER but becomes USERTEST without quotes)
+
+void	ft_expand_str(t_token *tok, char **envp_cpy)
 {
-    char **envp_cpy;
-    int i;
-
-    i = 0;
-    while (envp[i])
-        i++;
-    envp_cpy = malloc(sizeof(char *) * (i + 1));
-    i = 0;
-    while (envp[i])
-    {
-        envp_cpy[i] = ft_strdup(envp[i]);
-        i++;
-    }
-    envp_cpy[i] = NULL;
-    return (envp_cpy);
+	int i;
+	
+	while (tok)
+	{
+		tok->env = NULL;
+		if (tok->type == WORD)
+		{
+			i = 0;
+			if (tok->str[i] == '$')
+			{
+				ft_create_env(tok, tok->str, envp_cpy);
+			}
+		}
+		tok = tok->next;
+	}
 }
-
-void ft_expand(char **envp)
-{
-    int i;
-    char **envp_cpy;
-    // char *stock;
-    
-    i = 0;
-    envp_cpy = ft_cpy_envp(envp);
-    free_tab(envp_cpy);
-}
-
-// int main(int argc, char **argv, char **envp)
-// {
-//     (void)argv;
-//     if (argc > 2)
-//         ft_expand(argv, envp);
-//     return (0);
-// }

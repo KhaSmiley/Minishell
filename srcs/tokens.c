@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokens.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 01:06:11 by lbarry            #+#    #+#             */
-/*   Updated: 2024/03/05 01:06:33 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/06 04:09:06 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ int     ft_tokenizer(char *token)
         return (PIPE);
     else if (ft_strcmp(token, " ") == 0)
         return (WHITE_SPACE);
-	else if (ft_strcmp(token, "$") == 0)
-		return (DOLLAR);
+	// else if (ft_strcmp(token, "$") == 0)
+	// 	return (DOLLAR);
 	else
 		return (WORD);
 }
@@ -57,7 +57,7 @@ int    alloc_token(t_token **tok, char *longchev, char *str, int i)
 }
 
 
-void    find_token(char *str)
+t_token    *find_token(char *str)
 {
     int i;
     int j;
@@ -76,8 +76,6 @@ void    find_token(char *str)
             ft_stock(&tok, ft_lstnew("|", ft_tokenizer("|")));
         else if (str[i] == ' ')
             ft_stock(&tok, ft_lstnew(" ", ft_tokenizer(" ")));
-		else if (str[i] == '$')
-			ft_stock(&tok, ft_lstnew("$", ft_tokenizer("$")));
         else
         {
             j = 0;
@@ -90,6 +88,7 @@ void    find_token(char *str)
         }
         i++;
     }
-    print_list(tok);
+    // print_list(tok);
     ft_syntax(tok);
+    return (tok);
 }
