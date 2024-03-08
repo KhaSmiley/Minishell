@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 23:15:53 by lbarry            #+#    #+#             */
-/*   Updated: 2024/03/05 01:29:04 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/08 22:04:28 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,22 +30,16 @@ void	del_char(char *address, char char_to_del)
 	// 	*address = "\n";
 }
 
-int	remove_quotes(char *str, char quote, t_input *flags)
+int	remove_quotes(char *str, char quote)
 {
 	int	i;
 	int	in_quotes;
 
 	i = 0;
 	in_quotes = 0;
-	flags->dollar_flag = 0;
 	// scan whole string for quotes
 	while (str[i])
 	{
-		if (in_quotes && str[i] == '$' && quote == '\"')
-		{
-			flags->dollar_flag++;
-			printf("dollar_flag: %d\n", flags->dollar_flag);
-		}
 		if (str[i] == quote && !in_quotes)
 		{
 			in_quotes = 1;
@@ -85,7 +79,7 @@ int	count_quotes(char *str, char c)
 // same for ' within ''
 // don't delete " within '' and vice versa
 
-int	in_d_quotes(char *str, t_input *flags)
+int	in_d_quotes(char *str)
 {
 	int	d_quotes;
 
@@ -100,13 +94,13 @@ int	in_d_quotes(char *str, t_input *flags)
 	else
 	{
 		printf("string before: %s\n", str);
-		remove_quotes(str, '\"', flags);
+		remove_quotes(str, '\"');
 		printf("string after: %s\n", str);
 	}
 	return (1);
 }
 
-int	in_s_quotes(char *str, t_input *flags)
+int	in_s_quotes(char *str)
 {
 	int	s_quotes;
 
@@ -121,23 +115,23 @@ int	in_s_quotes(char *str, t_input *flags)
 	else
 	{
 		printf("string before: %s\n", str);
-		remove_quotes(str, '\'', flags);
+		remove_quotes(str, '\'');
 		printf("string after: %s\n", str);
 	}
 	return (1);
 }
 
-int	manage_quotes(char *str, t_input *flags)
+int	manage_quotes(char *str)
 {
 	if (!ft_strchr(str, '\"') && !ft_strchr(str, '\''))
 		return (printf("no quotes\n"), 0);
 	else if (!ft_strchr(str, '\"'))
-		in_s_quotes(str, flags);
+		in_s_quotes(str);
 	else if (!ft_strchr(str, '\''))
-		in_d_quotes(str, flags);
+		in_d_quotes(str);
 	else if (ft_strchr(str, '\"') < ft_strchr(str, '\''))
-		in_d_quotes(str, flags);
+		in_d_quotes(str);
 	else
-		in_s_quotes(str, flags);
+		in_s_quotes(str);
 	return (1);
 }
