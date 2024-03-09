@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/05 01:19:48 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/08 23:05:36 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,14 @@ t_token					*ft_lstlast(t_token *lst);
 /* quotes.c */
 
 void					del_char(char *address, char char_to_del);
-int						remove_quotes(char *str, char quote, t_input *flags);
+int						remove_quotes(char *str, char quote);
 int						count_quotes(char *str, char c);
-int						manage_quotes(char *str, t_input *flags);
-int						in_d_quotes(char *str, t_input *flags);
-int						in_s_quotes(char *str, t_input *flags);
+int						manage_quotes(char *str);
+int						remove_d_quotes(char *str);
+int						remove_s_quotes(char *str);
+char					find_next_quote(char *str);
+int						manage_both_quotes(char *str);
+int						manage_solo_quotes(char *str);
 
 /* syntax.c */
 

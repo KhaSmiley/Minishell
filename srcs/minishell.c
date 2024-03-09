@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/05 01:06:58 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/08 22:04:32 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int main(int argc, char **argv, char **envp)
     (void)argc;
     (void)argv;
     (void)envp;
-	static t_input	quote_flags = {0};
 
     while (1)
     {
@@ -27,7 +26,7 @@ int main(int argc, char **argv, char **envp)
         if (!*input)
             continue;
         add_history(input);
-		manage_quotes(input, &quote_flags);
+		manage_quotes(input);
         find_token(input);
 	}
     return (0);

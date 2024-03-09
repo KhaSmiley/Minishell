@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:38 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/05 01:30:30 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/08 18:41:25 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ int ft_syntax(t_token *tok)
 
     int error;
     tmp = tok;
+	// double check how to handle empty input later
 	if (!tmp)
 	 	return (ft_printf("empty quotes = \\n\n"), -1);
 	if ((tmp->type == GREATER || tmp->type == LESS || tmp->type == DGREATER || tmp->type == DLESS))
