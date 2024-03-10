@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/08 02:16:48 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/10 23:08:45 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,7 @@ enum
 /* expand.c */
 
 char					*ft_find_value(char *key, char **envp_cpy);
-t_env					*ft_create_env(t_token *tok, char *str, int i,
-							char **envp_cpy);
+t_env					*ft_create_env(t_token *tok, char *str, int i, char **envp_cpy);
 void					ft_expand_str(t_token *tok, char **envp_cpy);
 
 /* expand_utils.c */
