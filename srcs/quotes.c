@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 23:15:53 by lbarry            #+#    #+#             */
-/*   Updated: 2024/03/09 03:55:51 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/10 01:27:17 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,19 @@ void	del_char(char *address, char char_to_del)
 	}
 }
 
-char	find_next_quote(char *str)
-{
-	int	i;
+// char	find_next_quote(char *str)
+// {
+// 	int	i;
 
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '\'' || str[i] == '\"')
-			return (str[i]);
-		i++;
-	}
-	return ('\0');
-}
+// 	i = 0;
+// 	while (str[i])
+// 	{
+// 		if (str[i] == '\'' || str[i] == '\"')
+// 			return (str[i]);
+// 		i++;
+// 	}
+// 	return ('\0');
+// }
 
 int	remove_quotes(char *str, char quote)
 {
@@ -71,103 +71,103 @@ int	remove_quotes(char *str, char quote)
 	}
 	return (0);
 }
-
-int	count_quotes(char *str, char c)
-{
-	int	i;
-	int	count;
-
-	i = 0;
-	count = 0;
-	while (str[i])
-	{
-		if (str[i] == c)
-			count++;
-		i++;
-	}
-	return (count);
-}
 // exit syntax error if quotes are not closed
 // then remove quotes if " found within ""
 // same for ' within ''
 // don't delete " within '' and vice versa
 
-int	remove_d_quotes(char *str)
-{
-	int	i;
-	int	in_quotes;
+// int	remove_d_quotes(char *str)
+// {
+// 	int	i;
+// 	int	in_quotes;
 
-	i = 0;
-	in_quotes = 0;
-	while (str[i] && str[i] != '\'')
-	{
-		if (str[i] == '\"' && !in_quotes)
-		{
-			in_quotes = 1;
-			del_char(&str[i], '\"');
-			i--;
-		}
-		else if (str[i] == '\"' && in_quotes)
-		{
-			in_quotes = 0;
-			del_char(&str[i], '\"');
-			i--;
-		}
-		i++;
-	}
-	return (0);
-}
-int	remove_s_quotes(char *str)
-{
-	int	i;
-	int	in_quotes;
+// 	i = 0;
+// 	in_quotes = 0;
+// 	while (str[i] && str[i] != '\'')
+// 	{
+// 		if (str[i] == '\"' && !in_quotes)
+// 		{
+// 			in_quotes = 1;
+// 			del_char(&str[i], '\"');
+// 			i--;
+// 		}
+// 		else if (str[i] == '\"' && in_quotes)
+// 		{
+// 			in_quotes = 0;
+// 			del_char(&str[i], '\"');
+// 			i--;
+// 		}
+// 		i++;
+// 	}
+// 	return (0);
+// }
 
-	i = 0;
-	in_quotes = 0;
-	while (str[i] && str[i] != '\"')
-	{
-		if (str[i] == '\'' && !in_quotes)
-		{
-			in_quotes = 1;
-			del_char(&str[i], '\'');
-			i--;
-		}
-		else if (str[i] == '\'' && in_quotes)
-		{
-			in_quotes = 0;
-			del_char(&str[i], '\'');
-			i--;
-		}
-		i++;
-	}
-	return (0);
-}
+// int	remove_s_quotes(char *str)
+// {
+// 	int	i;
+// 	int	in_quotes;
+
+// 	i = 0;
+// 	in_quotes = 0;
+// 	while (str[i] && str[i] != '\"')
+// 	{
+// 		if (str[i] == '\'' && !in_quotes)
+// 		{
+// 			in_quotes = 1;
+// 			del_char(&str[i], '\'');
+// 			i--;
+// 		}
+// 		else if (str[i] == '\'' && in_quotes)
+// 		{
+// 			in_quotes = 0;
+// 			del_char(&str[i], '\'');
+// 			i--;
+// 		}
+// 		i++;
+// 	}
+// 	return (0);
+// }
+
 int	manage_solo_quotes(char *input)
 {
-	// check quotes open
-	// $ stock expands
-	// remove quotes
-	int s_quotes;
-	int d_quotes;
-
-	s_quotes = count_quotes(input, '\'');
-	printf("s_quotes: %d\n", s_quotes);
-	d_quotes = count_quotes(input, '\"');
-	printf("d_quotes: %d\n", d_quotes);
-
-	// check if quotes open
 	printf("str before: %s\n", input);
-	if (s_quotes % 2 != 0 || d_quotes % 2 != 0)
-	{
-		printf("Syntax error: quotes open\n");
-		return (-1);
-	}
-	// only single 	quotes
-	else if (!ft_strchr(input, '\"'))
+	// only single quotes
+	if (!ft_strchr(input, '\"'))
 		remove_quotes(input, '\'');
 	// only double quotes
 	else if (!ft_strchr(input, '\''))
 		remove_quotes(input, '\"');;
 	printf("str after: %s\n", input);
 	return (1);
+}
+
+// int manage_both_quotes(char *input)
+// {
+// 	// remove quotes found together but not within other quotes
+// 	// e.g. "" '' ""BONJOUR
+
+// 	return (0);
+// }
+
+int	manage_quotes(char *input)
+{
+	// check quotes open
+	// $ stock expands
+	// remove quotes
+
+	// no quotes
+	if (!ft_strchr(input, '\"') && !ft_strchr(input, '\''))
+		return (printf("no quotes\n"), 0);
+	// check quotes open
+	if (!check_quotes_open(input))
+	{
+		printf("Syntax error: quotes open\n");
+		exit(1);
+	}
+	// --> insert $ stuff here before removing quotes
+	if (!ft_strchr(input, '\"') || !ft_strchr(input, '\''))
+		manage_solo_quotes(input);
+	// else
+	//  	manage_both_quotes(input);
+	return (0);
 }
