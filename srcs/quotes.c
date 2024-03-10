@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 23:15:53 by lbarry            #+#    #+#             */
-/*   Updated: 2024/03/10 01:27:17 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/10 20:39:21 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,126 +28,39 @@ void	del_char(char *address, char char_to_del)
 	}
 }
 
-// char	find_next_quote(char *str)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (str[i])
-// 	{
-// 		if (str[i] == '\'' || str[i] == '\"')
-// 			return (str[i]);
-// 		i++;
-// 	}
-// 	return ('\0');
-// }
-
-int	remove_quotes(char *str, char quote)
+int	remove_quotes(char *str)
 {
 	int	i;
-	int	in_quotes;
+	int	in_d_quotes;
+	int	in_s_quotes;
 
 	i = 0;
-	in_quotes = 0;
-	// scan whole string for quotes
+	in_d_quotes = 0;
+	in_s_quotes = 0;
 	while (str[i])
 	{
-		if (str[i] == quote && !in_quotes)
+		if (str[i] == '\"' && !in_s_quotes)
 		{
-			in_quotes = 1;
-			// if quotes are found remove them
-			del_char(&str[i], quote);
-			// i-- if not we skip a char, since delchar deleted a char
-			//new char at old adress
+			if (!in_d_quotes)
+				in_d_quotes = 1;
+			else
+				in_d_quotes = 0;
+			del_char(&str[i], '\"');
 			i--;
 		}
-		else if (str[i] == quote && in_quotes)
+		else if (str[i] == '\'' && !in_d_quotes)
 		{
-			in_quotes = 0;
-			del_char(&str[i], quote);
+			if (!in_s_quotes)
+				in_s_quotes = 1;
+			else
+				in_s_quotes = 0;
+			del_char(&str[i], '\'');
 			i--;
 		}
 		i++;
 	}
 	return (0);
 }
-// exit syntax error if quotes are not closed
-// then remove quotes if " found within ""
-// same for ' within ''
-// don't delete " within '' and vice versa
-
-// int	remove_d_quotes(char *str)
-// {
-// 	int	i;
-// 	int	in_quotes;
-
-// 	i = 0;
-// 	in_quotes = 0;
-// 	while (str[i] && str[i] != '\'')
-// 	{
-// 		if (str[i] == '\"' && !in_quotes)
-// 		{
-// 			in_quotes = 1;
-// 			del_char(&str[i], '\"');
-// 			i--;
-// 		}
-// 		else if (str[i] == '\"' && in_quotes)
-// 		{
-// 			in_quotes = 0;
-// 			del_char(&str[i], '\"');
-// 			i--;
-// 		}
-// 		i++;
-// 	}
-// 	return (0);
-// }
-
-// int	remove_s_quotes(char *str)
-// {
-// 	int	i;
-// 	int	in_quotes;
-
-// 	i = 0;
-// 	in_quotes = 0;
-// 	while (str[i] && str[i] != '\"')
-// 	{
-// 		if (str[i] == '\'' && !in_quotes)
-// 		{
-// 			in_quotes = 1;
-// 			del_char(&str[i], '\'');
-// 			i--;
-// 		}
-// 		else if (str[i] == '\'' && in_quotes)
-// 		{
-// 			in_quotes = 0;
-// 			del_char(&str[i], '\'');
-// 			i--;
-// 		}
-// 		i++;
-// 	}
-// 	return (0);
-// }
-
-int	manage_solo_quotes(char *input)
-{
-	printf("str before: %s\n", input);
-	// only single quotes
-	if (!ft_strchr(input, '\"'))
-		remove_quotes(input, '\'');
-	// only double quotes
-	else if (!ft_strchr(input, '\''))
-		remove_quotes(input, '\"');;
-	printf("str after: %s\n", input);
-	return (1);
-}
-
-// int manage_both_quotes(char *input)
-// {
-// 	// remove quotes found together but not within other quotes
-// 	// e.g. "" '' ""BONJOUR
-
-// 	return (0);
-// }
 
 int	manage_quotes(char *input)
 {
@@ -165,9 +78,10 @@ int	manage_quotes(char *input)
 		exit(1);
 	}
 	// --> insert $ stuff here before removing quotes
-	if (!ft_strchr(input, '\"') || !ft_strchr(input, '\''))
-		manage_solo_quotes(input);
-	// else
-	//  	manage_both_quotes(input);
+
+	// remove quotes
+	printf("input: %s\n", input);
+	remove_quotes(input);
+	printf("after remove quotes: %s\n", input);
 	return (0);
 }

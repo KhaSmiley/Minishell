@@ -27,6 +27,36 @@ int	lonely_d_quote_count(char *input)
 	}
 	return (count);
 }
+
+int	remove_quotes(char *str, char quote)
+{
+	int	i;
+	int	in_quotes;
+
+	i = 0;
+	in_quotes = 0;
+	// scan whole string for quotes
+	while (str[i])
+	{
+		if (str[i] == quote && !in_quotes)
+		{
+			in_quotes = 1;
+			// if quotes are found remove them
+			del_char(&str[i], quote);
+			// i-- if not we skip a char, since delchar deleted a char
+			//new char at old adress
+			i--;
+		}
+		else if (str[i] == quote && in_quotes)
+		{
+			in_quotes = 0;
+			del_char(&str[i], quote);
+			i--;
+		}
+		i++;
+	}
+	return (0);
+}
 int main()
 {
 	// ''""""

@@ -97,27 +97,22 @@ int	count_quotes(char *str, char c)
 	return (count);
 }
 
-int	check_solo_quotes_open(char *input)
-{
-	int s_quotes;
-	int d_quotes;
-
-	s_quotes = count_quotes(input, '\'');
-	printf("s_quotes: %d\n", s_quotes);
-	d_quotes = count_quotes(input, '\"');
-	printf("d_quotes: %d\n", d_quotes);
-	if (s_quotes % 2 != 0 || d_quotes % 2 != 0)
-		return (0);
-	return (1);
-}
-
 int	check_quotes_open(char *input)
 {
+	int	s_quotes;
+	int	d_quotes;
+
+	// check for syntax error when only 1 type of quotes
 	if (!ft_strchr(input, '\"') || !ft_strchr(input, '\''))
 	{
-		if (!check_solo_quotes_open(input))
+		s_quotes = count_quotes(input, '\'');
+		printf("s_quotes: %d\n", s_quotes);
+		d_quotes = count_quotes(input, '\"');
+		printf("d_quotes: %d\n", d_quotes);
+		if (s_quotes % 2 != 0 || d_quotes % 2 != 0)
 			return (0);
 	}
+	// check for syntax error when both types of quotes
 	else
 	{
 		if (!s_quotes_open(input) || !d_quotes_open(input))
