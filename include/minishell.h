@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/10 23:09:51 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/10 23:28:36 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,25 @@ char					*ft_find_value(char *key, char **envp_cpy);
 t_env					*ft_create_env(t_token *tok, char *str, int i, char **envp_cpy);
 void					ft_expand_str(t_token *tok, char **envp_cpy);
 
+// /* expand_new.c */
+
+// t_env					*ft_create_env_new(t_token *tok, char *str);
+// void					ft_expand_dollar(t_token *tok_word);
+
 /* expand_utils.c */
 
-char					*expand_new_str(char *str, char *key, char *value);
 t_env					*ft_lstlast_env(t_env *lst);
 void					ft_stock_env(t_env **lst, t_env *new_link);
 t_env					*ft_lstnew_env(char *key, char *value);
 void					print_list_env(t_token *lst);
+
+/* expand_utils_two.c */
+
+char					*ft_find_key(char *str, int count);
+int						ft_strlen_from_char(char *str, char c);
+int						ft_find_malloc_key(char *str, int i);
+int						ft_tablen(char **tab);
+char					**ft_envp_copy(char **envp);
 
 /* lst_utils.c */
 
@@ -95,6 +107,6 @@ int						ft_syntax_word(t_token *tok);
 int						ft_tokenizer(char *token);
 int						word_size(char *str, int i);
 int						alloc_token(t_token **tok, char *longchev, char *str, int i);
-void					find_token(char *str);
+t_token					*find_token(char *str);
 
 #endif

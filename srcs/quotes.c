@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 23:15:53 by lbarry            #+#    #+#             */
-/*   Updated: 2024/03/10 20:39:21 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/10 23:39:41 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,19 @@ int	remove_quotes(char *str)
 	}
 	return (0);
 }
+int	only_quotes(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] != '\'' && str[i] != '\"')
+			return (0);
+		i++;
+	}
+	return (1);
+}
 
 int	manage_quotes(char *input)
 {
@@ -77,11 +90,12 @@ int	manage_quotes(char *input)
 		printf("Syntax error: quotes open\n");
 		exit(1);
 	}
-	// --> insert $ stuff here before removing quotes
-
-	// remove quotes
-	printf("input: %s\n", input);
-	remove_quotes(input);
-	printf("after remove quotes: %s\n", input);
+	// check if string contains only quotes --> command not found
+	if (only_quotes(input))
+	{
+		printf("command not found\n");
+		// return prompt?
+		exit(1);
+	}
 	return (0);
 }

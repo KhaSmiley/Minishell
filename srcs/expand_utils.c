@@ -6,11 +6,11 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 22:14:19 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/10 22:59:13 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/10 23:24:55 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
+#include "../include/minishell.h"
 // Same functions as the lst_utils but for the env list
 
 t_env *ft_lstlast_env(t_env *lst)
