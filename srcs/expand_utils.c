@@ -3,67 +3,59 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 22:14:19 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/02 02:17:05 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/10 22:59:13 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
 
-int ft_find_dollar(char *str)
+// Same functions as the lst_utils but for the env list
+
+t_env *ft_lstlast_env(t_env *lst)
 {
-    int i;
-    int count;
-
-    i = 0;
-    count = 0;
-    while (str[i])
-    {
-        if (str[i] == '$')
-            count++;
-        i++;
-    }
-    return (count);
+	if (!lst)
+		return (NULL);
+	while (lst->next)
+		lst = lst->next;
+	return (lst);
 }
 
-char *expand_new_str(char *str, char *stock)
+void	ft_stock_env(t_env **lst, t_env *new_link)
 {
-    char *new_str;
-    char *stock;
-    int i;
-    int j;
-
-    i = 0;
-    j = 0;
-    while (str[i])
-    {
-        while (str[i] && str[i] != '$')
-        {
-            new_str[j] = str[i];
-            i++;
-        }
-        if (str[i] == '$')
-        {
-            ft_strlcat(new_str, stock, ft_strlen(new_str) + ft_strlen(stock) + 1);
-        }
-    }
-    
+	if (!lst || !new_link)
+		return ;
+	if (!*lst)
+		*lst = new_link;
+	else
+		(ft_lstlast_env(*lst))->next = new_link;
 }
 
-int *find_key(t_token *tok)
+t_env	*ft_lstnew_env(char *key, char *value)
 {
-    int i;
-    t_token *tmp;
+	t_env	*new;
 
-    i = 0;
-    tmp = tok;
-    while(tmp)
-    {
-        if (tmp->str[i] == '$')
-            return (&tmp->str[i + 1]);
-        tmp = tmp->next;
-    }
-    return (NULL);
+	if (!key || !value)
+		return (NULL);
+	new = malloc(sizeof(*new));
+	if (!new)
+		return (NULL);
+	new->key = ft_strdup(key);
+    new->value = ft_strdup(value);
+	new->next = NULL;
+	return (new);
+}
+
+void print_list_env(t_token *lst)
+{
+	printf("PRINTING ENV LIST\n");
+	if (!lst)
+		return ;
+	while(lst)
+	{
+		ft_printf("KEY : %s VALUE : %s\n", lst->env->key, lst->env->value);
+		lst = lst->next;
+	}
+	return ;
 }
