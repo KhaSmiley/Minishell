@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/10 20:41:15 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/10 23:07:13 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,6 @@ typedef struct s_token
 	int					type;
 	struct s_token		*next;
 }						t_token;
-
-typedef struct s_input
-{
-	int	dollar_flag;
-}				t_input;
 
 enum
 {
@@ -50,6 +45,9 @@ enum
 
 /* expand.c */
 
+char					*ft_find_value(char *key, char **envp_cpy);
+t_env					*ft_create_env(t_token *tok, char *str, int i, char **envp_cpy);
+void					ft_expand_str(t_token *tok, char **envp_cpy);
 void					ft_expand(char **envp);
 char					**ft_cpy_envp(char **envp);
 char					*ft_find_var(char *var, char **envp_cpy);
@@ -59,6 +57,10 @@ void					free_tab(char **tab);
 /* expand_utils.c */
 
 char					*expand_new_str(char *str, char *key, char *value);
+t_env					*ft_lstlast_env(t_env *lst);
+void					ft_stock_env(t_env **lst, t_env *new_link);
+t_env					*ft_lstnew_env(char *key, char *value);
+void					print_list_env(t_token *lst);
 
 /* lst_utils.c */
 
