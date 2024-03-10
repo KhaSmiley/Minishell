@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/10 23:09:26 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/10 23:09:51 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,19 @@
 
 typedef struct s_token	t_token;
 
+typedef struct s_env
+{
+	char				*key;
+	char				*value;
+	struct s_env		*next;
+}						t_env;
+
 typedef struct s_token
 {
 	char				*str;
 	int					type;
 	struct s_token		*next;
+	struct s_env		*env;
 }						t_token;
 
 enum
