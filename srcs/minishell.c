@@ -17,6 +17,10 @@ int main(int argc, char **argv, char **envp)
     (void)argc;
     (void)argv;
     (void)envp;
+
+    (void)argc;
+    (void)argv;
+    (void)envp;
     t_token *tok;
     char **envp_cpy;
 
@@ -29,10 +33,16 @@ int main(int argc, char **argv, char **envp)
             continue;
         add_history(input);
         tok = find_token(input);
-		// manage_quotes(input, &quote_flags);  
+		// manage quote syntax errors
+		manage_quotes(input);
+		// $
         envp_cpy = ft_envp_copy(envp);
         ft_expand_str(tok, envp_cpy);
-        print_list_env(tok);
+		// remove quotes
+		printf("input: %s\n", input);
+		remove_quotes(input);
+		printf("after remove quotes: %s\n", input);
+        //print_list_env(tok);
 	}
     return (0);
 }

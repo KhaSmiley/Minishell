@@ -7,13 +7,15 @@ DIR_SRCS		=	srcs
 DIR_OBJS		=	.objs
 
 SRCS_NAMES		=	expand.c \
-					expand_utils.c \
-					expand_utils_two.c \
 					minishell.c \
 					lst_utils.c \
 					syntax.c \
+					tokens.c \
 					quotes.c \
-					tokens.c
+					quotes_utils.c \
+					expand.c \
+					expand_utils.c \
+					expand_utils_two.c
 
 OBJS_NAMES		=	${SRCS_NAMES:.c=.o}
 
