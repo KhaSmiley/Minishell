@@ -3,19 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/03/10 23:08:45 by lbarry           ###   ########.fr       */
+=======
+/*   Updated: 2024/03/08 23:40:16 by kboulkri         ###   ########.fr       */
+>>>>>>> a9fd81a3efbe804036540ed46c488bb8d70e84a1
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-typedef struct s_token	t_token;
-
-// struct for the token list and a new struct to add the key + value for each $ found in word
+// typedef struct s_token	t_token;
 
 typedef struct s_env
 {
@@ -55,8 +57,18 @@ enum
 /* expand.c */
 
 char					*ft_find_value(char *key, char **envp_cpy);
+<<<<<<< HEAD
 t_env					*ft_create_env(t_token *tok, char *str, int i, char **envp_cpy);
+=======
+int						ft_create_env(t_token *tok, char *str, char **envp_cpy);
+>>>>>>> a9fd81a3efbe804036540ed46c488bb8d70e84a1
 void					ft_expand_str(t_token *tok, char **envp_cpy);
+void	check_quotes_for_env(char *quote_char, char *word, int i_word);
+
+/* expand_new.c */
+
+t_env					*ft_create_env_new(t_token *tok, char *str);
+void					ft_expand_dollar(t_token *tok_word);
 
 /* expand_utils.c */
 

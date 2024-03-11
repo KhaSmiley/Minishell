@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 05:31:16 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/06 21:43:21 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/08 23:43:57 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,19 @@
 // value is the string after the = in the env list
 // ex : USER=kboulkri, key is USER and value is kboulkri
 
+void	check_quotes_for_env(char *quote_char, char *word, int i_word)
+{
+	if (!*quote_char)
+		*quote_char = word[i_word];
+	else if (*quote_char == word[i_word])
+		*quote_char = '\0';
+}
 
 char	*ft_find_value(char *key, char **envp_cpy)
 {
 	int		i;
 	char	*stock;
+
 	i = 0;
 	while (envp_cpy[i])
 	{
@@ -44,26 +52,40 @@ char	*ft_find_value(char *key, char **envp_cpy)
 // Trying to create a new env list with the key and value found for each word with $ in it
 // so i can use it later to replace the word with the value if necessary (quote handling)
 
-t_env	*ft_create_env(t_token *tok, char *str, int i, char **envp_cpy)
+int	ft_create_env(t_token *tok, char *str, char **envp_cpy)
 {
 	char	*key;
 	char	*value;
 	int		count;
+	char	flag_quote;
+	int		i;
 
-    count = 1;
+	i = 0;
+	count = 1;
+	flag_quote = '\0';
 	while (str[i])
 	{
-		if (str[i] == '$')
+		key = NULL;
+		value = NULL;
+		if (str[i] == '\'' || str[i] == '\"')
+			check_quotes_for_env(&flag_quote, str, i);
+		else if (str[i] == '$')
 		{
-			i++;
-			key = ft_find_key(str, count);
-            value = ft_find_value(key, envp_cpy);
-            ft_stock_env(&tok->env, ft_lstnew_env(key, value));
-            count++;
-        }
+			if (flag_quote == '\'')
+				ft_stock_env(&tok->env, ft_lstnew_env(NULL, NULL));
+			else
+			{
+				key = ft_find_key(str, count);
+				value = ft_find_value(key, envp_cpy);
+				ft_stock_env(&tok->env, ft_lstnew_env(key, value));
+				if (!tok->env)
+					return (1);
+				count++;
+			}
+		}
 		i++;
 	}
-	return (tok->env);
+	return (0);
 }
 
 // Trying to check for word with $ and expand it,
@@ -72,17 +94,19 @@ t_env	*ft_create_env(t_token *tok, char *str, int i, char **envp_cpy)
 
 void	ft_expand_str(t_token *tok, char **envp_cpy)
 {
-	int i;
+	int	i;
 
 	while (tok)
 	{
-		i = 0;
-		if (tok->type == WORD && tok->str[i] == '$')
+		tok->env = NULL;
+		if (tok->type == WORD)
 		{
-			tok->env = ft_create_env(tok, tok->str, i, envp_cpy);
+			i = 0;
+			if (tok->str[i] == '$')
+			{
+				ft_create_env(tok, tok->str, envp_cpy);
+			}
 		}
 		tok = tok->next;
 	}
-	// print_list(tok);
-	// print_list_env(tok);
 }
