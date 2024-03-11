@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 02:18:19 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/08 21:51:07 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/08 23:53:41 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int ft_tablen(char **tab)
 
 int ft_find_malloc_key(char *str, int i)
 {
-    while(str[i] && (str[i] != ' ' && str[i] != '$'))
+    while(str[i] && ft_isalnum(str[i]))
         i++;
     return (i);
 }
@@ -50,7 +50,7 @@ char *ft_find_key(char *str, int count)
             j = 0;
             i++;
             key = malloc(ft_find_malloc_key(str, i) + 1);
-            while(str[i] && (str[i] != ' ' && str[i] != '$'))
+            while(str[i] && ft_isalnum(str[i]))
                 key[j++] = str[i++];
             key[j] = '\0';
             break ;
