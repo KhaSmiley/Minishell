@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 05:31:16 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/08 23:43:57 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/11 18:36:46 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,15 +94,12 @@ int	ft_create_env(t_token *tok, char *str, char **envp_cpy)
 
 void	ft_expand_str(t_token *tok, char **envp_cpy)
 {
-	int	i;
-
 	while (tok)
 	{
 		tok->env = NULL;
 		if (tok->type == WORD)
 		{
-			i = 0;
-			if (tok->str[i] == '$')
+			if (ft_strchr(tok->str, '$'))
 			{
 				ft_create_env(tok, tok->str, envp_cpy);
 			}

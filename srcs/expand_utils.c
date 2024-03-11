@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 22:14:19 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/08 21:37:50 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/11 18:40:18 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,14 @@ t_env *ft_lstlast_env(t_env *lst)
 		lst = lst->next;
 	return (lst);
 }
-
+void	ft_stock_env(t_env **lst, t_env *new_link)
+{
+	if (!lst || !new_link)
 		return ;
+	if (!*lst && new_link)
+		*lst = new_link;
+	else if (new_link)
+		(ft_lstlast_env(*lst))->next = new_link;
 }
 
 t_env	*ft_lstnew_env(char *key, char *value)
