@@ -6,8 +6,7 @@ DIR_SRCS		=	srcs
 
 DIR_OBJS		=	.objs
 
-SRCS_NAMES		=	expand.c \
-					minishell.c \
+SRCS_NAMES		=	minishell.c \
 					lst_utils.c \
 					syntax.c \
 					tokens.c \

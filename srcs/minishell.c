@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/08 22:51:10 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/11 18:49:11 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int main(int argc, char **argv, char **envp)
 		printf("input: %s\n", input);
 		remove_quotes(input);
 		printf("after remove quotes: %s\n", input);
-        //print_list_env(tok);
+        print_list_env(tok);
 	}
     return (0);
 }

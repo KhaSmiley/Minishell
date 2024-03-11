@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/10 23:08:45 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/11 18:45:18 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,8 @@ enum
 char					*ft_find_value(char *key, char **envp_cpy);
 int						ft_create_env(t_token *tok, char *str, char **envp_cpy);
 void					ft_expand_str(t_token *tok, char **envp_cpy);
-void	check_quotes_for_env(char *quote_char, char *word, int i_word);
-
-// /* expand_new.c */
-
-// t_env					*ft_create_env_new(t_token *tok, char *str);
-// void					ft_expand_dollar(t_token *tok_word);
+void					check_quotes_for_env(char *quote_char, char *word,
+							int i_word);
 
 /* expand_utils.c */
 
@@ -85,7 +81,6 @@ void					ft_stock(t_token **lst, t_token *new_link);
 t_token					*ft_lstlast(t_token *lst);
 
 /* quotes.c */
-# define TRUE 5
 
 void					del_char(char *address, char char_to_del);
 int						remove_quotes(char *str);
@@ -107,6 +102,8 @@ int						ft_syntax_redir(t_token *tok);
 int						ft_syntax_word(t_token *tok);
 int						ft_tokenizer(char *token);
 int						word_size(char *str, int i);
-int						alloc_token(t_token **tok, char *longchev, char *str, int i);
+int						alloc_token(t_token **tok, char *longchev, char *str,
+							int i);
+t_token					*find_token(char *str);
 
 #endif
