@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 23:15:53 by lbarry            #+#    #+#             */
-/*   Updated: 2024/03/10 23:39:41 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/11 21:21:27 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,4 +98,22 @@ int	manage_quotes(char *input)
 		exit(1);
 	}
 	return (0);
+}
+
+t_token *fix_quotes_token(t_token *tok)
+{
+	t_token *tmp;
+	int i;
+
+	tmp = tok;
+	i = 0;
+	while (tmp)
+	{
+		if (tmp->type == WORD)
+		{
+			remove_quotes(tmp->str);
+		}
+		tmp = tmp->next;
+	}
+	return (tok);
 }

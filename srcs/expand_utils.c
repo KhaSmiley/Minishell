@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 22:14:19 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/11 18:40:18 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/12 22:07:33 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,23 @@ void print_list_env(t_token *lst)
 		lst = lst->next;
 	}
 	return ;
+}
+
+void free_list_env(t_env *env)
+{
+    t_env   *temp;
+
+	if (!env)
+		return ;
+    while (env)
+    {
+        temp = env;
+        if (env->next != NULL)
+			env = env->next;
+		else
+			free(env);
+        // free(temp->key);
+        // free(temp->value);
+        // free(temp);
+    }
 }

@@ -14,7 +14,8 @@ SRCS_NAMES		=	minishell.c \
 					quotes_utils.c \
 					expand.c \
 					expand_utils.c \
-					expand_utils_two.c
+					expand_utils_two.c \
+					expand_after_quotes.c
 
 OBJS_NAMES		=	${SRCS_NAMES:.c=.o}
 
