@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 23:15:53 by lbarry            #+#    #+#             */
-/*   Updated: 2024/03/10 23:39:41 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/13 11:53:01 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	manage_quotes(char *input)
 
 	// no quotes
 	if (!ft_strchr(input, '\"') && !ft_strchr(input, '\''))
-		return (printf("no quotes\n"), 0);
+		return (0);
 	// check quotes open
 	if (!check_quotes_open(input))
 	{
@@ -98,4 +98,22 @@ int	manage_quotes(char *input)
 		exit(1);
 	}
 	return (0);
+}
+
+t_token *fix_quotes_token(t_token *tok)
+{
+	t_token *tmp;
+	int i;
+
+	tmp = tok;
+	i = 0;
+	while (tmp)
+	{
+		if (tmp->type == WORD)
+		{
+			remove_quotes(tmp->str);
+		}
+		tmp = tmp->next;
+	}
+	return (tok);
 }

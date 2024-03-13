@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 05:31:16 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/11 18:36:46 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/13 11:59:55 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	*ft_find_value(char *key, char **envp_cpy)
 		}
 		i++;
 	}
-	return (ft_printf("$%s doesn't exist", key), NULL);
+	return (ft_strdup(""));
 }
 
 // Trying to create a new env list with the key and value found for each word with $ in it
@@ -80,11 +80,18 @@ int	ft_create_env(t_token *tok, char *str, char **envp_cpy)
 				ft_stock_env(&tok->env, ft_lstnew_env(key, value));
 				if (!tok->env)
 					return (1);
+				else
+				{
+					free(key);
+					free(value);
+				}
 				count++;
 			}
 		}
 		i++;
 	}
+	// free(key);
+	// free(value);
 	return (0);
 }
 
@@ -94,6 +101,8 @@ int	ft_create_env(t_token *tok, char *str, char **envp_cpy)
 
 void	ft_expand_str(t_token *tok, char **envp_cpy)
 {
+	if (!tok)
+		return ;
 	while (tok)
 	{
 		tok->env = NULL;

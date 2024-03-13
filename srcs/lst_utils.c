@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 03:40:10 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/06 04:29:29 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/13 12:19:28 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,39 @@ void print_list(t_token *lst)
 		return ;
     while(lst)
     {
-        ft_printf("WORD : %s TYPE : %d\n", lst->str, lst->type);
+        ft_printf("%s", lst->str);
         lst = lst->next;
     }
+	ft_printf("\n");
     return ;
+}
+void free_list(t_token **tok)
+{
+	t_token	*tmp;
+	t_token	*lst;
+	t_token *tmp2;
+
+	if (!tok || !*tok)
+		return ;
+	lst = *tok;
+	while (lst)
+	{
+		tmp = (lst)->next;
+		if (lst->env)
+		{
+			if (lst->env->key)
+				free((lst)->env->key);
+			if (lst->env->value)
+				free((lst)->env->value);
+		}
+		lst = tmp;
+	}
+	while (*tok)
+	{
+		tmp = (*tok)->next;
+		tmp2 = *tok;
+		free(tmp2->str);
+		free(tmp2);
+		*tok = tmp;
+	}
 }
