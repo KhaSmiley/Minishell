@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 05:31:16 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/12 22:17:40 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/13 11:59:55 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,11 @@ int	ft_create_env(t_token *tok, char *str, char **envp_cpy)
 				ft_stock_env(&tok->env, ft_lstnew_env(key, value));
 				if (!tok->env)
 					return (1);
+				else
+				{
+					free(key);
+					free(value);
+				}
 				count++;
 			}
 		}

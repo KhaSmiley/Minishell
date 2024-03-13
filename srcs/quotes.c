@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 23:15:53 by lbarry            #+#    #+#             */
-/*   Updated: 2024/03/11 21:21:27 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/13 11:53:01 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	manage_quotes(char *input)
 
 	// no quotes
 	if (!ft_strchr(input, '\"') && !ft_strchr(input, '\''))
-		return (printf("no quotes\n"), 0);
+		return (0);
 	// check quotes open
 	if (!check_quotes_open(input))
 	{
