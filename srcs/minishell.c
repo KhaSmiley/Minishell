@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/11 18:49:11 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/13 15:43:44 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,26 +23,26 @@ int main(int argc, char **argv, char **envp)
     (void)envp;
     t_token *tok;
     char **envp_cpy;
+    char *input;
 
     while (1)
     {
-        char *input = readline("> ");
+        input = readline("> ");
         if (!input)
             break;
         if (!*input)
             continue;
         add_history(input);
-        tok = find_token(input);
-		// manage quote syntax errors
-		manage_quotes(input);
-		// $
         envp_cpy = ft_envp_copy(envp);
+		manage_quotes(input);
+        tok = find_token(input);
         ft_expand_str(tok, envp_cpy);
-		// remove quotes
-		printf("input: %s\n", input);
-		remove_quotes(input);
-		printf("after remove quotes: %s\n", input);
+		fix_quotes_token(tok);
+        find_str_to_expand(&tok);
+        print_list(tok);
         print_list_env(tok);
+        free_list(&tok);
+        free_tab(envp_cpy);
 	}
     return (0);
 }
