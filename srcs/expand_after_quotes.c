@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 20:06:40 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/13 14:46:46 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/13 15:37:21 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,18 @@ char *ft_get_new_str_for_env(char *str, t_token *tok)
         else if (str[i] == '$')
         {
             i++;
-            env_str = ft_strjoin_gnl(env_str, tok->env->value);
-            i = i + ft_strlen(tok->env->key) - 1;
+            if (tok->env->value[0] == '\0')
+            {
+                i--;
+                add_str = ft_substr(str, i, 1);
+                env_str = ft_strjoin_gnl(env_str, add_str);
+                free(add_str);
+            }
+            else if (tok->env->value)
+            {
+                env_str = ft_strjoin_gnl(env_str, tok->env->value);
+                i = i + ft_strlen(tok->env->key) - 1;
+            }
             tok->env = tok->env->next;
         }
         else
