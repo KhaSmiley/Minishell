@@ -6,11 +6,27 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 05:31:16 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/13 11:59:55 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/13 14:48:13 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+int ft_stock_key_and_value_env(t_token *tok, char *str, int *count, char **envp_cpy)
+{
+	char	*key;
+	char	*value;
+
+	key = NULL;
+	value = NULL;
+	key = ft_find_key(str, (*count));
+	value = ft_find_value(key, envp_cpy);
+	ft_stock_env(&tok->env, ft_lstnew_env(key, value));
+	if (!tok->env)
+		return (1);
+	(*count)++;
+	return (0);
+}
 
 // Trying to find the value with the key
 // value is the string after the = in the env list
@@ -54,8 +70,6 @@ char	*ft_find_value(char *key, char **envp_cpy)
 
 int	ft_create_env(t_token *tok, char *str, char **envp_cpy)
 {
-	char	*key;
-	char	*value;
 	int		count;
 	char	flag_quote;
 	int		i;
@@ -65,8 +79,6 @@ int	ft_create_env(t_token *tok, char *str, char **envp_cpy)
 	flag_quote = '\0';
 	while (str[i])
 	{
-		key = NULL;
-		value = NULL;
 		if (str[i] == '\'' || str[i] == '\"')
 			check_quotes_for_env(&flag_quote, str, i);
 		else if (str[i] == '$')
@@ -74,24 +86,10 @@ int	ft_create_env(t_token *tok, char *str, char **envp_cpy)
 			if (flag_quote == '\'')
 				ft_stock_env(&tok->env, ft_lstnew_env(NULL, NULL));
 			else
-			{
-				key = ft_find_key(str, count);
-				value = ft_find_value(key, envp_cpy);
-				ft_stock_env(&tok->env, ft_lstnew_env(key, value));
-				if (!tok->env)
-					return (1);
-				else
-				{
-					free(key);
-					free(value);
-				}
-				count++;
-			}
+				ft_stock_key_and_value_env(tok, str, &count, envp_cpy);
 		}
 		i++;
 	}
-	// free(key);
-	// free(value);
 	return (0);
 }
 

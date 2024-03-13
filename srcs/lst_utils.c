@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 03:40:10 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/13 12:19:28 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/13 14:47:45 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ void free_list(t_token **tok)
 	{
 		tmp = (*tok)->next;
 		tmp2 = *tok;
-		free(tmp2->str);
 		free(tmp2);
 		*tok = tmp;
 	}

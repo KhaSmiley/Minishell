@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 20:06:40 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/13 13:28:36 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/13 14:46:46 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,7 @@ char *ft_get_new_str_for_env(char *str, t_token *tok)
     while (str[i])
     {
         if (str[i] == '$' && str[i + 1] == '?')
-        {
             printf("RETURN EXIT STATUS\n");
-        }
         else if (str[i] == '$')
         {
             i++;
@@ -35,7 +33,7 @@ char *ft_get_new_str_for_env(char *str, t_token *tok)
         }
         else
         {
-            add_str = ft_substr_env(str, i, 1);
+            add_str = ft_substr(str, i, 1);
             env_str = ft_strjoin_gnl(env_str, add_str);
             free(add_str);
         }
