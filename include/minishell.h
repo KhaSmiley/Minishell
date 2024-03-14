@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/13 14:14:57 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/13 22:43:57 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void					free_list(t_token **tok);
 
 void					del_char(char *address, char char_to_del);
 int						remove_quotes(char *str);
-int						manage_quotes(char *input);
+int						manage_quote_errors(char *input);
 t_token					*fix_quotes_token(t_token *tok);
 
 /* quotes_utils.c */

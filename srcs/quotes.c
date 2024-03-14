@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 23:15:53 by lbarry            #+#    #+#             */
-/*   Updated: 2024/03/13 11:53:01 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/13 23:30:20 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,29 +75,24 @@ int	only_quotes(char *str)
 	return (1);
 }
 
-int	manage_quotes(char *input)
+int	manage_quote_errors(char *input)
 {
-	// check quotes open
-	// $ stock expands
-	// remove quotes
-
-	// no quotes
+	// no quotes, return
 	if (!ft_strchr(input, '\"') && !ft_strchr(input, '\''))
-		return (0);
+		return (1);
 	// check quotes open
 	if (!check_quotes_open(input))
 	{
 		printf("Syntax error: quotes open\n");
-		exit(1);
+		return (0);
 	}
 	// check if string contains only quotes --> command not found
 	if (only_quotes(input))
 	{
 		printf("command not found\n");
-		// return prompt?
-		exit(1);
+		return (0);
 	}
-	return (0);
+	return (1);
 }
 
 t_token *fix_quotes_token(t_token *tok)

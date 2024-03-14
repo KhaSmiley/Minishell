@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 03:40:10 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/13 15:21:52 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/14 03:11:32 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,29 +58,32 @@ void print_list(t_token *lst)
 void free_list(t_token **tok)
 {
 	t_token	*tmp;
-	t_token	*lst;
+	t_token	*next;
 	t_token *tmp2;
+	t_token *next2;
 
 	if (!tok || !*tok)
 		return ;
-	lst = *tok;
-	while (lst)
+	tmp = *tok;
+	while (tmp)
 	{
-		tmp = (lst)->next;
-		if (lst->env)
+		next = tmp->next;
+		if (tmp->env)
 		{
-			if (lst->env->key)
-				free((lst)->env->key);
-			if (lst->env->value)
-				free((lst)->env->value);
+			if (tmp->env->key)
+				free(tmp->env->key);
+			if (tmp->env->value)
+				free(tmp->env->value);
 		}
-		lst = tmp;
+		tmp = next;
 	}
-	while (*tok)
+	// invalid free line 86
+	tmp2 = *tok;
+	while (tmp2)
 	{
-		tmp = (*tok)->next;
-		tmp2 = *tok;
-		free(tmp2);
-		*tok = tmp;
+		next2 = tmp2->next;
+		if (tmp2->str)
+			free(tmp2->str);
+		tmp2 = next2;
 	}
 }

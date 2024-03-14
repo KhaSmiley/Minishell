@@ -9,6 +9,8 @@ int check_closure(char *str, int i, char quote, int flag)
 {
 	char other;
 
+	if (!str)
+		return (-2);
 	if (quote == '\'')
 		other = '\"';
 	else
@@ -30,23 +32,23 @@ int	s_quotes_open(char *str)
 
 	d_flag = 0;
 	i = 0;
+	if (!str)
+		return (1);
 	while (str[i] != '\0')
 	{
-		while (str[i] != '\0' && str[i] != '\'')
+		if (str[i] != '\0' && str[i] != '\'')
 		{
 			if (!d_flag && str[i] == '\"')
 				d_flag = 1;
 			else if (d_flag && str[i] == '\"')
 				d_flag = 0;
-			i++;
 		}
-		if (str[i] == '\'' && d_flag == 0)
+		if (str[i] && str[i] == '\'' && d_flag == 0)
 		{
 			if (check_closure(str, i, '\'', d_flag) == -1)
 				return (printf("Error: s quotes open\n"), 0);
 			else
 				i = check_closure(str, i, '\'', d_flag);
-
 		}
 		i++;
 	}
@@ -60,17 +62,18 @@ int	d_quotes_open(char *str)
 
 	i = 0;
 	s_flag = 0;
+	if (!str)
+		return (1);
 	while (str[i] != '\0')
 	{
-		while (str[i] != '\0' && str[i] != '\"')
+		if (str[i] != '\0' && str[i] != '\"')
 		{
 			if (!s_flag && str[i] == '\'')
 				s_flag = 1;
 			else if (s_flag && str[i] == '\'')
 				s_flag = 0;
-			i++;
 		}
-		if (str[i] == '\"' && s_flag == 0)
+		if (str[i] && str[i] == '\"' && s_flag == 0)
 		{
 			if (check_closure(str, i, '\"', s_flag) == -1)
 				return (printf("Error: d quotes open\n"), 0);
@@ -102,6 +105,8 @@ int	check_quotes_open(char *input)
 	int	s_quotes;
 	int	d_quotes;
 
+	if (!input)
+		return (1);
 	// check for syntax error when only 1 type of quotes
 	if (!ft_strchr(input, '\"') || !ft_strchr(input, '\''))
 	{
@@ -115,7 +120,9 @@ int	check_quotes_open(char *input)
 	// check for syntax error when both types of quotes
 	else
 	{
-		if (!s_quotes_open(input) || !d_quotes_open(input))
+		if (!s_quotes_open(input))
+			return (0);
+		if (!d_quotes_open(input))
 			return (0);
 	}
 	return (1);
