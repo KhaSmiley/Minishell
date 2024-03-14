@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokens.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 01:06:11 by lbarry            #+#    #+#             */
-/*   Updated: 2024/03/13 11:37:09 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/14 17:19:33 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int     ft_tokenizer(char *token)
 {
+	if (!token)
+		return (0);
     if (ft_strcmp(token, "<") == 0)
         return (LESS);
     else if (ft_strcmp(token, ">") == 0)
@@ -65,6 +67,7 @@ t_token    *find_token(char *str)
     t_token *tok;
 
     tok = NULL;
+	word = NULL;
     i = 0;
     while(str[i])
     {
@@ -80,6 +83,8 @@ t_token    *find_token(char *str)
         {
             j = 0;
             word = malloc(word_size(str, i) + 1);
+			if (!word)
+				return (NULL);
             while (ft_strchr(" \t><|\0", str[i]) == 0)
                 word[j++] = str[i++];
             word[j] = '\0';

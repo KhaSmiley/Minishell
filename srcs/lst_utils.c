@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 03:40:10 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/14 03:11:32 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/14 17:20:37 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ t_token	*ft_lstnew(char *content, int type)
 {
 	t_token	*new;
 
+	if (!content)
+		return (NULL);
 	new = malloc(sizeof(*new));
 	if (!new)
 		return (NULL);
@@ -59,8 +61,6 @@ void free_list(t_token **tok)
 {
 	t_token	*tmp;
 	t_token	*next;
-	t_token *tmp2;
-	t_token *next2;
 
 	if (!tok || !*tok)
 		return ;
@@ -75,15 +75,9 @@ void free_list(t_token **tok)
 			if (tmp->env->value)
 				free(tmp->env->value);
 		}
+		if (tmp->str)
+			free(tmp->str);
+		//free(tmp);
 		tmp = next;
-	}
-	// invalid free line 86
-	tmp2 = *tok;
-	while (tmp2)
-	{
-		next2 = tmp2->next;
-		if (tmp2->str)
-			free(tmp2->str);
-		tmp2 = next2;
 	}
 }

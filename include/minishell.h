@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/13 22:43:57 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/14 17:22:51 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ enum
 	PIPE,
 	WHITE_SPACE,
 	WORD,
+	EMPTY,
 };
 
 # include "../libft/libft.h"
