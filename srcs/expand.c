@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 05:31:16 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/13 15:27:32 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/15 22:05:07 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ int ft_stock_key_and_value_env(t_token *tok, char *str, int *count, char **envp_
 	char	*key;
 	char	*value;
 
-	key = NULL;
-	value = NULL;
 	key = ft_find_key(str, (*count));
 	value = ft_find_value(key, envp_cpy);
 	ft_stock_env(&tok->env, ft_lstnew_env(key, value));
@@ -86,7 +84,9 @@ int	ft_create_env(t_token *tok, char *str, char **envp_cpy)
 			if (flag_quote == '\'')
 				ft_stock_env(&tok->env, ft_lstnew_env(ft_strdup(""), ft_strdup("")));
 			else
+			{
 				ft_stock_key_and_value_env(tok, str, &count, envp_cpy);
+			}
 		}
 		i++;
 	}

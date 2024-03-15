@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/14 17:22:51 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/15 21:59:07 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,5 +115,11 @@ int						word_size(char *str, int i);
 int						alloc_token(t_token **tok, char *longchev, char *str,
 							int i);
 t_token					*find_token(char *str);
+
+/* memory.c */
+
+void					free_tok(t_token **tok);
+void					free_envp_cpy(char **envp_cpy);
+void					free_tok_env(t_env *my_env);
 
 #endif

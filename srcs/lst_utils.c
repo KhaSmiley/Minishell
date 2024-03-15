@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 03:40:10 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/14 03:11:32 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/15 22:05:34 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,41 +49,9 @@ void print_list(t_token *lst)
 		return ;
     while(lst)
     {
-        ft_printf("%s", lst->str);
+        ft_printf("<%s>", lst->str);
         lst = lst->next;
     }
 	ft_printf("\n");
     return ;
-}
-void free_list(t_token **tok)
-{
-	t_token	*tmp;
-	t_token	*next;
-	t_token *tmp2;
-	t_token *next2;
-
-	if (!tok || !*tok)
-		return ;
-	tmp = *tok;
-	while (tmp)
-	{
-		next = tmp->next;
-		if (tmp->env)
-		{
-			if (tmp->env->key)
-				free(tmp->env->key);
-			if (tmp->env->value)
-				free(tmp->env->value);
-		}
-		tmp = next;
-	}
-	// invalid free line 86
-	tmp2 = *tok;
-	while (tmp2)
-	{
-		next2 = tmp2->next;
-		if (tmp2->str)
-			free(tmp2->str);
-		tmp2 = next2;
-	}
 }

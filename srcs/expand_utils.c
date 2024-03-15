@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 22:14:19 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/13 20:42:33 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/15 22:04:51 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ t_env	*ft_lstnew_env(char *key, char *value)
 	new = malloc(sizeof(*new));
 	if (!new)
 		return (NULL);
-	new->key = ft_strdup(key);
-    new->value = ft_strdup(value);
+	new->key = key;
+    new->value = value;
 	new->next = NULL;
 	return (new);
 }
@@ -58,10 +58,7 @@ void print_list_env(t_token *lst)
 			while (env_ptr)
 			{
 				if (env_ptr->key && env_ptr->value)
-				{
-					ft_printf("KEY : %s VALUE : %s\n", env_ptr->key, env_ptr->value);
 					env_ptr = env_ptr->next;
-				}
 				else
 					break ;
 			}

@@ -111,9 +111,7 @@ int	check_quotes_open(char *input)
 	if (!ft_strchr(input, '\"') || !ft_strchr(input, '\''))
 	{
 		s_quotes = count_quotes(input, '\'');
-		printf("s_quotes: %d\n", s_quotes);
 		d_quotes = count_quotes(input, '\"');
-		printf("d_quotes: %d\n", d_quotes);
 		if (s_quotes % 2 != 0 || d_quotes % 2 != 0)
 			return (0);
 	}

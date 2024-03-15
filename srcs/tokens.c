@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokens.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 01:06:11 by lbarry            #+#    #+#             */
-/*   Updated: 2024/03/13 11:37:09 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/15 22:10:21 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ int     ft_tokenizer(char *token)
         return (PIPE);
     else if (ft_strcmp(token, " ") == 0)
         return (WHITE_SPACE);
-	// else if (ft_strcmp(token, "$") == 0)
-	// 	return (DOLLAR);
 	else
 		return (WORD);
 }
@@ -75,7 +73,7 @@ t_token    *find_token(char *str)
         else if (str[i] == '|')
             ft_stock(&tok, ft_lstnew("|", ft_tokenizer("|")));
         else if (str[i] == ' ')
-            ft_stock(&tok, ft_lstnew(" ", ft_tokenizer(" ")));
+            ft_tokenizer(" ");
         else
         {
             j = 0;
