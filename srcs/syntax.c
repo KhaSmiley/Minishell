@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:38 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/08 18:41:25 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/15 22:09:58 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,20 +76,6 @@ int ft_syntax_word(t_token *tok)
     }
     return (0);
 }
-
-/*
-    if tab[0] == PIPE
-
-    if tab[i] == PIPE && tab[i + 1] == PIPE
-
-    if tab[dernier] == PIPE ou CHEVRON
-
-    if tab[i] == CHEVRON && tab[i + 1] == CHEVRON ou PIPE
-
-
-    OK
-    tab[i] == PIPE && tab[i + 1] == CHEVRON
-*/
 
 int ft_syntax(t_token *tok)
 {

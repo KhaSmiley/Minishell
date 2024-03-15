@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/13 14:14:57 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/15 21:59:07 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ enum
 	PIPE,
 	WHITE_SPACE,
 	WORD,
+	EMPTY,
 };
 
 # include "../libft/libft.h"
@@ -92,7 +93,7 @@ void					free_list(t_token **tok);
 
 void					del_char(char *address, char char_to_del);
 int						remove_quotes(char *str);
-int						manage_quotes(char *input);
+int						manage_quote_errors(char *input);
 t_token					*fix_quotes_token(t_token *tok);
 
 /* quotes_utils.c */
@@ -114,5 +115,11 @@ int						word_size(char *str, int i);
 int						alloc_token(t_token **tok, char *longchev, char *str,
 							int i);
 t_token					*find_token(char *str);
+
+/* memory.c */
+
+void					free_tok(t_token **tok);
+void					free_envp_cpy(char **envp_cpy);
+void					free_tok_env(t_env *my_env);
 
 #endif
