@@ -37,6 +37,8 @@ int	remove_quotes(char *str)
 	i = 0;
 	in_d_quotes = 0;
 	in_s_quotes = 0;
+	if (!str)
+		return (0);
 	while (str[i])
 	{
 		if (str[i] == '\"' && !in_s_quotes)
@@ -59,7 +61,7 @@ int	remove_quotes(char *str)
 		}
 		i++;
 	}
-	return (0);
+	return (1);
 }
 
 int	manage_quote_errors(char *input)
