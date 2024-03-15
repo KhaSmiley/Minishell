@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/15 01:33:26 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/15 01:58:04 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ int main(int argc, char **argv, char **envp)
         add_history(input);
 		if (!manage_quote_errors(input))
 		{
-			// free
 			printf("quitting quote error\n");
 			free(input);
 			return (1);
