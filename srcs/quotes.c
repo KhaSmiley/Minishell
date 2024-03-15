@@ -90,6 +90,11 @@ t_token *fix_quotes_token(t_token *tok)
 		if (tmp->type == WORD)
 		{
 			remove_quotes(tmp->str);
+			if (tmp->str[0] == '\0')
+			{
+				tmp->type = EMPTY;
+				tmp->str = NULL;
+			}
 		}
 		tmp = tmp->next;
 	}
