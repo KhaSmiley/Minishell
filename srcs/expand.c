@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 05:31:16 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/15 22:05:07 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/16 01:02:28 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	ft_create_env(t_token *tok, char *str, char **envp_cpy)
 		else if (str[i] == '$')
 		{
 			if (flag_quote == '\'')
-				ft_stock_env(&tok->env, ft_lstnew_env(ft_strdup(""), ft_strdup("")));
+				ft_stock_env(&tok->env, ft_lstnew_env(NULL, NULL));
 			else
 			{
 				ft_stock_key_and_value_env(tok, str, &count, envp_cpy);

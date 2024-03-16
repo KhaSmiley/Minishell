@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 03:40:10 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/15 22:05:34 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/16 00:36:22 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ void print_list(t_token *lst)
 		return ;
     while(lst)
     {
-        ft_printf("<%s>", lst->str);
+        printf("string: %s\ntype = %d\n", lst->str, lst->type);
         lst = lst->next;
     }
-	ft_printf("\n");
+	// ft_printf("\n");
     return ;
 }

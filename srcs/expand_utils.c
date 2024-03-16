@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 22:14:19 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/15 22:04:51 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/16 01:05:35 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,10 @@ void print_list_env(t_token *lst)
 			while (env_ptr)
 			{
 				if (env_ptr->key && env_ptr->value)
+				{
+					printf("key: %s value: %s\n", env_ptr->key, env_ptr->value);
 					env_ptr = env_ptr->next;
+				}
 				else
 					break ;
 			}

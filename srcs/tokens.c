@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 01:06:11 by lbarry            #+#    #+#             */
-/*   Updated: 2024/03/15 22:10:21 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/16 00:53:19 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int    alloc_token(t_token **tok, char *longchev, char *str, int i)
     return (0);
 }
 
-
+// malloc non word tokens
 t_token    *find_token(char *str)
 {
     int i;

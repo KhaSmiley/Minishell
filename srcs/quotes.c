@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 23:15:53 by lbarry            #+#    #+#             */
-/*   Updated: 2024/03/15 01:11:32 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/16 01:13:00 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,7 @@ t_token *fix_quotes_token(t_token *tok)
 		{
 			remove_quotes(tmp->str);
 			if (tmp->str[0] == '\0')
-			{
 				tmp->type = EMPTY;
-				tmp->str = NULL;
-			}
 		}
 		tmp = tmp->next;
 	}
