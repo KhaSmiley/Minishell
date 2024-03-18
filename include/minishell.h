@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/08 22:14:47 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/15 21:59:07 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 # define MINISHELL_H
 
 typedef struct s_token	t_token;
-
-// struct for the token list and a new struct to add the key + value for each $ found in word
 
 typedef struct s_env
 {
@@ -41,6 +39,7 @@ enum
 	PIPE,
 	WHITE_SPACE,
 	WORD,
+	EMPTY,
 };
 
 # include "../libft/libft.h"
@@ -55,28 +54,32 @@ enum
 /* expand.c */
 
 char					*ft_find_value(char *key, char **envp_cpy);
-int					ft_create_env(t_token *tok, char *str,
-							char **envp_cpy);
+int						ft_create_env(t_token *tok, char *str, char **envp_cpy);
 void					ft_expand_str(t_token *tok, char **envp_cpy);
-
-/* expand_new.c */
-
-t_env	*ft_create_env_new(t_token *tok, char *str);
-void					ft_expand_dollar(t_token *tok_word);
+void					check_quotes_for_env(char *quote_char, char *word,
+							int i_word);
 
 /* expand_utils.c */
 
-t_env					*ft_lstnew_env(char *key, char *value);
+t_env					*ft_lstlast_env(t_env *lst);
 void					ft_stock_env(t_env **lst, t_env *new_link);
+t_env					*ft_lstnew_env(char *key, char *value);
 void					print_list_env(t_token *lst);
+void					free_list_env(t_env *tok);
 
-/* expand_utils_two */
+/* expand_utils_two.c */
 
-int						ft_find_malloc_key(char *str, int i);
-char					*ft_find_key(char *str, int y);
+char					*ft_find_key(char *str, int count);
 int						ft_strlen_from_char(char *str, char c);
-char					**ft_envp_copy(char **envp);
+int						ft_find_malloc_key(char *str, int i);
 int						ft_tablen(char **tab);
+char					**ft_envp_copy(char **envp);
+
+/* expand_after_quotes.c */
+
+void					find_str_to_expand(t_token **tok);
+char					*ft_get_new_str_for_env(char *str, t_token *tok);
+char					*ft_strjoin_env(char const *s1, char const *s2);
 
 /* lst_utils.c */
 
@@ -84,15 +87,22 @@ void					print_list(t_token *lst);
 t_token					*ft_lstnew(char *content, int type);
 void					ft_stock(t_token **lst, t_token *new_link);
 t_token					*ft_lstlast(t_token *lst);
+void					free_list(t_token **tok);
 
 /* quotes.c */
 
 void					del_char(char *address, char char_to_del);
-int						remove_quotes(char *str, char quote);
+int						remove_quotes(char *str);
+int						manage_quote_errors(char *input);
+t_token					*fix_quotes_token(t_token *tok);
+
+/* quotes_utils.c */
+
+int						check_closure(char *str, int i, char quote, int flag);
+int						s_quotes_open(char *str);
+int						d_quotes_open(char *str);
 int						count_quotes(char *str, char c);
-int						manage_quotes(char *str);
-int						in_d_quotes(char *str);
-int						in_s_quotes(char *str);
+int						check_quotes_open(char *input);
 
 /* syntax.c */
 
@@ -105,5 +115,11 @@ int						word_size(char *str, int i);
 int						alloc_token(t_token **tok, char *longchev, char *str,
 							int i);
 t_token					*find_token(char *str);
+
+/* memory.c */
+
+void					free_tok(t_token **tok);
+void					free_envp_cpy(char **envp_cpy);
+void					free_tok_env(t_env *my_env);
 
 #endif

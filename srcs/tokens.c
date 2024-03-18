@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokens.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 01:06:11 by lbarry            #+#    #+#             */
-/*   Updated: 2024/03/06 04:09:06 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/16 19:01:19 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ int     ft_tokenizer(char *token)
         return (PIPE);
     else if (ft_strcmp(token, " ") == 0)
         return (WHITE_SPACE);
-	// else if (ft_strcmp(token, "$") == 0)
-	// 	return (DOLLAR);
 	else
 		return (WORD);
 }
@@ -47,15 +45,32 @@ int word_size(char *str, int i)
 
 int    alloc_token(t_token **tok, char *longchev, char *str, int i)
 {
-    if (str[i + 1] == longchev[0])
-    {
-        ft_stock(tok, ft_lstnew(longchev, ft_tokenizer(longchev)));
-        return (1);
-    }
-    ft_stock(tok, ft_lstnew(&longchev[1], ft_tokenizer(&longchev[1])));
-    return (0);
-}
+	int		j;
+	char	*redirection;
 
+	j = 0;
+	if (str[i + 1] == longchev[0])
+	{
+		redirection = malloc(sizeof(char) * 3);
+		if (!redirection)
+			return (-1);
+		while (j < 2)
+		{
+			redirection[j] = longchev[j];
+			j++;
+		}
+		redirection[j] = '\0';
+		ft_stock(tok, ft_lstnew(redirection, ft_tokenizer(redirection)));
+		return (1);
+	}
+	redirection = malloc(sizeof(char) * 2);
+	if (!redirection)
+		return (-1);
+	redirection[0] = longchev[0];
+	redirection[1] = '\0';
+	ft_stock(tok, ft_lstnew(redirection, ft_tokenizer(redirection)));
+	return (0);
+}
 
 t_token    *find_token(char *str)
 {
@@ -73,13 +88,22 @@ t_token    *find_token(char *str)
         else if (str[i] == '>')
             i += alloc_token(&tok, ">>", str, i);
         else if (str[i] == '|')
-            ft_stock(&tok, ft_lstnew("|", ft_tokenizer("|")));
+		{
+			word = malloc(sizeof(char) * 2);
+			if (!word)
+				return (NULL);
+			word[0] = '|';
+			word[1] = '\0';
+            ft_stock(&tok, ft_lstnew(word, ft_tokenizer(word)));
+		}
         else if (str[i] == ' ')
-            ft_stock(&tok, ft_lstnew(" ", ft_tokenizer(" ")));
+            ft_tokenizer(" ");
         else
         {
             j = 0;
             word = malloc(word_size(str, i) + 1);
+			if (!word)
+				return (NULL);
             while (ft_strchr(" \t><|\0", str[i]) == 0)
                 word[j++] = str[i++];
             word[j] = '\0';
@@ -88,7 +112,6 @@ t_token    *find_token(char *str)
         }
         i++;
     }
-    // print_list(tok);
     ft_syntax(tok);
-    return (tok);
+	return (tok);
 }
