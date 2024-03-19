@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/15 21:59:07 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/19 01:54:11 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,5 +121,11 @@ t_token					*find_token(char *str);
 void					free_tok(t_token **tok);
 void					free_envp_cpy(char **envp_cpy);
 void					free_tok_env(t_env *my_env);
+
+/*built_ins*/
+
+int						to_builtin_or_not_to_builtin(t_token *tok, char **env_cpy);
+int						ft_pwd(void);
+int						ft_cd(t_token *tok, char **env_cpy);
 
 #endif

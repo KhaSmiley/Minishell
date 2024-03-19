@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/15 22:09:13 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/19 01:25:40 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ int main(int argc, char **argv, char **envp)
 		find_str_to_expand(&tok);
 		print_list(tok);
 		print_list_env(tok);
+		// builtins
+		to_builtin_or_not_to_builtin(tok, envp_cpy);
 		free(input);
 		free_tok(&tok);
 	}
