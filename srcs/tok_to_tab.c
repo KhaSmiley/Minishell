@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 01:46:52 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/20 11:46:47 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/20 13:50:49 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,12 @@ char **tok_to_tab(t_token **tok, int nb_pipe)
     {
         if (tmp->type == WORD)
         {
-            if (tmp->str[0] == '\0' && tmp->next)
+            if (tmp->next && tmp->str[0] == '\0')
+            {
                 tmp = tmp->next;
+                if (tmp->type == PIPE)
+                    break;
+            }    
             tab[i] = ft_strdup(tmp->str);
             i++;
         }
