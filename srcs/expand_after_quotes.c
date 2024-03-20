@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_after_quotes.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 20:06:40 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/15 22:04:52 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/19 21:17:56 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,12 @@ char *ft_get_new_str_for_env(char *str, t_token *tok)
             i++;
             if (tmp_env->value[0] == '\0')
             {
-                i--;
-                add_str = ft_substr(str, i, 1);
-                env_str = ft_strjoin_gnl(env_str, add_str);
-                free(add_str);
+                // i--;
+                // add_str = ft_substr(str, i, 1);
+                env_str = ft_strjoin_gnl(env_str, "");
+                while (str[i] && ft_isalnum(str[i]))
+                    i++;
+                // free(add_str);
             }
             else if (tmp_env->value)
             {

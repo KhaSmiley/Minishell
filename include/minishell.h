@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/19 01:54:11 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/20 12:01:59 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,19 @@ enum
 	EMPTY,
 };
 
+typedef struct s_data
+{
+	char				*input;
+	char				**envp_cpy;
+	int					tmp_fd;
+	int					argc;
+	int					count_tab;
+	int					nb_cmd;
+	int					pid[1024];
+	int					pipe_fd[2];
+
+}						t_data;
+
 # include "../libft/libft.h"
 # include <fcntl.h>
 # include <readline/history.h>
@@ -49,6 +62,7 @@ enum
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+# include <sys/wait.h>
 # include <unistd.h>
 
 /* expand.c */
@@ -121,6 +135,39 @@ t_token					*find_token(char *str);
 void					free_tok(t_token **tok);
 void					free_envp_cpy(char **envp_cpy);
 void					free_tok_env(t_env *my_env);
+
+/* ------------------------------------------------------------------- EXEC -------------------------------------------------------------------------- */
+
+/* free_tab */
+
+void					free_tab(char **tab);
+void					close_fds(t_data *data);
+
+/* pipex.c */
+
+void					child_process(t_data *data, t_token **tok, int i);
+int						exec_pipe(t_data *data, t_token **tok);
+void					redirection(t_data *data, int i);
+void					parent_process(t_data *data, int i);
+
+/* utils_exec_two.c */
+
+char					*ft_strdup_access(char *cmd);
+int						ft_strlen_from(int i, char *str);
+int						open_fd(t_data *data, int i);
+
+/* utils_exec.c */
+
+char					*find_envp_path(char **envp);
+char					**split_path(t_data *data);
+char					*complete_path(t_data *data, char *cmd);
+void					init_data(int argc, t_data *data, t_token *tok);
+int						ft_access(char *path);
+
+/* tok_to_tab */
+
+char					**tok_to_tab(t_token **tok, int nb_pipe);
+int						ft_count_pipe(t_token *tok);
 
 /*built_ins*/
 
