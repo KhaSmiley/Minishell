@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/20 14:10:30 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/20 19:33:39 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		}
 		init_data(argc, &data, tok);
+		if (data.nb_cmd == 1 && to_builtin_or_not_to_builtin(tok_to_tab(&tok, 0)))
+			continue ;
 		exec_pipe(&data, &tok);
 		free(input);
 		free_tok(&tok);

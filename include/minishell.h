@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/20 12:01:59 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/20 19:09:07 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,8 +171,8 @@ int						ft_count_pipe(t_token *tok);
 
 /*built_ins*/
 
-int						to_builtin_or_not_to_builtin(t_token *tok, char **env_cpy);
+int						to_builtin_or_not_to_builtin(char **cmd);
 int						ft_pwd(void);
-int						ft_cd(t_token *tok, char **env_cpy);
+int						ft_cd(char **cmd, char **env_cpy);
 
 #endif
