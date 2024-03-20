@@ -6,19 +6,19 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 00:49:03 by lbarry            #+#    #+#             */
-/*   Updated: 2024/03/20 19:38:10 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/20 23:24:19 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	to_builtin_or_not_to_builtin(char **cmd)
+int	to_builtin_or_not_to_builtin(char **cmd, char **envp_cpy)
 {
 	printf("in built ins cmd[0] = %s\n", cmd[0]);
 	if (!ft_strncmp(cmd[0], "pwd", 3))
 		return(ft_pwd(), 1);
 	if (!ft_strncmp(cmd[0], "cd", 2))
-		return(ft_cd(cmd, NULL), 1);
+		return(ft_cd(cmd, envp_cpy), 1);
 	return (0);
 }
 
@@ -37,24 +37,45 @@ int	ft_pwd(void)
 	return (1);
 }
 
+char	*get_home_env(char **envp_cpy)
+{
+	int		i;
+
+	i = 0;
+	while (envp_cpy[i])
+	{
+		if (!ft_strncmp(envp_cpy[i], "HOME=", 5))
+			return (envp_cpy[i] + 5);
+		i++;
+	}
+	return (NULL);
+}
 
 int	ft_cd(char **cmd, char **envp_cpy)
 {
 	int		ret;
-	(void)envp_cpy;
-
+	char	*path;
 	printf("in ft_cd\n");
 	printf("cmd[0] = %s\n", cmd[0]);
 	printf("cmd[1] = %s\n", cmd[1]);
 
+	//check 1 arg (if not error) ?
+
 	//no args go to HOME - find HOME in envp_cpy and send to chdir
 	//create find_str_in_envp_cpy func
-	// if (!cmd[1])
-	// {
-	// 	//find HOME in envp_cpy and stock in cmd[0]
-	// }
-	//check 1 arg (if not error) ?
-	ret = chdir(cmd[1]);
+	if (cmd[1] == NULL)
+	{
+		path = get_home_env(envp_cpy);
+		if (!path)
+		{
+			printf("cd: HOME not set\n");
+			return (0);
+		}
+		printf("home found %s\n", path);
+	}
+	else
+		path = cmd[1];
+	ret = chdir(path);
 	printf("ret = %d\n", ret);
 	if (ret == -1)
 	{

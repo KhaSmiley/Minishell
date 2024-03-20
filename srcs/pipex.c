@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 15:43:05 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/20 19:30:37 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/20 23:15:00 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	child_process(t_data *data, t_token **tok, int i)
 	path = complete_path(data, cmd[0]);
 	print_tab(cmd);
 	// 1 cmd only and builtin = execute builtin in parent
-	if (to_builtin_or_not_to_builtin(cmd))
+	if (to_builtin_or_not_to_builtin(cmd, data->envp_cpy))
 		return (free_tab(cmd), free(path), exit(0));
 	if (path)
 		execve(path, cmd, data->envp_cpy);
