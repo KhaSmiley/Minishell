@@ -48,7 +48,7 @@ all:	${NAME}
 $(NAME): $(DIR_OBJS) $(OBJS)
 	make -C libft
 	$(CC) $(CFLAGS) ${INC} $(CDFLAGS) $(OBJS) $(LIB) -lreadline -o $(NAME)
-	@ echo "Merci Laura pour les travaux"  | toilet -f future -F border --gay
+	@ echo "Khalid protect ur mallocs mon reuf"  | toilet -f future -F border --gay
 
 
 $(OBJS) : $(DIR_OBJS)/%.o : $(DIR_SRCS)/%.c
