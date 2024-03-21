@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/21 14:39:54 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/21 19:53:53 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,10 +138,10 @@ void					free_tok_env(t_env *my_env);
 
 /* ------------------------------------------------------------------- EXEC -------------------------------------------------------------------------- */
 
-/* free_tab */
+/* tab_utils.c */
 
 void					free_tab(char **tab);
-void					close_fds(t_data *data);
+void					print_tab(char **tab);
 
 /* pipex.c */
 
@@ -149,6 +149,7 @@ void					child_process(t_data *data, t_token **tok, int i);
 int						exec_pipe(t_data *data, t_token **tok);
 void					redirection(t_data *data, int i);
 void					parent_process(t_data *data, int i);
+void					close_fds(t_data *data);
 
 /* utils_exec_two.c */
 
@@ -171,9 +172,13 @@ int						ft_count_pipe(t_token *tok);
 
 /*built_ins*/
 
-int						to_builtin_or_not_to_builtin(char **cmd);
+int						to_builtin_or_not_to_builtin(char *cmd);
 int						lets_builtin(char **cmd, char **envp_cpy);
+char					*find_first_cmd(t_token **tok);
+int						one_built_in(char **builtin, t_data *data);
 int						ft_pwd(void);
 int						ft_cd(char **cmd, char **env_cpy);
+int						ft_env(char **envp_cpy);
+int						ft_echo(char **cmd);
 
 #endif

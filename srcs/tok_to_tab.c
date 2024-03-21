@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 01:46:52 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/21 15:15:44 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/21 19:17:10 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,20 @@ int ft_count_pipe (t_token *tok)
     int count;
     t_token *tmp;
 
-    count = 1;
+    count = 0;
     tmp = tok;
+	if (!tmp)
+		return (0);
     while (tmp)
     {
         if (tmp->type == PIPE)
             count++;
         tmp = tmp->next;
     }
+	if (count > 0)
+		count++;
+	else if (count == 0)
+		count = 1;
     return (count);
 }
 
@@ -34,24 +40,22 @@ char **tok_to_tab(t_token **tok, int nb_pipe)
     char **tab;
     int i;
     int count_pipe;
-	// (void)nb_pipe;
 
     count_pipe = 0;
     i = 0;
     tab = malloc(sizeof(char *) * (10));
-    tmp = *tok;
 	if (!tab)
 	{
 		ft_printf("tok to tab malloc error\n");
 		return (NULL);
 	}
+    tmp = *tok;
     while (tmp && count_pipe != nb_pipe)
     {
         if (tmp->type == PIPE)
             count_pipe++;
         tmp = tmp->next;
     }
-	// tmp = *tok;
     while (tmp && tmp->type != PIPE)
     {
         if (tmp->type == WORD)
@@ -68,10 +72,11 @@ char **tok_to_tab(t_token **tok, int nb_pipe)
         tmp = tmp->next;
     }
     tab[i] = NULL;
-	while (tab[i])
-	{
-		printf("tab[%d] = %s\n", i, tab[i]);
-		i++;
-	}
+	// i = 0;
+	// while (tab[i])
+	// {
+	// 	printf("tab[%d] = %s\n", i, tab[i]);
+	// 	i++;
+	// }
     return (tab);
 }
