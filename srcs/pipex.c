@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 15:43:05 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/20 23:15:00 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/21 15:17:40 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,15 +47,20 @@ void	child_process(t_data *data, t_token **tok, int i)
 	if (!cmd)
 		return (free_tab(cmd), exit(1));
 	if (!cmd[0])
-		return (ft_printf("minishell: : command not found\n"), free_tab(cmd), exit(1));
+		return (ft_printf("minishell: cmd[0] empty, tok 2 tab failed\n"), free_tab(cmd),  free_tok(tok), free_envp_cpy(data->envp_cpy), exit(1));
 	path = complete_path(data, cmd[0]);
+	if (!path)
+		return (ft_printf("minishell: %s: command path not found\n", cmd[0]), free_tab(cmd), free_tok(tok), free_envp_cpy(data->envp_cpy), exit(1));
 	print_tab(cmd);
 	// 1 cmd only and builtin = execute builtin in parent
-	if (to_builtin_or_not_to_builtin(cmd, data->envp_cpy))
-		return (free_tab(cmd), free(path), exit(0));
+	// if (to_builtin_or_not_to_builtin(cmd))
+	// {
+	// 	lets_builtin(cmd, data->envp_cpy);
+	// 	return (free_tab(cmd), free(path), free_tok(tok), free_envp_cpy(data->envp_cpy), exit(0));
+	// }
 	if (path)
 		execve(path, cmd, data->envp_cpy);
-	return (free_tab(cmd), free(path), exit(1));
+	return (free_tab(cmd), free(path), free_tok(tok), free_envp_cpy(data->envp_cpy), exit(0));
 }
 
 void	parent_process(t_data *data, int i)

@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/20 23:15:35 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/21 14:39:54 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,8 @@ int						ft_count_pipe(t_token *tok);
 
 /*built_ins*/
 
-int						to_builtin_or_not_to_builtin(char **cmd, char **envp_cpy);
+int						to_builtin_or_not_to_builtin(char **cmd);
+int						lets_builtin(char **cmd, char **envp_cpy);
 int						ft_pwd(void);
 int						ft_cd(char **cmd, char **env_cpy);
 

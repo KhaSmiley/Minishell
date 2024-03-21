@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 16:39:11 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/19 02:13:19 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/21 15:18:03 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,12 @@ char	*complete_path(t_data *data, char *cmd)
 		tmp2 = ft_strjoin(tmp[i], "/");
 		path = ft_strjoin(tmp2, cmd);
 		if (ft_access(path) == 1)
-			return (path);
+			return (free(tmp2), free_tab(tmp), path);
 		free(tmp2);
 		free(path);
 		i++;
 	}
-	return (free_tab(tmp), ft_printf("%s: command not found\n", cmd), NULL);
+	return (free_tab(tmp), ft_printf("%s: complete path command not found\n", cmd), NULL);
 }
 
 void	init_data(int argc, t_data *data, t_token *tok)

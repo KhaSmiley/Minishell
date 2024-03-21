@@ -6,19 +6,32 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 00:49:03 by lbarry            #+#    #+#             */
-/*   Updated: 2024/03/20 23:24:19 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/21 15:01:58 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	to_builtin_or_not_to_builtin(char **cmd, char **envp_cpy)
+int	to_builtin_or_not_to_builtin(char **cmd)
 {
-	printf("in built ins cmd[0] = %s\n", cmd[0]);
+	printf("checking if cmd[0] is builtin = %s\n", cmd[0]);
+
+	if (!ft_strncmp(cmd[0], "pwd", 3))
+		return(1);
+	else if (!ft_strncmp(cmd[0], "cd", 2))
+		return(1);
+	return (0);
+}
+
+int	lets_builtin(char **cmd, char **envp_cpy)
+{
+	printf("lets builtin = %s\n", cmd[0]);
+
 	if (!ft_strncmp(cmd[0], "pwd", 3))
 		return(ft_pwd(), 1);
 	if (!ft_strncmp(cmd[0], "cd", 2))
 		return(ft_cd(cmd, envp_cpy), 1);
+
 	return (0);
 }
 
@@ -66,12 +79,13 @@ int	ft_cd(char **cmd, char **envp_cpy)
 	if (cmd[1] == NULL)
 	{
 		path = get_home_env(envp_cpy);
+		printf("hom path returned %s\n", path);
 		if (!path)
 		{
 			printf("cd: HOME not set\n");
 			return (0);
 		}
-		printf("home found %s\n", path);
+		//printf("home found %s\n", path);
 	}
 	else
 		path = cmd[1];
