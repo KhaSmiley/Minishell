@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 00:49:03 by lbarry            #+#    #+#             */
-/*   Updated: 2024/03/21 19:57:21 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/23 01:06:11 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int	ft_cd(char **cmd, char **envp_cpy)
 	{
 		path = get_home_env(envp_cpy);
 		if (!path)
-			return (printf("cd noa args, HOME not found\n"), 0);
+			return (printf("cd no args, HOME not found\n"), 0);
 	}
 	else
 		path = cmd[1];
@@ -124,28 +124,63 @@ int	ft_env(char **envp_cpy)
 	return (1);
 }
 
+int	check_echo_option(char **args)
+{
+	int	i;
+	int	j;
+
+	i = 1;
+	while (args[i])
+	{
+		//printf("args[%d] = %s\n", i, args[i]);
+		j = 0;
+		while (args[i][j])
+		{
+			if (args[i][j] == '-')
+				j++;
+			if (args[i][j] != 'n')
+				return (i - 1);
+			if (args[i][j + 1] != 'n' && args[i][j + 1] != '\0' && args[i][j + 1] != ' ')
+				return (i - 1);
+			while (args[i][j] == 'n')
+			{
+				if (args[i][j] != 'n' && args[i][j] != '\0')
+					return (i - 1);
+				else if (args[i][j] == '\0')
+					break ;
+				j++;
+			}
+		}
+		i++;
+	}
+	return (i - 1);
+}
 int	ft_echo(char **cmd)
 {
 	int	i;
 	int	num_args;
+	int	no_line;
 
 	i = 1;
-	num_args = 0;
-	while (cmd[num_args])
-		num_args++;
-	if (!cmd[i])
+	num_args = 1;
+	no_line = check_echo_option(cmd);
+	//printf("no line count: %d\n", no_line);
+	if (!cmd[i] && !no_line)
 	{
 		printf("\n");
 		return (1);
 	}
-	// to do: check cmd[2++] for -n
+	while (cmd[num_args])
+		num_args++;
+	i = no_line + 1;
 	while (cmd[i])
 	{
 		printf("%s", cmd[i]);
-		if (i < num_args)
+		if (i < num_args - 1)
 			printf(" ");
 		i++;
 	}
-	printf("\n");
+	if (!no_line)
+		printf("\n");
 	return (1);
 }
