@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 15:43:05 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/25 02:42:46 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/25 03:05:47 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,20 @@ void	close_fds(t_data *data)
 		close(data->pipe_fd[0]);
 	if (data->pipe_fd[1] > 0)
 		close(data->pipe_fd[1]);
-	if (data->fd_in > 0)
-		close(data->fd_in);
+	// if (data->fd_in > 0)
+	// 	close(data->fd_in);
 	// fd out
 }
 
 
-void	open_fds(int i, t_data *data)
+void	open_fds(int i, t_data *data, t_token **tok)
 {
 	printf("i = %d\n", i);
 	printf("nb_cmd = %d\n", data->nb_cmd);
+	get_infile(data, tok);
+	printf("infile = %s\n", data->infile);
+	get_outfile(data, tok);
+	printf("outfile = %s\n", data->outfile);
 	if (i == 0 && data->infile)
 	{
 		if (access(data->infile, F_OK) == -1)
@@ -41,9 +45,9 @@ void	open_fds(int i, t_data *data)
 		}
 		else
 			data->fd_in = open(data->infile, O_RDONLY);
-		printf("infile opened\n");
+		printf("infile opened fd_in = %d\n", data->fd_in);
 	}
-	if (i == data->nb_cmd - 1 && data->outfile)
+	if (i == (data->nb_cmd - 1) && data->outfile)
 	{
 		data->fd_out = open(data->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (data->fd_out == -1)
@@ -53,7 +57,7 @@ void	open_fds(int i, t_data *data)
 			//free
 			exit(1);
 		}
-		printf("outfile opened\n");
+		printf("outfile opened fd_out = %d\n", data->fd_out);
 	}
 }
 
@@ -80,10 +84,8 @@ void	redirection(t_data *data, int i)
 		dup2(data->fd_out, STDOUT_FILENO);
 		close(data->fd_out);
 	}
-	if (data->pipe_fd[0] > 0)
-		close(data->pipe_fd[0]);
-	if (data->pipe_fd[1] > 0)
-		close(data->pipe_fd[1]);
+	close(data->pipe_fd[0]);
+	close(data->pipe_fd[1]);
 }
 
 void	child_process(t_data *data, t_token **tok, int i)
@@ -100,16 +102,12 @@ void	child_process(t_data *data, t_token **tok, int i)
 		return (free_tab(cmd), exit(1));
 	if (!cmd[0])
 		return (ft_printf("minishell: cmd[0] empty, tok 2 tab failed\n"), free_tab(cmd),  free_tok(tok), free_envp_cpy(data->envp_cpy), exit(1));
-	if (!get_infile(data, tok) || !get_outfile(data, tok))
-		return (printf("error getting in or outfile\n"), free_tab(cmd), free_tok(tok), free_envp_cpy(data->envp_cpy), exit(1));
 	if (to_builtin_or_not_to_builtin(cmd[0]))
 	{
 		lets_builtin(cmd, data->envp_cpy, tok);
 		return (free_tab(cmd), free_tok(tok), free_envp_cpy(data->envp_cpy), exit(0));
 	}
-	printf("infile = %s\n", data->infile);
-	printf("outfile = %s\n", data->outfile);
-	open_fds(i, data);
+	open_fds(i, data, tok);
 	redirection(data, i);
 	// when do we use func close fds?
 	path = complete_path(data, cmd[0]);
