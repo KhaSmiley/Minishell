@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tok_to_tab.c                                       :+:      :+:    :+:   */
+/*   exec_prep.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 01:46:52 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/21 19:17:10 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/25 01:57:47 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,12 @@ char **tok_to_tab(t_token **tok, int nb_pipe)
     }
     while (tmp && tmp->type != PIPE)
     {
-        if (tmp->type == WORD)
+		if (tmp && (tmp->type == LESS || tmp->type == GREATER))
+		{
+			tmp = tmp->next;
+			tmp = tmp->next;
+		}
+        if (tmp && tmp->type == WORD)
         {
             if (tmp->next && tmp->str[0] == '\0')
             {
@@ -72,11 +77,47 @@ char **tok_to_tab(t_token **tok, int nb_pipe)
         tmp = tmp->next;
     }
     tab[i] = NULL;
-	// i = 0;
-	// while (tab[i])
-	// {
-	// 	printf("tab[%d] = %s\n", i, tab[i]);
-	// 	i++;
-	// }
     return (tab);
+}
+
+int	get_infile(t_data *data, t_token **tok)
+{
+	t_token *tmp;
+
+	tmp = *tok;
+    while (tmp && tmp->type != PIPE)
+    {
+        if (tmp->type == LESS)
+		{
+			tmp = tmp->next;
+			data->infile = ft_strdup(tmp->str);
+			if (!data->infile)
+				return (0);
+		}
+        tmp = tmp->next;
+    }
+	return (1);
+}
+
+int	get_outfile(t_data *data, t_token **tok)
+{
+	t_token *tmp;
+
+	tmp = *tok;
+	while (tmp && tmp->type != PIPE)
+		tmp = tmp->next;
+	if (tmp && tmp->type == PIPE)
+		tmp = tmp->next;
+	while (tmp)
+	{
+		if (tmp->type == GREATER)
+		{
+			tmp = tmp->next;
+			data->outfile = ft_strdup(tmp->str);
+			if (!data->outfile)
+				return (0);
+		}
+		tmp = tmp->next;
+	}
+	return (1);
 }

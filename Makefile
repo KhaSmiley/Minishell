@@ -19,10 +19,11 @@ SRCS_NAMES		=	minishell.c \
 					memory.c \
 					tab_utils.c \
 					pipex.c \
-					tok_to_tab.c \
+					exec_prep.c \
 					utils_exec_two.c \
 					utils_exec.c \
-					built_ins.c
+					built_ins.c \
+					built_ins_utils.c
 
 OBJS_NAMES		=	${SRCS_NAMES:.c=.o}
 

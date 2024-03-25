@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/21 19:53:53 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/25 01:52:32 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,10 @@ typedef struct s_data
 	int					nb_cmd;
 	int					pid[1024];
 	int					pipe_fd[2];
+	int					fd_in;
+	int					fd_out;
+	char				*infile;
+	char				*outfile;
 
 }						t_data;
 
@@ -165,20 +169,28 @@ char					*complete_path(t_data *data, char *cmd);
 void					init_data(int argc, t_data *data, t_token *tok);
 int						ft_access(char *path);
 
-/* tok_to_tab */
+/* exec_prep */
 
 char					**tok_to_tab(t_token **tok, int nb_pipe);
 int						ft_count_pipe(t_token *tok);
+int						get_infile(t_data *data, t_token **tok);
+int						get_outfile(t_data *data, t_token **tok);
 
 /*built_ins*/
 
 int						to_builtin_or_not_to_builtin(char *cmd);
-int						lets_builtin(char **cmd, char **envp_cpy);
-char					*find_first_cmd(t_token **tok);
-int						one_built_in(char **builtin, t_data *data);
+int						lets_builtin(char **cmd, char **envp_cpy, t_token **tok);
 int						ft_pwd(void);
 int						ft_cd(char **cmd, char **env_cpy);
 int						ft_env(char **envp_cpy);
 int						ft_echo(char **cmd);
+void					ft_exit(char **cmd, char **envp_cpy, t_token **tok);
+
+/* built_ins_utils */
+
+char					*find_first_cmd(t_token **tok);
+int						one_built_in(char **builtin, t_data *data, t_token **tok);
+int						check_echo_option(char **args);
+char					*get_home_env(char **envp_cpy);
 
 #endif
