@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/20 14:10:30 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/21 19:56:31 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	parsing_and_stock_input(char *input, t_token **tok, t_data *data)
 		return (1);
 	}
 	tmp = find_token(input);
+	//print_list(tmp);
 	ft_expand_str(tmp, data->envp_cpy);
 	fix_quotes_token(tmp);
 	find_str_to_expand(&tmp);
@@ -53,6 +54,13 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		}
 		init_data(argc, &data, tok);
+		if (data.nb_cmd == 1 && (to_builtin_or_not_to_builtin(find_first_cmd(&tok))))
+		{
+			one_built_in((tok_to_tab(&tok, 0)), &data);
+			free_tok(&tok);
+			free(input);
+			continue ;
+		}
 		exec_pipe(&data, &tok);
 		free(input);
 		free_tok(&tok);

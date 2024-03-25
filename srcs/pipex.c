@@ -3,25 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 15:43:05 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/20 13:08:03 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/21 19:30:42 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void print_tab(char **tab)
+void	close_fds(t_data *data)
 {
-	int i;
-
-	i = 0;
-	while (tab[i])
-	{
-		printf("tab[%d] = %s\n", i, tab[i]);
-		i++;
-	}
+	if (data->tmp_fd > 0)
+		close(data->tmp_fd);
+	if (data->pipe_fd[0] > 0)
+		close(data->pipe_fd[0]);
+	if (data->pipe_fd[1] > 0)
+		close(data->pipe_fd[1]);
 }
 
 void	redirection(t_data *data, int i)
@@ -42,17 +40,24 @@ void	child_process(t_data *data, t_token **tok, int i)
 	char	**cmd;
 	char	*path;
 
-	redirection(data, i);
 	cmd = tok_to_tab(tok, i);
+	//print_tab(cmd);
 	if (!cmd)
 		return (free_tab(cmd), exit(1));
 	if (!cmd[0])
-		return (ft_printf("minishell: : command not found\n"), free_tab(cmd), exit(1));
+		return (ft_printf("minishell: cmd[0] empty, tok 2 tab failed\n"), free_tab(cmd),  free_tok(tok), free_envp_cpy(data->envp_cpy), exit(1));
+	if (to_builtin_or_not_to_builtin(cmd[0]))
+	{
+		lets_builtin(cmd, data->envp_cpy);
+		return (free_tab(cmd), free_tok(tok), free_envp_cpy(data->envp_cpy), exit(0));
+	}
 	path = complete_path(data, cmd[0]);
-	print_tab(cmd);
+	if (!path)
+		return (ft_printf("minishell: %s: command path not found\n", cmd[0]), free_tab(cmd), free_tok(tok), free_envp_cpy(data->envp_cpy), exit(1));
+	redirection(data, i);
 	if (path)
 		execve(path, cmd, data->envp_cpy);
-	return (free_tab(cmd), free(path), exit(1));
+	return (free_tab(cmd), free(path), free_tok(tok), free_envp_cpy(data->envp_cpy), exit(0));
 }
 
 void	parent_process(t_data *data, int i)
@@ -71,7 +76,8 @@ int	exec_pipe(t_data *data, t_token **tok)
 	i = -1;
 	while (++i < data->nb_cmd)
 	{
-		if (pipe(data->pipe_fd) == -1)
+		pipe(data->pipe_fd);
+		if (data->pipe_fd[0] == -1 || data->pipe_fd[1] == -1)
 			return (perror("Error pipe"), 0);
 		data->pid[i] = fork();
 		if (data->pid[i] == -1)
@@ -84,5 +90,6 @@ int	exec_pipe(t_data *data, t_token **tok)
 	i = 0;
 	while (i < data->nb_cmd)
 		waitpid(data->pid[i++], &status, 0);
+	close(data->pipe_fd[0]);
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_exec_two.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 18:43:40 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/19 02:13:22 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/21 15:18:05 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,6 @@ char	*ft_strdup_access(char *cmd)
 	if (ft_access(cmd) == 1)
 		return (cmd);
 	else
-		return (ft_printf("%s: command not found\n", cmd), NULL);
+		return (ft_printf("%s: dup access command not found\n", cmd), NULL);
 }
 

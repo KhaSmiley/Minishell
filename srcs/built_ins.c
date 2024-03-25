@@ -6,27 +6,65 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 00:49:03 by lbarry            #+#    #+#             */
-/*   Updated: 2024/03/19 01:54:06 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/23 01:06:11 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	to_builtin_or_not_to_builtin(t_token *tok, char **envp_cpy)
+char	*find_first_cmd(t_token **tok)
 {
-	(void)envp_cpy;
-	t_token	*tmp;
+	t_token *tmp;
 
-	tmp = tok;
-	while (tmp && tmp->type != PIPE)
+	tmp = *tok;
+	while (tmp)
 	{
-		if (!ft_strncmp(tmp->str, "pwd", 3))
-			ft_pwd();
-		// else if (!ft_strncmp(tmp->str, "cd", 2))
-		// 	ft_cd(tok, envp_cpy);
+		if (tmp->type == WORD)
+			return (tmp->str);
 		tmp = tmp->next;
 	}
-	return (1);
+	return (NULL);
+}
+
+int	one_built_in(char **builtin, t_data *data)
+{
+	// int i = 0;
+	// while (builtin[i])
+	// {
+	// 	printf("one builtin cmd[%d] = %s\n", i, builtin[i]);
+	// 	i++;
+	// }
+	lets_builtin(builtin, data->envp_cpy);
+	free_tab(builtin);
+	return (0);
+}
+
+int	to_builtin_or_not_to_builtin(char *cmd)
+{
+	//printf("checking if cmd[0] is builtin = %s\n", cmd);
+	if (!ft_strncmp(cmd, "pwd", 3))
+		return(1);
+	else if (!ft_strncmp(cmd, "cd", 2))
+		return(1);
+	else if (!ft_strncmp(cmd, "env", 3))
+		return(1);
+	else if (!ft_strncmp(cmd, "echo", 4))
+		return(1);
+	return (0);
+}
+
+int	lets_builtin(char **cmd, char **envp_cpy)
+{
+	//printf("lets builtin = %s\n", cmd[0]);
+	if (!ft_strncmp(cmd[0], "pwd", 3))
+		return(ft_pwd(), 1);
+	else if (!ft_strncmp(cmd[0], "cd", 2))
+		return(ft_cd(cmd, envp_cpy), 1);
+	else if (!ft_strncmp(cmd[0], "env", 3))
+		return(ft_env(envp_cpy), 1);
+	else if (!ft_strncmp(cmd[0], "echo", 4))
+		return(ft_echo(cmd), 1);
+	return (0);
 }
 
 int	ft_pwd(void)
@@ -44,37 +82,105 @@ int	ft_pwd(void)
 	return (1);
 }
 
+char	*get_home_env(char **envp_cpy)
+{
+	int		i;
 
-// int	ft_cd(t_token *tok, char **envp_cpy)
-// {
-// 	char	*path;
-// 	int		ret;
-// 	t_token	*tmp;
+	i = 0;
+	while (envp_cpy[i])
+	{
+		if (!ft_strncmp(envp_cpy[i], "HOME=", 5))
+			return (envp_cpy[i] + 5);
+		i++;
+	}
+	return (NULL);
+}
 
-// 	(void)envp_cpy;
-// 	tmp = tok;
-	// if no args go to HOME - find HOME in envp_cpy and send to chdir
-	// create find_str_in_envp_cpy func
-	// if (!tmp->next)
-	// {
-	// 	path = ft_strdup("HOME");
-	// 	if (!path)
-	// 		return (0);
-	// }
+int	ft_cd(char **cmd, char **envp_cpy)
+{
+	int		ret;
+	char	*path;
 
-	// check 1 arg (if not error)
+	if (cmd[1] == NULL)
+	{
+		path = get_home_env(envp_cpy);
+		if (!path)
+			return (printf("cd no args, HOME not found\n"), 0);
+	}
+	else
+		path = cmd[1];
+	ret = chdir(path);
+	if (ret == -1)
+	{
+		printf("cd: %s: No such file or directory\n", cmd[1]);
+		return (0);
+	}
+	return (1);
+}
 
-	// do we need to malloc???
+int	ft_env(char **envp_cpy)
+{
+	print_tab(envp_cpy);
+	return (1);
+}
 
-	// if (tmp->next)
-	// {
-	// 	path = tmp->next->str;
-	// }
-// 	ret = chdir(path);
-// 	if (ret == -1)
-// 	{
-// 		printf("cd: %s: No such file or directory\n", path);
-// 		return (0);
-// 	}
-// 	return (1);
-// }
+int	check_echo_option(char **args)
+{
+	int	i;
+	int	j;
+
+	i = 1;
+	while (args[i])
+	{
+		//printf("args[%d] = %s\n", i, args[i]);
+		j = 0;
+		while (args[i][j])
+		{
+			if (args[i][j] == '-')
+				j++;
+			if (args[i][j] != 'n')
+				return (i - 1);
+			if (args[i][j + 1] != 'n' && args[i][j + 1] != '\0' && args[i][j + 1] != ' ')
+				return (i - 1);
+			while (args[i][j] == 'n')
+			{
+				if (args[i][j] != 'n' && args[i][j] != '\0')
+					return (i - 1);
+				else if (args[i][j] == '\0')
+					break ;
+				j++;
+			}
+		}
+		i++;
+	}
+	return (i - 1);
+}
+int	ft_echo(char **cmd)
+{
+	int	i;
+	int	num_args;
+	int	no_line;
+
+	i = 1;
+	num_args = 1;
+	no_line = check_echo_option(cmd);
+	//printf("no line count: %d\n", no_line);
+	if (!cmd[i] && !no_line)
+	{
+		printf("\n");
+		return (1);
+	}
+	while (cmd[num_args])
+		num_args++;
+	i = no_line + 1;
+	while (cmd[i])
+	{
+		printf("%s", cmd[i]);
+		if (i < num_args - 1)
+			printf(" ");
+		i++;
+	}
+	if (!no_line)
+		printf("\n");
+	return (1);
+}

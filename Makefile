@@ -17,12 +17,11 @@ SRCS_NAMES		=	minishell.c \
 					expand_utils_two.c \
 					expand_after_quotes.c \
 					memory.c \
-					free_tab.c \
+					tab_utils.c \
 					pipex.c \
 					tok_to_tab.c \
 					utils_exec_two.c \
 					utils_exec.c \
- \
 					built_ins.c
 
 OBJS_NAMES		=	${SRCS_NAMES:.c=.o}

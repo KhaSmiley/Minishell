@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_tab.c                                         :+:      :+:    :+:   */
+/*   tab_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 21:23:47 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/19 02:13:35 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/21 19:53:48 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,14 @@ void	free_tab(char **tab)
 	free(tab);
 }
 
-void	close_fds(t_data *data)
+void	print_tab(char **tab)
 {
-	if (data->tmp_fd > 0)
-		close(data->tmp_fd);
-	if (data->pipe_fd[0] > 0)
-		close(data->pipe_fd[0]);
-	if (data->pipe_fd[1] > 0)
-		close(data->pipe_fd[1]);
+	int i;
+
+	i = 0;
+	while (tab[i])
+	{
+		printf("%s\n", tab[i]);
+		i++;
+	}
 }
