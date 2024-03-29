@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/24 21:54:37 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/29 04:13:31 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,10 @@ int	main(int argc, char **argv, char **envp)
 	close(data.pipe_fd[0]);
 	free_tok(&tok);
 	free_envp_cpy(data.envp_cpy);
+	if (data.infile)
+		free(data.infile);
+	if (data.outfile)
+		free(data.outfile);
+	rl_clear_history();
 	return (0);
 }

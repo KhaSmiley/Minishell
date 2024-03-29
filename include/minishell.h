@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/25 01:52:32 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/29 01:23:53 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,8 +173,8 @@ int						ft_access(char *path);
 
 char					**tok_to_tab(t_token **tok, int nb_pipe);
 int						ft_count_pipe(t_token *tok);
-int						get_infile(t_data *data, t_token **tok);
-int						get_outfile(t_data *data, t_token **tok);
+int						get_infile(t_data *data, t_token **tok, int nb_pipe);
+int						get_outfile(t_data *data, t_token **tok, int nb_pipe);
 
 /*built_ins*/
 

@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 00:49:03 by lbarry            #+#    #+#             */
-/*   Updated: 2024/03/24 21:47:51 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/29 01:03:52 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	to_builtin_or_not_to_builtin(char *cmd)
 {
+	if (!cmd)
+		return (0);
 	//printf("checking if cmd[0] is builtin = %s\n", cmd);
 	if (!ft_strncmp(cmd, "pwd", 3))
 		return(1);
@@ -34,6 +36,8 @@ int	to_builtin_or_not_to_builtin(char *cmd)
 
 int	lets_builtin(char **cmd, char **envp_cpy, t_token **tok)
 {
+	if (!cmd[0])
+		return (0);
 	//printf("lets builtin = %s\n", cmd[0]);
 	if (!ft_strncmp(cmd[0], "pwd", 3))
 		return(ft_pwd(), 1);
