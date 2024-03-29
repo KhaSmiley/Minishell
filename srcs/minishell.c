@@ -6,49 +6,67 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/15 22:09:13 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/21 19:56:31 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int main(int argc, char **argv, char **envp)
+int	parsing_and_stock_input(char *input, t_token **tok, t_data *data)
 {
-	(void)argc;
+	t_token	*tmp;
+
+	tmp = *tok;
+	if (!manage_quote_errors(input))
+	{
+		printf("quitting quote error\n");
+		return (1);
+	}
+	tmp = find_token(input);
+	//print_list(tmp);
+	ft_expand_str(tmp, data->envp_cpy);
+	fix_quotes_token(tmp);
+	find_str_to_expand(&tmp);
+	*tok = tmp;
+	return (0);
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	static t_data	data = {0};
+	t_token			*tok;
+	char			*input;
+
 	(void)argv;
-	(void)envp;
-
-	t_token *tok;
 	tok = NULL;
-	char **envp_cpy;
-	char *input;
-
-	envp_cpy = ft_envp_copy(envp);
+	data.envp_cpy = ft_envp_copy(envp);
 	while (1)
 	{
 		input = readline("> ");
 		if (!input)
-			break;
+			break ;
 		if (!*input)
-			continue;
+			continue ;
 		add_history(input);
-		if (!manage_quote_errors(input))
+		if (parsing_and_stock_input(input, &tok, &data))
 		{
-			printf("quitting quote error\n");
 			free(input);
 			continue ;
 		}
-		tok = find_token(input);
-		ft_expand_str(tok, envp_cpy);
-		// remove quotes in func below
-		fix_quotes_token(tok);
-		find_str_to_expand(&tok);
-		print_list(tok);
-		print_list_env(tok);
+		init_data(argc, &data, tok);
+		if (data.nb_cmd == 1 && (to_builtin_or_not_to_builtin(find_first_cmd(&tok))))
+		{
+			one_built_in((tok_to_tab(&tok, 0)), &data);
+			free_tok(&tok);
+			free(input);
+			continue ;
+		}
+		exec_pipe(&data, &tok);
 		free(input);
 		free_tok(&tok);
 	}
+	close(data.pipe_fd[0]);
 	free_tok(&tok);
-	free_envp_cpy(envp_cpy);
-    return (0);
+	free_envp_cpy(data.envp_cpy);
+	return (0);
 }

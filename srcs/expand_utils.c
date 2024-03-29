@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 22:14:19 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/16 01:05:35 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/19 03:39:00 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@ t_env	*ft_lstnew_env(char *key, char *value)
 {
 	t_env	*new;
 
-	if (!key || !value)
-		return (NULL);
 	new = malloc(sizeof(*new));
 	if (!new)
 		return (NULL);
