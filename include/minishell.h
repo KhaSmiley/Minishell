@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/29 23:08:59 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/29 23:34:42 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ void					print_tab(char **tab);
 
 void					child_process(t_data *data, t_token **tok, int i);
 int						exec_pipe(t_data *data, t_token **tok);
-void					redirection(t_data *data, int i);
+void					redirection(t_data *data, t_token *tok, int i);
 void					parent_process(t_data *data, int i);
 void					close_fds(t_data *data);
 

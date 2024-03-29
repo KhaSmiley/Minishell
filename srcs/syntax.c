@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:38 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/29 04:45:44 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/29 23:12:36 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,8 @@ int ft_syntax(t_token **tok)
     int error;
     tmp = *tok;
 	// double check how to handle empty input later
-
+	if (!tmp)
+		return (0);
 	if ((tmp->type == GREATER || tmp->type == LESS || tmp->type == DGREATER || tmp->type == DLESS))
     {
         if (tmp->next == NULL)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/29 04:42:49 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/29 23:15:22 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int	parsing_and_stock_input(char *input, t_token **tok, t_data *data)
 		return (1);
 	}
 	tmp = find_token(input);
-	printf("%d\n", tmp->type);
     if (ft_syntax(tok))
 		return (1);
 	ft_expand_str(tmp, data);
