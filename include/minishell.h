@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/21 19:53:53 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/29 04:43:02 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,21 @@ typedef struct s_token
 	struct s_env		*env;
 }						t_token;
 
+typedef struct s_export
+{
+	char				*key;
+	char				*value;
+	struct s_export		*next;
+}						t_export;
+
+typedef struct s_heredoc
+{
+	int					fd;
+	char				*lim;
+	int					in_cmd;
+	struct s_heredoc	*next;
+}						t_heredoc;
+
 enum
 {
 	GREATER,
@@ -52,7 +67,8 @@ typedef struct s_data
 	int					nb_cmd;
 	int					pid[1024];
 	int					pipe_fd[2];
-
+	int					curr_here_doc;
+	t_export			*env_export;
 }						t_data;
 
 # include "../libft/libft.h"
@@ -67,9 +83,9 @@ typedef struct s_data
 
 /* expand.c */
 
-char					*ft_find_value(char *key, char **envp_cpy);
-int						ft_create_env(t_token *tok, char *str, char **envp_cpy);
-void					ft_expand_str(t_token *tok, char **envp_cpy);
+char					*ft_find_value(char *key, t_export *env);
+int						ft_create_env(t_token *tok, char *str, t_export *env);
+void					ft_expand_str(t_token *tok, t_data *data);
 void					check_quotes_for_env(char *quote_char, char *word,
 							int i_word);
 
@@ -88,6 +104,7 @@ int						ft_strlen_from_char(char *str, char c);
 int						ft_find_malloc_key(char *str, int i);
 int						ft_tablen(char **tab);
 char					**ft_envp_copy(char **envp);
+int						ft_isalnum_env(int c);
 
 /* expand_after_quotes.c */
 
@@ -120,7 +137,7 @@ int						check_quotes_open(char *input);
 
 /* syntax.c */
 
-int						ft_syntax(t_token *tok);
+int						ft_syntax(t_token **tok);
 int						ft_syntax_pipe(t_token *tok);
 int						ft_syntax_redir(t_token *tok);
 int						ft_syntax_word(t_token *tok);
@@ -135,6 +152,7 @@ t_token					*find_token(char *str);
 void					free_tok(t_token **tok);
 void					free_envp_cpy(char **envp_cpy);
 void					free_tok_env(t_env *my_env);
+void					free_export(t_export *lst);
 
 /* ------------------------------------------------------------------- EXEC -------------------------------------------------------------------------- */
 
@@ -173,12 +191,35 @@ int						ft_count_pipe(t_token *tok);
 /*built_ins*/
 
 int						to_builtin_or_not_to_builtin(char *cmd);
-int						lets_builtin(char **cmd, char **envp_cpy);
+int						lets_builtin(t_data *data, char **cmd, char **envp_cpy);
 char					*find_first_cmd(t_token **tok);
 int						one_built_in(char **builtin, t_data *data);
 int						ft_pwd(void);
 int						ft_cd(char **cmd, char **env_cpy);
-int						ft_env(char **envp_cpy);
+int						ft_env(t_data *data);
 int						ft_echo(char **cmd);
+
+/* export */
+
+void					ft_export(t_data *data, char **args);
+void					ft_envp_copy_export(t_data *data);
+void					print_list_export(t_export *lst);
+
+/* export_utils.c */
+
+int						check_if_key_exist_export(t_export *lst, char *key);
+void					free_key_export(void *delete);
+char					*ft_find_key_export(char *str);
+void					ft_delone_export(t_export **env, char *key);
+void					ft_stock_export(t_export **lst, t_export *new_link);
+t_export				*ft_lstnew_export(char *key, char *value);
+
+/* unset.c */
+void					ft_unset(t_data *data, char **args);
+
+/* here_doc.c */
+
+t_heredoc				*exec_here_docs(t_data *data, t_token **tok);
+void					print_list_here_doc(t_heredoc *lst);
 
 #endif

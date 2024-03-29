@@ -1,18 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lst_utils.c                                        :+:      :+:    :+:   */
+/*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/27 03:40:10 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/25 21:38:05 by kboulkri         ###   ########.fr       */
+/*   Created: 2024/03/25 04:21:27 by kboulkri          #+#    #+#             */
+/*   Updated: 2024/03/27 03:00:51 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-t_token *ft_lstlast(t_token *lst)
+int check_if_key_exist_export(t_export *lst, char *key)
+{
+    while (lst)
+    {
+        if (!ft_strncmp(lst->key, key, ft_strlen(lst->key)))
+            return (1);
+        lst = lst->next;
+    }
+    return (0);
+}
+
+t_export *ft_lstlast_export(t_export *lst)
 {
 	if (!lst)
 		return (NULL);
@@ -21,37 +32,30 @@ t_token *ft_lstlast(t_token *lst)
 	return (lst);
 }
 
-void	ft_stock(t_token **lst, t_token *new_link)
+void	ft_stock_export(t_export **lst, t_export *new_link)
 {
 	if (!lst)
 		return ;
 	if (!*lst)
 		*lst = new_link;
 	else
-		(ft_lstlast(*lst))->next = new_link;
+		(ft_lstlast_export(*lst))->next = new_link;
 }
 
-t_token	*ft_lstnew(char *content, int type)
+t_export	*ft_lstnew_export(char *key, char *value)
 {
-	t_token	*new;
+	t_export	*new;
 
 	new = malloc(sizeof(*new));
 	if (!new)
 		return (NULL);
-	new->str = content;
-    new->type = type;
+	new->key = key;
+    new->value = value;
 	new->next = NULL;
 	return (new);
 }
-void print_list(t_token *lst)
+
+void free_key_export(void *delete)
 {
-    if (!lst)
-		return ;
-    while(lst)
-    {
-        printf("string: %s\ntype = %d\n", lst->str, lst->type);
-        lst = lst->next;
-    }
-	// ft_printf("\n");
-    return ;
+    free(delete);
 }

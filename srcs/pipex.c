@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 15:43:05 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/21 19:30:42 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/29 04:36:54 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,13 @@ void	child_process(t_data *data, t_token **tok, int i)
 	char	*path;
 
 	cmd = tok_to_tab(tok, i);
-	//print_tab(cmd);
 	if (!cmd)
 		return (free_tab(cmd), exit(1));
 	if (!cmd[0])
 		return (ft_printf("minishell: cmd[0] empty, tok 2 tab failed\n"), free_tab(cmd),  free_tok(tok), free_envp_cpy(data->envp_cpy), exit(1));
 	if (to_builtin_or_not_to_builtin(cmd[0]))
 	{
-		lets_builtin(cmd, data->envp_cpy);
+		lets_builtin(data, cmd, data->envp_cpy);
 		return (free_tab(cmd), free_tok(tok), free_envp_cpy(data->envp_cpy), exit(0));
 	}
 	path = complete_path(data, cmd[0]);
@@ -72,7 +71,10 @@ int	exec_pipe(t_data *data, t_token **tok)
 {
 	int	i;
 	int	status;
+	t_heredoc *here_docs;
 
+	here_docs = exec_here_docs(data, tok);
+	print_list_here_doc(here_docs);
 	i = -1;
 	while (++i < data->nb_cmd)
 	{

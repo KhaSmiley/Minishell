@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 20:06:40 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/19 21:17:56 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/29 00:30:41 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,22 +24,33 @@ char *ft_get_new_str_for_env(char *str, t_token *tok)
 
     i = 0;
     env_str = NULL;
-	t_env *tmp_env = tok->env;
+	t_env *tmp_env;
+    
+    tmp_env = tok->env;
     while (str[i])
     {
         if (str[i] == '$' && str[i + 1] == '?')
             printf("RETURN EXIT STATUS\n");
-        else if (str[i] == '$')
+        else if (str[i] == '$' && ft_isdigit(str[i + 1]))
+            printf("can't expand digit after $\n");
+        else if (str[i] == '$' && (str[i + 1] == '\0' || !ft_isalnum(str[i + 1])))
+        {
+            add_str = ft_substr(str, i, 1);
+            env_str = ft_strjoin_gnl(env_str, add_str);
+            free(add_str);
+        }
+        else if (str[i] == '$' && tmp_env->value)
         {
             i++;
-            if (tmp_env->value[0] == '\0')
+            if (tmp_env->value && tmp_env->value[0] == '\0')
             {
-                // i--;
-                // add_str = ft_substr(str, i, 1);
+                if (tmp_env->key[0] == '\0')
+                    continue ;
                 env_str = ft_strjoin_gnl(env_str, "");
                 while (str[i] && ft_isalnum(str[i]))
                     i++;
-                // free(add_str);
+                if (str[i] == '$')
+                    i--;
             }
             else if (tmp_env->value)
             {

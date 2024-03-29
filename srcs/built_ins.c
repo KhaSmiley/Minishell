@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_ins.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 00:49:03 by lbarry            #+#    #+#             */
-/*   Updated: 2024/03/23 01:06:11 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/29 01:11:39 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,9 @@ int	one_built_in(char **builtin, t_data *data)
 	// 	printf("one builtin cmd[%d] = %s\n", i, builtin[i]);
 	// 	i++;
 	// }
-	lets_builtin(builtin, data->envp_cpy);
+	lets_builtin(data, builtin, data->envp_cpy);
+	if (ft_strcmp(builtin[0], "unset") == 0)
+		return (free(builtin[0]), 0);
 	free_tab(builtin);
 	return (0);
 }
@@ -42,18 +44,22 @@ int	one_built_in(char **builtin, t_data *data)
 int	to_builtin_or_not_to_builtin(char *cmd)
 {
 	//printf("checking if cmd[0] is builtin = %s\n", cmd);
-	if (!ft_strncmp(cmd, "pwd", 3))
+	if (!ft_strcmp(cmd, "pwd"))
 		return(1);
-	else if (!ft_strncmp(cmd, "cd", 2))
+	else if (!ft_strcmp(cmd, "cd"))
 		return(1);
-	else if (!ft_strncmp(cmd, "env", 3))
+	else if (!ft_strcmp(cmd, "env"))
 		return(1);
-	else if (!ft_strncmp(cmd, "echo", 4))
+	else if (!ft_strcmp(cmd, "echo"))
+		return(1);
+	else if (!ft_strcmp(cmd, "export"))
+		return(1);
+	else if (!ft_strcmp(cmd, "unset"))
 		return(1);
 	return (0);
 }
 
-int	lets_builtin(char **cmd, char **envp_cpy)
+int	lets_builtin(t_data *data, char **cmd, char **envp_cpy)
 {
 	//printf("lets builtin = %s\n", cmd[0]);
 	if (!ft_strncmp(cmd[0], "pwd", 3))
@@ -61,9 +67,13 @@ int	lets_builtin(char **cmd, char **envp_cpy)
 	else if (!ft_strncmp(cmd[0], "cd", 2))
 		return(ft_cd(cmd, envp_cpy), 1);
 	else if (!ft_strncmp(cmd[0], "env", 3))
-		return(ft_env(envp_cpy), 1);
+		return(ft_env(data), 1);
 	else if (!ft_strncmp(cmd[0], "echo", 4))
 		return(ft_echo(cmd), 1);
+	else if (!ft_strncmp(cmd[0], "export", 6))
+		return(ft_export(data, cmd) ,1);
+	else if (!ft_strncmp(cmd[0], "unset", 6))
+		return(ft_unset(data, cmd) ,1);
 	return (0);
 }
 
@@ -118,9 +128,9 @@ int	ft_cd(char **cmd, char **envp_cpy)
 	return (1);
 }
 
-int	ft_env(char **envp_cpy)
+int	ft_env(t_data *data)
 {
-	print_tab(envp_cpy);
+	print_list_export(data->env_export);
 	return (1);
 }
 
@@ -140,7 +150,7 @@ int	check_echo_option(char **args)
 				j++;
 			if (args[i][j] != 'n')
 				return (i - 1);
-			if (args[i][j + 1] != 'n' && args[i][j + 1] != '\0' && args[i][j + 1] != ' ')
+			if (args[i][j + 1] != 'n' && args[i][j + 1] != '\0' && (args[i][j + 1] != ' ' || args[i][j + 1] != '\t'))
 				return (i - 1);
 			while (args[i][j] == 'n')
 			{
