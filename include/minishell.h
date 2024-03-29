@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/21 19:53:53 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/29 06:11:37 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ typedef struct s_data
 	int					argc;
 	int					count_tab;
 	int					nb_cmd;
+	int					outfile_fd;
+	int					infile_fd;
 	int					pid[1024];
 	int					pipe_fd[2];
 
