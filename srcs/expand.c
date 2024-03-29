@@ -6,19 +6,19 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 05:31:16 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/19 21:15:37 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/26 04:33:53 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int ft_stock_key_and_value_env(t_token *tok, char *str, int *count, char **envp_cpy)
+int ft_stock_key_and_value_env(t_token *tok, char *str, int *count, t_export *env)
 {
 	char	*key;
 	char	*value;
 
 	key = ft_find_key(str, (*count));
-	value = ft_find_value(key, envp_cpy);
+	value = ft_find_value(key, env);
 	ft_stock_env(&tok->env, ft_lstnew_env(key, value));
 	if (!tok->env)
 		return (1);
@@ -38,27 +38,24 @@ void	check_quotes_for_env(char *quote_char, char *word, int i_word)
 		*quote_char = '\0';
 }
 
-char	*ft_find_value(char *key, char **envp_cpy)
+char	*ft_find_value(char *key, t_export *env)
 {
 	int		i;
 	char	*stock;
+	t_export *tmp;
 
 	i = 0;
-	while (envp_cpy[i])
+	tmp = env;
+	while (tmp)
 	{
-		if (ft_strncmp(envp_cpy[i], key, ft_strlen(key)) == 0)
+		if (ft_strcmp(tmp->key, key) == 0)
 		{
-			if (envp_cpy[i][ft_strlen(key)] == '=')
-			{
-				stock = ft_substr(envp_cpy[i], ft_strlen_from_char(envp_cpy[i],
-							'=') + 1, ft_strlen(envp_cpy[i]) - ft_strlen(key)
-						- 1);
-				if (!stock)
-					return (NULL);
-				return (stock);
-			}
+			stock = ft_strdup(tmp->value);
+			if (!stock)
+				return (NULL);
+			return (stock);
 		}
-		i++;
+		tmp = tmp->next;
 	}
 	return (ft_strdup(""));
 }
@@ -66,7 +63,7 @@ char	*ft_find_value(char *key, char **envp_cpy)
 // Trying to create a new env list with the key and value found for each word with $ in it
 // so i can use it later to replace the word with the value if necessary (quote handling)
 
-int	ft_create_env(t_token *tok, char *str, char **envp_cpy)
+int	ft_create_env(t_token *tok, char *str, t_export *env)
 {
 	int		count;
 	char	flag_quote;
@@ -85,7 +82,7 @@ int	ft_create_env(t_token *tok, char *str, char **envp_cpy)
 				ft_stock_env(&tok->env, ft_lstnew_env(NULL, NULL));
 			else
 			{
-				ft_stock_key_and_value_env(tok, str, &count, envp_cpy);
+				ft_stock_key_and_value_env(tok, str, &count, env);
 			}
 		}
 		i++;
@@ -97,7 +94,7 @@ int	ft_create_env(t_token *tok, char *str, char **envp_cpy)
 // the reason i wanna do it before deleting quotes is
 // echo test"$USER"test the value to expend is USER but becomes USERTEST without quotes)
 
-void	ft_expand_str(t_token *tok, char **envp_cpy)
+void	ft_expand_str(t_token *tok, t_data *data)
 {
 	if (!tok)
 		return ;
@@ -108,7 +105,7 @@ void	ft_expand_str(t_token *tok, char **envp_cpy)
 		{
 			if (ft_strchr(tok->str, '$'))
 			{
-				ft_create_env(tok, tok->str, envp_cpy);
+				ft_create_env(tok, tok->str, data->env_export);
 			}
 		}
 		tok = tok->next;

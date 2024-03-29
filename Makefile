@@ -22,7 +22,11 @@ SRCS_NAMES		=	minishell.c \
 					tok_to_tab.c \
 					utils_exec_two.c \
 					utils_exec.c \
-					built_ins.c
+					built_ins.c \
+					export.c \
+					unset.c \
+					export_utils.c \
+					here_docs.c \
 
 OBJS_NAMES		=	${SRCS_NAMES:.c=.o}
 
@@ -47,7 +51,7 @@ all:	${NAME}
 $(NAME): $(DIR_OBJS) $(OBJS)
 	make -C libft
 	$(CC) $(CFLAGS) ${INC} $(CDFLAGS) $(OBJS) $(LIB) -lreadline -o $(NAME)
-	@ echo "Merci Laura pour les travaux"  | toilet -f future -F border --gay
+	@ echo "Khalid protect ur mallocs mon reuf"  | toilet -f future -F border --gay
 
 
 $(OBJS) : $(DIR_OBJS)/%.o : $(DIR_SRCS)/%.c

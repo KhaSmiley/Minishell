@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:38 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/15 22:09:58 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/29 04:45:44 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,15 +77,14 @@ int ft_syntax_word(t_token *tok)
     return (0);
 }
 
-int ft_syntax(t_token *tok)
+int ft_syntax(t_token **tok)
 {
     t_token *tmp;
 
     int error;
-    tmp = tok;
+    tmp = *tok;
 	// double check how to handle empty input later
-	if (!tmp)
-	 	return (ft_printf("empty quotes = \\n\n"), -1);
+
 	if ((tmp->type == GREATER || tmp->type == LESS || tmp->type == DGREATER || tmp->type == DLESS))
     {
         if (tmp->next == NULL)
