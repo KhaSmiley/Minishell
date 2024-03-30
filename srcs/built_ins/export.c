@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 15:13:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/29 00:34:30 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/30 04:32:42 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,14 @@ void	ft_delone_export(t_export **env, char *key)
 {
 	t_export *tmp;
 	t_export *prev;
-	
+
 	prev = *env;
 	if (env && !ft_strcmp((*env)->key, key))
 	{
 		tmp = (*env);
 		(*env) = (*env)->next;
-		free(tmp->key);	
-		free(tmp->value);	
+		free(tmp->key);
+		free(tmp->value);
 		free(tmp);
 		free(key);
 		return ;
@@ -110,6 +110,7 @@ void ft_export(t_data *data, char **args)
 	int i;
 	i = 1;
 
+	ft_envp_copy_export(data);
 	while(args[i])
 	{
 		if (ft_check_syntax_key(args[i]))

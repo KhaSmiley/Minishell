@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_docs.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 05:04:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/29 04:10:23 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/30 01:53:09 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	ft_stock_here_doc(t_heredoc **lst, t_heredoc *new_link)
 	else
 		(ft_lstlast_here_doc(*lst))->next = new_link;
 }
+
 void print_list_here_doc(t_heredoc *lst)
 {
     if (!lst)

@@ -6,12 +6,24 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 15:43:05 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/29 23:47:24 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/30 04:39:07 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
+void	quit_file_error(int fd, t_token *tok, t_data *data)
+{
+	fprintf(stderr, "%d -> Error FD\n", fd);
+	free_tok(&tok);
+	free_envp_cpy(data->envp_cpy);
+	if (data->builtin)
+		free_tab(data->builtin);
+	if (data->cmd)
+		free_tab(data->cmd);
+	close_fds(data);
+	exit(0);
+}
 void	close_fds(t_data *data)
 {
 	if (data->tmp_fd > 0)
@@ -22,54 +34,37 @@ void	close_fds(t_data *data)
 		close(data->pipe_fd[1]);
 }
 
-void redir_files(t_token *tok, int i)
+void	redir_files(t_token *tok, int i, t_data *data)
 {
-	int fd;
-	int nb_pipe;
-	t_token *tmp;
+	int		fd;
+	int		nb_pipe;
+	t_token	*tmp;
 
 	tmp = tok;
 	nb_pipe = 0;
+	fd = -2;
 	while (tmp)
 	{
-		fprintf(stderr, "JE SUIS LA STRING %s\n", tmp->str);
 		if (nb_pipe == i)
 			break ;
 		if (tmp->type == PIPE)
 			nb_pipe++;
 		tmp = tmp->next;
 	}
-	fprintf(stderr, "NB PIPE = %d\n", nb_pipe);
 	while(tmp && tmp->type != PIPE)
 	{
 		if (tmp->type == GREATER)
-		{
 			fd = open(tmp->next->str, O_CREAT | O_RDWR | O_TRUNC, 0666);
-			fprintf(stderr, "FD GREATER -> %d and str %s\n", fd, tmp->next->str);
-		}
 		else if (tmp->type == DGREATER)
-		{
 			fd = open(tmp->next->str, O_CREAT | O_RDWR | O_APPEND, 0666);
-			fprintf(stderr,"FD DGREATER -> %d\n", fd);
-		}
 		else if (tmp->type == LESS)
-		{
 			fd = open(tmp->next->str, O_RDONLY);
-			fprintf(stderr, "FD LESS -> %d\n", fd);
-		}
 		if (fd == -1)
-		{
-			fprintf(stderr, "%d -> Error FD\n", fd);
-			exit(0);
-		}
+			quit_file_error(fd, tok, data);
 		if (tmp->type == GREATER || tmp->type == DGREATER)
-		{
 			dup2(fd, STDOUT_FILENO);
-		}
 		else if (tmp->type == LESS)
-		{
 			dup2(fd, STDIN_FILENO);
-		}
 		tmp = tmp->next;
 	}
 }
@@ -85,31 +80,30 @@ void	redirection(t_data *data, t_token *tok, int i)
 		dup2(data->pipe_fd[1], 1);
 	close(data->pipe_fd[0]);
 	close(data->pipe_fd[1]);
-	redir_files(tok, i);
+	redir_files(tok, i, data);
 }
 
 void	child_process(t_data *data, t_token **tok, int i)
 {
-	char	**cmd;
 	char	*path;
 
-	cmd = tok_to_tab(tok, i);
-	if (!cmd)
-		return (free_tab(cmd), exit(1));
-	if (!cmd[0])
-		return (ft_printf("minishell: cmd[0] empty, tok 2 tab failed\n"), free_tab(cmd),  free_tok(tok), free_envp_cpy(data->envp_cpy), exit(1));
-	if (to_builtin_or_not_to_builtin(cmd[0]))
-	{
-		lets_builtin(data, cmd, data->envp_cpy);
-		return (free_tab(cmd), free_tok(tok), free_envp_cpy(data->envp_cpy), exit(0));
-	}
-	path = complete_path(data, cmd[0]);
-	if (!path)
-		return (ft_printf("minishell: %s: command path not found\n", cmd[0]), free_tab(cmd), free_tok(tok), free_envp_cpy(data->envp_cpy), exit(1));
+	data->cmd = tok_to_tab(tok, i);
+	if (!data->cmd)
+		return (free_tab(data->cmd), exit(1));
+	if (!data->cmd[0])
+		return (ft_printf("minishell: cmd[0] empty, tok 2 tab failed\n"), free_tab(data->cmd),  free_tok(tok), free_envp_cpy(data->envp_cpy), exit(1));
 	redirection(data, *tok, i);
+	if (to_builtin_or_not_to_builtin(data->cmd[0]))
+	{
+		lets_builtin(data, data->cmd, data->envp_cpy);
+		return (free_tab(data->cmd), free_tok(tok), free_envp_cpy(data->envp_cpy), exit(0));
+	}
+	path = complete_path(data, data->cmd[0]);
+	if (!path)
+		return (ft_printf("minishell: %s: command path not found\n", data->cmd[0]), free_tab(data->cmd), free_tok(tok), free_envp_cpy(data->envp_cpy), exit(1));
 	if (path)
-		execve(path, cmd, data->envp_cpy);
-	return (free_tab(cmd), free(path), free_tok(tok), free_envp_cpy(data->envp_cpy), exit(0));
+		execve(path, data->cmd, data->envp_cpy);
+	return (free_tab(data->cmd), free(path), free_tok(tok), free_envp_cpy(data->envp_cpy), exit(0));
 }
 
 void	parent_process(t_data *data, int i)

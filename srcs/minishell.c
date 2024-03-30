@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/29 23:15:22 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/30 04:29:41 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	tok = NULL;
 	data.envp_cpy = ft_envp_copy(envp);
-	ft_envp_copy_export(&data);
 	while (1)
 	{
 		input = readline("> ");
@@ -59,7 +58,7 @@ int	main(int argc, char **argv, char **envp)
 		init_data(argc, &data, tok);
 		if (data.nb_cmd == 1 && (to_builtin_or_not_to_builtin(find_first_cmd(&tok))))
 		{
-			one_built_in((tok_to_tab(&tok, 0)), &data);
+			one_built_in((tok_to_tab(&tok, 0)), tok, &data);
 			free_tok(&tok);
 			free(input);
 			continue ;

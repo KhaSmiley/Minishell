@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 06:00:30 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/29 01:05:53 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/30 04:32:13 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ void	ft_delone_unset(t_export **env, char *key)
 	{
 		tmp = (*env);
 		(*env) = (*env)->next;
-		free(tmp->key);	
-		free(tmp->value);	
+		free(tmp->key);
+		free(tmp->value);
 		free(tmp);
 		free(key);
 		return ;
@@ -47,16 +47,17 @@ void	ft_delone_unset(t_export **env, char *key)
 
 void ft_unset(t_data *data, char **args)
 {
-    int i;
-	
+	int i;
+
+	ft_envp_copy_export(data);
 	i = 1;
 	if (!args[i])
 		return ;
 	if (!data->env_export)
 		return ;
-    while (args[i])   
-    {
-        ft_delone_unset(&data->env_export, args[i]);
-        i++;
-    }
+	while (args[i])
+	{
+		ft_delone_unset(&data->env_export, args[i]);
+		i++;
+	}
 }
