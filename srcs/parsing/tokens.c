@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 01:06:11 by lbarry            #+#    #+#             */
-/*   Updated: 2024/03/20 14:10:12 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/29 04:27:12 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int word_size(char *str, int i)
     int j;
 
     j = 0;
-    while(str[i] != ' ' && str[i] != '>' && str[i] != '<' && str[i] != '|' && str[i] != '\0')
+    while(str[i] != ' ' && str[i] != '\t' && str[i] != '>' && str[i] != '<' && str[i] != '|' && str[i] != '\0')
     {
         j++;
         i++;
@@ -97,7 +97,7 @@ t_token    *find_token(char *str)
 			word[1] = '\0';
             ft_stock(&tok, ft_lstnew(word, ft_tokenizer(word)));
 		}
-        else if (str[i] == ' ')
+        else if (str[i] == ' ' || str[i] == '\t')
             ft_tokenizer(" ");
         else
         {
@@ -113,6 +113,5 @@ t_token    *find_token(char *str)
         }
         i++;
     }
-    ft_syntax(tok);
 	return (tok);
 }

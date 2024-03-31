@@ -6,35 +6,13 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 00:49:03 by lbarry            #+#    #+#             */
-/*   Updated: 2024/03/29 01:03:52 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/31 01:52:20 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	to_builtin_or_not_to_builtin(char *cmd)
-{
-	if (!cmd)
-		return (0);
-	//printf("checking if cmd[0] is builtin = %s\n", cmd);
-	if (!ft_strncmp(cmd, "pwd", 3))
-		return(1);
-	else if (!ft_strncmp(cmd, "cd", 2))
-		return(1);
-	else if (!ft_strncmp(cmd, "env", 3))
-		return(1);
-	else if (!ft_strncmp(cmd, "echo", 4))
-		return(1);
-	// else if (!ft_strncmp(cmd, "export", 6))
-	// 	return(1);
-	// else if (!ft_strncmp(cmd, "unset", 5))
-	// 	return(1);
-	else if (!ft_strncmp(cmd, "exit", 4))
-		return(1);
-	return (0);
-}
-
-int	lets_builtin(char **cmd, char **envp_cpy, t_token **tok)
+int	lets_builtin(t_data *data, char **cmd, char **envp_cpy)
 {
 	if (!cmd[0])
 		return (0);
@@ -44,25 +22,14 @@ int	lets_builtin(char **cmd, char **envp_cpy, t_token **tok)
 	else if (!ft_strncmp(cmd[0], "cd", 2))
 		return(ft_cd(cmd, envp_cpy), 1);
 	else if (!ft_strncmp(cmd[0], "env", 3))
-		return(ft_env(envp_cpy), 1);
+		return(ft_env(data), 1);
 	else if (!ft_strncmp(cmd[0], "echo", 4))
 		return(ft_echo(cmd), 1);
-	// else if (!ft_strncmp(cmd[0], "export", 6))
-	// 	return(ft_export(cmd, envp_cpy), 1);
-	// else if (!ft_strncmp(cmd[0], "unset", 5))
-	// 	return(ft_unset(cmd, envp_cpy), 1);
-	else if (!ft_strncmp(cmd[0], "exit", 4))
-		return(ft_exit(cmd, envp_cpy, tok), 1);
+	else if (!ft_strncmp(cmd[0], "export", 6))
+		return(ft_export(data, cmd) , 1);
+	else if (!ft_strncmp(cmd[0], "unset", 6))
+		return(ft_unset(data, cmd) ,1);
 	return (0);
-}
-
-void	ft_exit(char **cmd, char **envp_cpy, t_token **tok)
-{
-	free_tab(envp_cpy);
-	free_tab(cmd);
-	free_tok(tok);
-	rl_clear_history();
-	exit(0);
 }
 
 int	ft_pwd(void)
@@ -102,9 +69,10 @@ int	ft_cd(char **cmd, char **envp_cpy)
 	return (1);
 }
 
-int	ft_env(char **envp_cpy)
+int	ft_env(t_data *data)
 {
-	print_tab(envp_cpy);
+	ft_envp_copy_export(data);
+	print_list_export(data->env_export);
 	return (1);
 }
 
