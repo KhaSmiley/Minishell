@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/30 04:37:16 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/31 06:17:41 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ typedef struct s_data
 # include <sys/wait.h>
 # include <unistd.h>
 
+char					**ft_envp_copy_to_tab(t_data *data);
+
 /* expand.c */
 
 char					*ft_find_value(char *key, t_export *env);
@@ -152,7 +154,6 @@ t_token					*find_token(char *str);
 /* memory.c */
 
 void					free_tok(t_token **tok);
-void					free_envp_cpy(char **envp_cpy);
 void					free_tok_env(t_env *my_env);
 void					free_export(t_export *lst);
 
@@ -165,13 +166,16 @@ void					print_tab(char **tab);
 
 /* pipex.c */
 
-void					child_process(t_data *data, t_token **tok, int i);
+void					child_process(t_data *data, t_token **tok,
+							t_heredoc *h_docs, int i);
 int						exec_pipe(t_data *data, t_token **tok);
-void					redirection(t_data *data, t_token *tok, int i);
-void					redir_files(t_token *tok, int i, t_data *data);
+void					redirection(t_data *data, t_token *tok,
+							t_heredoc *h_docs, int i);
+void					redir_files(t_token *tok, int i, t_data *data,
+							t_heredoc *h_docs);
 void					parent_process(t_data *data, int i);
 void					close_fds(t_data *data);
-void					reset_std_fd();
+void					reset_std_fd(void);
 
 /* utils_exec_two.c */
 
@@ -181,7 +185,7 @@ int						open_fd(t_data *data, int i);
 
 /* utils_exec.c */
 
-char					*find_envp_path(char **envp);
+char					*find_envp_path(t_export *env);
 char					**split_path(t_data *data);
 char					*complete_path(t_data *data, char *cmd);
 void					init_data(int argc, t_data *data, t_token *tok);
@@ -194,9 +198,9 @@ int						ft_count_pipe(t_token *tok);
 
 /*built_ins*/
 
-int						lets_builtin(t_data *data, char **cmd, char **envp_cpy);
+int						lets_builtin(t_data *data, char **cmd);
 int						ft_pwd(void);
-int						ft_cd(char **cmd, char **env_cpy);
+int						ft_cd(char **cmd, t_data *data);
 int						ft_env(t_data *data);
 int						ft_echo(char **cmd);
 
@@ -204,14 +208,14 @@ int						ft_echo(char **cmd);
 
 int						to_builtin_or_not_to_builtin(char *cmd);
 char					*find_first_cmd(t_token **tok);
-int						one_built_in(char **builtin, t_token *tok, t_data *data);
-char					*get_home_env(char **envp_cpy);
+int						one_built_in(char **builtin, t_data *data);
+char					*get_home_env(t_export *env);
 int						check_echo_option(char **args);
 
 /* export */
 
 void					ft_export(t_data *data, char **args);
-void					ft_envp_copy_export(t_data *data);
+void					ft_envp_copy_export(t_data *data, char **envp);
 void					print_list_export(t_export *lst);
 
 /* export_utils.c */
@@ -230,5 +234,6 @@ void					ft_unset(t_data *data, char **args);
 
 t_heredoc				*exec_here_docs(t_data *data, t_token **tok);
 void					print_list_here_doc(t_heredoc *lst);
+void					close_heredocs(t_heredoc *h_doc);
 
 #endif

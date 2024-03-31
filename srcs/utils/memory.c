@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 21:55:28 by lbarry            #+#    #+#             */
-/*   Updated: 2024/03/27 02:46:08 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/03/31 03:24:03 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,6 @@ void	free_tok_env(t_env *my_env)
 	}
 }
 
-void	free_envp_cpy(char **envp_cpy)
-{
-	int	i;
-
-	i = 0;
-	if (!envp_cpy)
-		return ;
-	while (envp_cpy[i])
-	{
-		free(envp_cpy[i]);
-		i++;
-	}
-	free(envp_cpy);
-}
 
 void	free_tok(t_token **tok)
 {

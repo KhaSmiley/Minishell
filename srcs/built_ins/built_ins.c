@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   built_ins.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 00:49:03 by lbarry            #+#    #+#             */
-/*   Updated: 2024/03/30 04:32:33 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/31 04:36:59 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	lets_builtin(t_data *data, char **cmd, char **envp_cpy)
+int	lets_builtin(t_data *data, char **cmd)
 {
 	if (!cmd[0])
 		return (0);
@@ -20,7 +20,7 @@ int	lets_builtin(t_data *data, char **cmd, char **envp_cpy)
 	if (!ft_strncmp(cmd[0], "pwd", 3))
 		return(ft_pwd(), 1);
 	else if (!ft_strncmp(cmd[0], "cd", 2))
-		return(ft_cd(cmd, envp_cpy), 1);
+		return(ft_cd(cmd, data), 1);
 	else if (!ft_strncmp(cmd[0], "env", 3))
 		return(ft_env(data), 1);
 	else if (!ft_strncmp(cmd[0], "echo", 4))
@@ -47,14 +47,14 @@ int	ft_pwd(void)
 	return (1);
 }
 
-int	ft_cd(char **cmd, char **envp_cpy)
+int	ft_cd(char **cmd, t_data *data)
 {
 	int		ret;
 	char	*path;
 
 	if (cmd[1] == NULL)
 	{
-		path = get_home_env(envp_cpy);
+		path = get_home_env(data->env_export);
 		if (!path)
 			return (printf("cd no args, HOME not found\n"), 0);
 	}
@@ -71,7 +71,6 @@ int	ft_cd(char **cmd, char **envp_cpy)
 
 int	ft_env(t_data *data)
 {
-	ft_envp_copy_export(data);
 	print_list_export(data->env_export);
 	return (1);
 }
