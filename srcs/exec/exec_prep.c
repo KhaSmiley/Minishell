@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tok_to_tab.c                                       :+:      :+:    :+:   */
+/*   exec_prep.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 01:46:52 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/30 01:52:22 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/31 03:16:00 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,6 @@ char **tok_to_tab(t_token **tok, int nb_pipe)
     while (tmp && tmp->type != PIPE)
     {
 		if (tmp->type == GREATER || tmp->type == LESS || tmp->type == DGREATER)
-		{
-			tmp = tmp->next;
-			tmp = tmp->next;
-			continue ;
-		}
-		if (tmp->type == DGREATER)
 		{
 			tmp = tmp->next;
 			tmp = tmp->next;
