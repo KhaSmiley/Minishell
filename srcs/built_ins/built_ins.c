@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 00:49:03 by lbarry            #+#    #+#             */
-/*   Updated: 2024/03/31 01:52:20 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/01 20:03:06 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,18 @@ int	lets_builtin(t_data *data, char **cmd, char **envp_cpy)
 {
 	if (!cmd[0])
 		return (0);
-	//printf("lets builtin = %s\n", cmd[0]);
 	if (!ft_strncmp(cmd[0], "pwd", 3))
-		return(ft_pwd(), 1);
+		return (ft_pwd(), 1);
 	else if (!ft_strncmp(cmd[0], "cd", 2))
-		return(ft_cd(cmd, envp_cpy), 1);
+		return (ft_cd(cmd, envp_cpy), 1);
 	else if (!ft_strncmp(cmd[0], "env", 3))
-		return(ft_env(data), 1);
+		return (ft_env(data), 1);
 	else if (!ft_strncmp(cmd[0], "echo", 4))
-		return(ft_echo(cmd), 1);
+		return (ft_echo(cmd), 1);
 	else if (!ft_strncmp(cmd[0], "export", 6))
-		return(ft_export(data, cmd) , 1);
+		return (ft_export(data, cmd), 1);
 	else if (!ft_strncmp(cmd[0], "unset", 6))
-		return(ft_unset(data, cmd) ,1);
+		return (ft_unset(data, cmd), 1);
 	return (0);
 }
 
@@ -84,8 +83,7 @@ int	ft_echo(char **cmd)
 
 	i = 1;
 	num_args = 1;
-	no_line = check_echo_option(cmd);
-	//printf("no line count: %d\n", no_line);
+	no_line = check_echo_option(cmd, 0, 0);
 	if (!cmd[i] && !no_line)
 	{
 		printf("\n");
