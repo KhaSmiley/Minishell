@@ -3,30 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/01 20:56:59 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/02 00:26:29 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	parsing_and_stock_input(char *input, t_token **tok, t_data *data)
-{
-	t_token	*tmp;
+int	sig_return;
 
-	tmp = *tok;
-	if (!manage_quote_errors(input))
-		return (1);
-	tmp = find_token(input);
-    if (ft_syntax(&tmp))
-		return (1);
-	ft_expand_str(tmp, data);
-	fix_quotes_token(tmp);
-	find_str_to_expand(&tmp);
-	*tok = tmp;
-	return (0);
+// handle ctrl C SIGINT with sigaction
+void	ctrl_c(int signum)
+{
+	(void)signum;
+	write(1, "\n", 1);
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
+	sig_return = 130;
+}
+
+void	handle_signals(void)
+{
+	struct sigaction	sa;
+
+	sa.sa_handler = &(ctrl_c);
+	sa.sa_flags = 0;
+	sigaction(SIGINT, &sa, NULL);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -40,7 +45,8 @@ int	main(int argc, char **argv, char **envp)
 	ft_envp_copy_export(&data, envp);
 	while (1)
 	{
-		input = readline("> ");
+		handle_signals();
+		input = readline("baznboul> ");
 		if (!input)
 			break ;
 		if (!*input)
@@ -60,6 +66,7 @@ int	main(int argc, char **argv, char **envp)
 			free(input);
 			continue ;
 		}
+		printf("last sig_return: %d\n", sig_return);
 		exec_pipe(&data, &tok);
 		free(input);
 		free_tok(&tok);
@@ -68,5 +75,6 @@ int	main(int argc, char **argv, char **envp)
 	free_export(data.env_export);
 	free_tok(&tok);
 	rl_clear_history();
+	printf("last sig_return: %d\n", sig_return);
 	return (0);
 }

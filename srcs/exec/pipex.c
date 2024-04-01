@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 15:43:05 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/01 20:57:43 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/02 00:20:55 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,7 @@ int	exec_pipe(t_data *data, t_token **tok)
 	t_heredoc *here_docs;
 
 	here_docs = exec_here_docs(data, tok);
-	print_list_here_doc(here_docs);
+	//print_list_here_doc(here_docs);
 	i = -1;
 	while (++i < data->nb_cmd)
 	{

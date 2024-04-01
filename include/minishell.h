@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/01 20:56:16 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/02 00:27:45 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <string.h>
 # include <sys/wait.h>
 # include <unistd.h>
+# include <signal.h>
 
 typedef struct s_token
 {
@@ -165,6 +166,7 @@ int						check_quotes_open(char *input);
 
 /* syntax.c */
 
+int						parsing_and_stock_input(char *input, t_token **tok, t_data *data);
 int						ft_syntax(t_token **tok);
 int						ft_syntax_pipe(t_token *tok);
 int						ft_syntax_redir(t_token *tok);

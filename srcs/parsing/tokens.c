@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokens.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 01:06:11 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/01 19:43:04 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/02 00:21:25 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int ft_find_end(char *str, char flag_quotes, int i)
         {
             stop = i;
             break ;
-        }    
+        }
     }
     return(stop);
 }
@@ -133,7 +133,7 @@ t_token    *find_token(char *str)
                 word[j] = '\0';
                 ft_stock(&tok, ft_lstnew(word, ft_tokenizer(word)));
                 i--;
-            } 
+            }
         }
         else
         {
@@ -154,6 +154,6 @@ t_token    *find_token(char *str)
         }
         i++;
     }
-    print_list(tok);
+    //print_list(tok);
 	return (tok);
 }
