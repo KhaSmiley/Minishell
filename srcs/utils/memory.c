@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   memory.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 21:55:28 by lbarry            #+#    #+#             */
-/*   Updated: 2024/03/19 02:26:25 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/01 19:28:58 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	free_envp_cpy(char **envp_cpy)
 void	free_tok(t_token **tok)
 {
 	t_token	*tmp;
+
 	if (!*tok || !tok)
 		return ;
 	while (*tok)
@@ -57,5 +58,19 @@ void	free_tok(t_token **tok)
 		free_tok_env(tmp->env);
 		free(tmp);
 		tmp = NULL;
+	}
+}
+
+void	free_export(t_export *lst)
+{
+	t_export	*tmp;
+
+	while (lst)
+	{
+		tmp = lst;
+		lst = lst->next;
+		free(tmp->key);
+		free(tmp->value);
+		free(tmp);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/21 19:56:31 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/31 03:03:47 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,11 @@ int	parsing_and_stock_input(char *input, t_token **tok, t_data *data)
 
 	tmp = *tok;
 	if (!manage_quote_errors(input))
-	{
-		printf("quitting quote error\n");
 		return (1);
-	}
 	tmp = find_token(input);
-	//print_list(tmp);
-	ft_expand_str(tmp, data->envp_cpy);
+    if (ft_syntax(&tmp))
+		return (1);
+	ft_expand_str(tmp, data);
 	fix_quotes_token(tmp);
 	find_str_to_expand(&tmp);
 	*tok = tmp;
@@ -50,13 +48,14 @@ int	main(int argc, char **argv, char **envp)
 		add_history(input);
 		if (parsing_and_stock_input(input, &tok, &data))
 		{
+			printf("ERROR\n");
 			free(input);
 			continue ;
 		}
 		init_data(argc, &data, tok);
 		if (data.nb_cmd == 1 && (to_builtin_or_not_to_builtin(find_first_cmd(&tok))))
 		{
-			one_built_in((tok_to_tab(&tok, 0)), &data);
+			one_built_in((tok_to_tab(&tok, 0)), tok, &data);
 			free_tok(&tok);
 			free(input);
 			continue ;
@@ -66,7 +65,9 @@ int	main(int argc, char **argv, char **envp)
 		free_tok(&tok);
 	}
 	close(data.pipe_fd[0]);
+	free_export(data.env_export);
 	free_tok(&tok);
 	free_envp_cpy(data.envp_cpy);
+	rl_clear_history();
 	return (0);
 }

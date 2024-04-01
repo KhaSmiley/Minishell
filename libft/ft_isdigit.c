@@ -1,38 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tab_utils.c                                        :+:      :+:    :+:   */
+/*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/28 21:23:47 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/21 19:53:48 by lbarry           ###   ########.fr       */
+/*   Created: 2024/03/28 23:42:16 by kboulkri          #+#    #+#             */
+/*   Updated: 2024/03/28 23:44:49 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "libft.h"
 
-void	free_tab(char **tab)
+int	ft_isdigit(int c)
 {
-	int	i;
-
-	i = 0;
-	while (tab[i] != NULL)
+	if (c >= '0' && c <= '9')
 	{
-		free(tab[i]);
-		i++;
+		return (1);
 	}
-	free(tab);
-}
-
-void	print_tab(char **tab)
-{
-	int i;
-
-	i = 0;
-	while (tab[i])
-	{
-		printf("%s\n", tab[i]);
-		i++;
-	}
+	return (0);
 }

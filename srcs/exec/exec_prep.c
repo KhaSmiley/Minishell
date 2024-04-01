@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tok_to_tab.c                                       :+:      :+:    :+:   */
+/*   exec_prep.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 01:46:52 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/21 19:17:10 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/31 03:16:00 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,12 @@ char **tok_to_tab(t_token **tok, int nb_pipe)
     }
     while (tmp && tmp->type != PIPE)
     {
+		if (tmp->type == GREATER || tmp->type == LESS || tmp->type == DGREATER)
+		{
+			tmp = tmp->next;
+			tmp = tmp->next;
+			continue ;
+		}
         if (tmp->type == WORD)
         {
             if (tmp->next && tmp->str[0] == '\0')
@@ -72,11 +78,6 @@ char **tok_to_tab(t_token **tok, int nb_pipe)
         tmp = tmp->next;
     }
     tab[i] = NULL;
-	// i = 0;
-	// while (tab[i])
-	// {
-	// 	printf("tab[%d] = %s\n", i, tab[i]);
-	// 	i++;
-	// }
     return (tab);
 }
+
