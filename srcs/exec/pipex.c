@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 15:43:05 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/31 04:05:24 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/01 19:17:30 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void	redir_files(t_token *tok, int i, t_data *data)
 			dup2(fd, STDIN_FILENO);
 		tmp = tmp->next;
 	}
+	close(fd);
 }
 
 void	redirection(t_data *data, int i)

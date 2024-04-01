@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   lst_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 03:40:10 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/25 21:38:05 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/01 19:28:06 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-t_token *ft_lstlast(t_token *lst)
+t_token	*ft_lstlast(t_token *lst)
 {
 	if (!lst)
 		return (NULL);
@@ -39,19 +39,19 @@ t_token	*ft_lstnew(char *content, int type)
 	if (!new)
 		return (NULL);
 	new->str = content;
-    new->type = type;
+	new->type = type;
 	new->next = NULL;
 	return (new);
 }
-void print_list(t_token *lst)
+
+void	print_list(t_token *lst)
 {
-    if (!lst)
+	if (!lst)
 		return ;
-    while(lst)
-    {
-        printf("string: %s\ntype = %d\n", lst->str, lst->type);
-        lst = lst->next;
-    }
-	// ft_printf("\n");
-    return ;
+	while (lst)
+	{
+		printf("string: %s\ntype = %d\n", lst->str, lst->type);
+		lst = lst->next;
+	}
+	return ;
 }
