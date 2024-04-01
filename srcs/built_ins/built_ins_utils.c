@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_ins_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 03:45:20 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/01 20:03:42 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/01 20:41:01 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	*find_first_cmd(t_token **tok)
 	return (NULL);
 }
 
-int	one_built_in(char **builtin, t_token *tok, t_data *data)
+int	one_built_in(char **builtin, t_data *data)
 {
 	int	std_fd[2];
 
@@ -54,7 +54,7 @@ int	one_built_in(char **builtin, t_token *tok, t_data *data)
 	std_fd[1] = dup(STDOUT_FILENO);
 	redirection(data, 0);
 	redir_files(tok, 0, data);
-	lets_builtin(data, builtin, data->envp_cpy);
+	lets_builtin(data, builtin);
 	if (ft_strcmp(builtin[0], "unset") == 0)
 		return (free(builtin[0]), 0);
 	free_tab(builtin);
@@ -65,16 +65,18 @@ int	one_built_in(char **builtin, t_token *tok, t_data *data)
 	return (0);
 }
 
-char	*get_home_env(char **envp_cpy)
+char	*get_home_env(t_export *env)
 {
+	t_export *tmp;
 	int		i;
 
+	tmp = env;
 	i = 0;
-	while (envp_cpy[i])
+	while (tmp)
 	{
-		if (!ft_strncmp(envp_cpy[i], "HOME=", 5))
-			return (envp_cpy[i] + 5);
-		i++;
+		if (!ft_strcmp(tmp->key, "HOME"))
+			return (env->value);
+		tmp = tmp->next;
 	}
 	return (NULL);
 }

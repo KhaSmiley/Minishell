@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 15:43:05 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/01 19:17:30 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/01 20:49:01 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	quit_file_error(int fd, t_token *tok, t_data *data)
 {
 	fprintf(stderr, "%d -> Error FD\n", fd);
 	free_tok(&tok);
-	free_envp_cpy(data->envp_cpy);
 	if (data->builtin)
 		free_tab(data->builtin);
 	if (data->cmd)
@@ -34,11 +33,13 @@ void	close_fds(t_data *data)
 		close(data->pipe_fd[1]);
 }
 
-void	redir_files(t_token *tok, int i, t_data *data)
+void	redir_files(t_token *tok, int i, t_data *data, t_heredoc *h_docs)
 {
 	int		fd;
 	int		nb_pipe;
 	t_token	*tmp;
+
+	(void) h_docs;
 
 	tmp = tok;
 	nb_pipe = 0;
@@ -59,12 +60,29 @@ void	redir_files(t_token *tok, int i, t_data *data)
 			fd = open(tmp->next->str, O_CREAT | O_RDWR | O_APPEND, 0666);
 		else if (tmp->type == LESS)
 			fd = open(tmp->next->str, O_RDONLY);
+		// else if (tmp->type == DLESS)
+		// 	fd = open(tmp->next->str)
 		if (fd == -1)
 			quit_file_error(fd, tok, data);
 		if (tmp->type == GREATER || tmp->type == DGREATER)
 			dup2(fd, STDOUT_FILENO);
 		else if (tmp->type == LESS)
 			dup2(fd, STDIN_FILENO);
+		tmp = tmp->next;
+		// if (tmp->type != DLESS);
+		// 	close(fd);
+	}
+	// close_heredocs(h_docs);
+}
+
+void close_heredocs(t_heredoc *h_doc)
+{
+	t_heredoc *tmp;
+
+	tmp = h_doc;
+	while(tmp)
+	{
+		close(tmp->fd);
 		tmp = tmp->next;
 	}
 	close(fd);
@@ -83,28 +101,73 @@ void	redirection(t_data *data, int i)
 	close(data->pipe_fd[1]);
 }
 
-void	child_process(t_data *data, t_token **tok, int i)
+int ft_lstsize(t_export *env)
+{
+    t_export *tmp;
+    int i;
+
+    i = 0;
+    if (!env)
+        return (i);
+    tmp = env;
+    while (tmp)
+    {
+        i++;
+        tmp = tmp->next;
+    }
+    return (i);
+}
+char **ft_envp_copy_to_tab(t_data *data)
+{
+    t_export *tmp;
+    char *new_str;
+    char **tab;
+    int size;
+    int i;
+
+    i = 0;
+    tmp = data->env_export;
+    size = ft_lstsize(data->env_export);
+	tab = NULL;
+    tab = malloc(sizeof(char *) * (size + 1));
+    while(tmp)
+    {
+        new_str = NULL;
+        new_str = ft_strjoin(tmp->key, "=");
+        new_str = ft_strjoin_gnl(new_str, tmp->value);
+        tab[i] = ft_strdup(new_str);
+        free(new_str);
+        tmp = tmp->next;
+        i++;
+    }
+    tab[i] = NULL;
+    return (tab);
+}
+
+void	child_process(t_data *data, t_token **tok, t_heredoc *h_docs, int i)
 {
 	char	*path;
+	char **tab;
 
 	data->cmd = tok_to_tab(tok, i);
 	redirection(data, i);
 	if (!data->cmd)
 		return (free_tab(data->cmd), exit(1));
 	if (!data->cmd[0])
-		return (ft_printf("minishell: cmd[0] empty, tok 2 tab failed\n"), free_tab(data->cmd),  free_tok(tok), free_envp_cpy(data->envp_cpy), exit(1));
+		return (ft_printf("minishell: : command not found\n"), free_tab(data->cmd),  free_tok(tok), free_export(data->env_export), exit(1));
 	redir_files(*tok, i, data);
 	if (to_builtin_or_not_to_builtin(data->cmd[0]))
 	{
-		lets_builtin(data, data->cmd, data->envp_cpy);
-		return (free_tab(data->cmd), free_tok(tok), free_envp_cpy(data->envp_cpy), exit(0));
+		lets_builtin(data, data->cmd);
+		return (free_tab(data->cmd), free_tok(tok), free_export(data->env_export), exit(0));
 	}
 	path = complete_path(data, data->cmd[0]);
 	if (!path)
-		return (ft_printf("minishell: %s: command path not found\n", data->cmd[0]), free_tab(data->cmd), free_tok(tok), free_envp_cpy(data->envp_cpy), exit(1));
+		return (ft_printf("minishell: %s: command path not found\n", data->cmd[0]), free_tab(data->cmd), free_tok(tok), free_export(data->env_export), exit(1));
+	tab = ft_envp_copy_to_tab(data);
 	if (path)
-		execve(path, data->cmd, data->envp_cpy);
-	return (free_tab(data->cmd), free(path), free_tok(tok), free_envp_cpy(data->envp_cpy), exit(0));
+		execve(path, data->cmd, tab);
+	return (free_tab(data->cmd), free(path), free_tok(tok), free_export(data->env_export), exit(0));
 }
 
 void	parent_process(t_data *data, int i)
@@ -133,7 +196,7 @@ int	exec_pipe(t_data *data, t_token **tok)
 		if (data->pid[i] == -1)
 			return (perror("Error fork"), 0);
 		if (data->pid[i] == 0)
-			child_process(data, tok, i);
+			child_process(data, tok, here_docs, i);
 		else
 			parent_process(data, i);
 	}
