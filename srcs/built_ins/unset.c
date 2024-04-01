@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 06:00:30 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/30 04:32:13 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/31 03:33:17 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void ft_unset(t_data *data, char **args)
 {
 	int i;
 
-	ft_envp_copy_export(data);
 	i = 1;
 	if (!args[i])
 		return ;

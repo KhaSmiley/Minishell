@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/31 03:03:47 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/01 20:56:59 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argv;
 	tok = NULL;
-	data.envp_cpy = ft_envp_copy(envp);
+	ft_envp_copy_export(&data, envp);
 	while (1)
 	{
 		input = readline("> ");
@@ -67,7 +67,6 @@ int	main(int argc, char **argv, char **envp)
 	close(data.pipe_fd[0]);
 	free_export(data.env_export);
 	free_tok(&tok);
-	free_envp_cpy(data.envp_cpy);
 	rl_clear_history();
 	return (0);
 }

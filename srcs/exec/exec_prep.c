@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   exec_prep.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/19 01:46:52 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/31 03:16:00 by lbarry           ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2024/04/01 20:44:12 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../include/minishell.h"
 
@@ -59,6 +60,12 @@ char **tok_to_tab(t_token **tok, int nb_pipe)
     while (tmp && tmp->type != PIPE)
     {
 		if (tmp->type == GREATER || tmp->type == LESS || tmp->type == DGREATER)
+		{
+			tmp = tmp->next;
+			tmp = tmp->next;
+			continue ;
+		}
+		if (tmp->type == DGREATER)
 		{
 			tmp = tmp->next;
 			tmp = tmp->next;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 15:13:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/30 04:32:42 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/31 06:12:57 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,6 @@ void ft_export(t_data *data, char **args)
 	int i;
 	i = 1;
 
-	ft_envp_copy_export(data);
 	while(args[i])
 	{
 		if (ft_check_syntax_key(args[i]))
@@ -134,14 +133,14 @@ void ft_export(t_data *data, char **args)
 	return ;
 }
 
-void ft_envp_copy_export(t_data *data)
+void ft_envp_copy_export(t_data *data, char **envp)
 {
 	int i;
 
 	i = 0;
-	while(data->envp_cpy[i])
+	while(envp[i])
 	{
-		ft_stock_export(&data->env_export, ft_lstnew_export(ft_find_key_export(data->envp_cpy[i]), ft_find_value_export(data->envp_cpy[i])));
+		ft_stock_export(&data->env_export, ft_lstnew_export(ft_find_key_export(envp[i]), ft_find_value_export(envp[i])));
 		i++;
 	}
 }
