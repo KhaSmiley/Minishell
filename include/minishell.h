@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/30 04:37:16 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/31 03:49:11 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,7 @@ void					print_tab(char **tab);
 
 void					child_process(t_data *data, t_token **tok, int i);
 int						exec_pipe(t_data *data, t_token **tok);
-void					redirection(t_data *data, t_token *tok, int i);
+void					redirection(t_data *data, int i);
 void					redir_files(t_token *tok, int i, t_data *data);
 void					parent_process(t_data *data, int i);
 void					close_fds(t_data *data);
@@ -187,10 +187,12 @@ char					*complete_path(t_data *data, char *cmd);
 void					init_data(int argc, t_data *data, t_token *tok);
 int						ft_access(char *path);
 
-/* tok_to_tab */
+/* exec_prep */
 
 char					**tok_to_tab(t_token **tok, int nb_pipe);
 int						ft_count_pipe(t_token *tok);
+int						get_infile(t_data *data, t_token **tok, int nb_pipe);
+int						get_outfile(t_data *data, t_token **tok, int nb_pipe);
 
 /*built_ins*/
 
@@ -199,6 +201,7 @@ int						ft_pwd(void);
 int						ft_cd(char **cmd, char **env_cpy);
 int						ft_env(t_data *data);
 int						ft_echo(char **cmd);
+void					ft_exit(char **cmd, char **envp_cpy, t_token **tok);
 
 /* built_ins_utils.c */
 

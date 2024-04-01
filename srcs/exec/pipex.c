@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 15:43:05 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/30 04:39:07 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/31 04:05:24 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	redir_files(t_token *tok, int i, t_data *data)
 	}
 }
 
-void	redirection(t_data *data, t_token *tok, int i)
+void	redirection(t_data *data, int i)
 {
 	if (i != 0)
 	{
@@ -80,7 +80,6 @@ void	redirection(t_data *data, t_token *tok, int i)
 		dup2(data->pipe_fd[1], 1);
 	close(data->pipe_fd[0]);
 	close(data->pipe_fd[1]);
-	redir_files(tok, i, data);
 }
 
 void	child_process(t_data *data, t_token **tok, int i)
@@ -88,11 +87,12 @@ void	child_process(t_data *data, t_token **tok, int i)
 	char	*path;
 
 	data->cmd = tok_to_tab(tok, i);
+	redirection(data, i);
 	if (!data->cmd)
 		return (free_tab(data->cmd), exit(1));
 	if (!data->cmd[0])
 		return (ft_printf("minishell: cmd[0] empty, tok 2 tab failed\n"), free_tab(data->cmd),  free_tok(tok), free_envp_cpy(data->envp_cpy), exit(1));
-	redirection(data, *tok, i);
+	redir_files(*tok, i, data);
 	if (to_builtin_or_not_to_builtin(data->cmd[0]))
 	{
 		lets_builtin(data, data->cmd, data->envp_cpy);

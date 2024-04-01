@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 03:45:20 by lbarry            #+#    #+#             */
-/*   Updated: 2024/03/30 04:27:07 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/03/31 03:49:25 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ int	one_built_in(char **builtin, t_token *tok, t_data *data)
 	// stock stdin and stdout dup simple
 	std_fd[0] = dup(STDIN_FILENO);
 	std_fd[1] = dup(STDOUT_FILENO);
-	redirection(data, tok, 0);
+	redirection(data, 0);
+	redir_files(tok, 0, data);
 	lets_builtin(data, builtin, data->envp_cpy);
 	if (ft_strcmp(builtin[0], "unset") == 0)
 		return (free(builtin[0]), 0);
