@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 03:45:20 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/01 20:41:01 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/01 20:55:28 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	*find_first_cmd(t_token **tok)
 	return (NULL);
 }
 
-int	one_built_in(char **builtin, t_data *data)
+int	one_built_in(char **builtin, t_token *tok, t_data *data)
 {
 	int	std_fd[2];
 

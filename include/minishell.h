@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/01 20:39:30 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/01 20:56:16 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,10 +184,8 @@ int						ft_tokenizer(char *token);
 void					child_process(t_data *data, t_token **tok,
 							t_heredoc *h_docs, int i);
 int						exec_pipe(t_data *data, t_token **tok);
-void					redirection(t_data *data, t_token *tok,
-							t_heredoc *h_docs, int i);
-void					redir_files(t_token *tok, int i, t_data *data,
-							t_heredoc *h_docs);
+void					redirection(t_data *data, int i);
+void					redir_files(t_token *tok, int i, t_data *data);
 void					parent_process(t_data *data, int i);
 void					close_fds(t_data *data);
 void					reset_std_fd(void);
@@ -237,7 +235,6 @@ int						one_built_in(char **builtin, t_token *tok,
 							t_data *data);
 int						check_echo_option(char **args, int i, int j);
 char					*get_home_env(t_export *env);
-int						check_echo_option(char **args);
 
 /* export */
 

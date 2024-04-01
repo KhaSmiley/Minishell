@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/01 20:51:01 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/01 20:56:59 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	main(int argc, char **argv, char **envp)
 		init_data(argc, &data, tok);
 		if (data.nb_cmd == 1 && (to_builtin_or_not_to_builtin(find_first_cmd(&tok))))
 		{
-			one_built_in((tok_to_tab(&tok, 0)), &data);
+			one_built_in((tok_to_tab(&tok, 0)), tok, &data);
 			free_tok(&tok);
 			free(input);
 			continue ;

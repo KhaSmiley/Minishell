@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 15:43:05 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/01 20:49:01 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/01 20:57:43 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,11 @@ void	close_fds(t_data *data)
 		close(data->pipe_fd[1]);
 }
 
-void	redir_files(t_token *tok, int i, t_data *data, t_heredoc *h_docs)
+void	redir_files(t_token *tok, int i, t_data *data)
 {
 	int		fd;
 	int		nb_pipe;
 	t_token	*tmp;
-
-	(void) h_docs;
 
 	tmp = tok;
 	nb_pipe = 0;
@@ -60,29 +58,12 @@ void	redir_files(t_token *tok, int i, t_data *data, t_heredoc *h_docs)
 			fd = open(tmp->next->str, O_CREAT | O_RDWR | O_APPEND, 0666);
 		else if (tmp->type == LESS)
 			fd = open(tmp->next->str, O_RDONLY);
-		// else if (tmp->type == DLESS)
-		// 	fd = open(tmp->next->str)
 		if (fd == -1)
 			quit_file_error(fd, tok, data);
 		if (tmp->type == GREATER || tmp->type == DGREATER)
 			dup2(fd, STDOUT_FILENO);
 		else if (tmp->type == LESS)
 			dup2(fd, STDIN_FILENO);
-		tmp = tmp->next;
-		// if (tmp->type != DLESS);
-		// 	close(fd);
-	}
-	// close_heredocs(h_docs);
-}
-
-void close_heredocs(t_heredoc *h_doc)
-{
-	t_heredoc *tmp;
-
-	tmp = h_doc;
-	while(tmp)
-	{
-		close(tmp->fd);
 		tmp = tmp->next;
 	}
 	close(fd);
@@ -148,6 +129,8 @@ void	child_process(t_data *data, t_token **tok, t_heredoc *h_docs, int i)
 {
 	char	*path;
 	char **tab;
+
+	(void)h_docs;
 
 	data->cmd = tok_to_tab(tok, i);
 	redirection(data, i);
