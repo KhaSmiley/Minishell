@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 20:06:40 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/31 03:45:14 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/01 20:06:49 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ char *ft_get_new_str_for_env(char *str, t_token *tok)
                     i++;
                 if (str[i] == '$')
                     i--;
+                i--;
             }
             else if (tmp_env->value)
             {

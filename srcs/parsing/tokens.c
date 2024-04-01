@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 01:06:11 by lbarry            #+#    #+#             */
-/*   Updated: 2024/03/31 01:15:49 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/01 19:43:04 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,45 +73,87 @@ int    alloc_token(t_token **tok, char *longchev, char *str, int i)
 	return (0);
 }
 
+int ft_find_end(char *str, char flag_quotes, int i)
+{
+    int stop;
+    stop = 0;
+    while(str[i])
+    {
+        i++;
+        if (str[i] == '\0' || ((str[i] == flag_quotes) && str[i + 1] == ' '))
+        {
+            stop = i;
+            break ;
+        }    
+    }
+    return(stop);
+}
+
 t_token    *find_token(char *str)
 {
     int i;
     int j;
     char *word;
     t_token *tok;
+    char flag_quote;
+    int stop;
 
     tok = NULL;
     i = 0;
+    flag_quote = '\0';
     while(str[i])
     {
-        if (str[i] == '<')
-            i += alloc_token(&tok, "<<", str, i);
-        else if (str[i] == '>')
-            i += alloc_token(&tok, ">>", str, i);
-        else if (str[i] == '|')
-		{
-			word = malloc(sizeof(char) * 2);
-			if (!word)
-				return (NULL);
-			word[0] = '|';
-			word[1] = '\0';
-            ft_stock(&tok, ft_lstnew(word, ft_tokenizer(word)));
-		}
-        else if (str[i] == ' ' || str[i] == '\t')
-            ft_tokenizer(" ");
+        if (str[i] == '\'' || str[i] == '\"')
+		    check_quotes_for_env(&flag_quote, str, i);
+        if (flag_quote == '\0')
+        {
+            if (str[i] == '<')
+                i += alloc_token(&tok, "<<", str, i);
+            else if (str[i] == '>')
+                i += alloc_token(&tok, ">>", str, i);
+            else if (str[i] == '|')
+            {
+                word = malloc(sizeof(char) * 2);
+                if (!word)
+                    return (NULL);
+                word[0] = '|';
+                word[1] = '\0';
+                ft_stock(&tok, ft_lstnew(word, ft_tokenizer(word)));
+            }
+            else if (str[i] == ' ' || str[i] == '\t')
+                ft_tokenizer(" ");
+            else
+            {
+                j = 0;
+                word = malloc(word_size(str, i) + 1);
+                if (!word)
+                    return (NULL);
+                while (ft_strchr(" \t><|\0", str[i]) == 0)
+                    word[j++] = str[i++];
+                word[j] = '\0';
+                ft_stock(&tok, ft_lstnew(word, ft_tokenizer(word)));
+                i--;
+            } 
+        }
         else
         {
-            j = 0;
-            word = malloc(word_size(str, i) + 1);
-			if (!word)
-				return (NULL);
-            while (ft_strchr(" \t><|\0", str[i]) == 0)
-                word[j++] = str[i++];
-            word[j] = '\0';
-            ft_stock(&tok, ft_lstnew(word, ft_tokenizer(word)));
-            i--;
+            if (flag_quote == '\'' || flag_quote == '\"')
+            {
+                j = 0;
+                word = malloc(ft_find_end(str, flag_quote, i) + 1);
+                if (!word)
+                    return (NULL);
+                stop = ft_find_end(str, flag_quote, i);
+                while (i <= stop)
+                    word[j++] = str[i++];
+                word[j] = '\0';
+                ft_stock(&tok, ft_lstnew(word, ft_tokenizer(word)));
+                i--;
+                flag_quote = '\0';
+            }
         }
         i++;
     }
+    print_list(tok);
 	return (tok);
 }
