@@ -3,59 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   here_docs.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 05:04:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/30 01:53:09 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/02 04:10:56 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-t_heredoc *ft_lstlast_here_doc(t_heredoc *lst)
-{
-	if (!lst)
-		return (NULL);
-	while (lst->next)
-		lst = lst->next;
-	return (lst);
-}
-
-t_heredoc	*ft_lstnew_here_doc(int fd, char *content, int nb_cmd)
-{
-	t_heredoc	*new;
-
-	new = malloc(sizeof(*new));
-	if (!new)
-		return (NULL);
-    new->fd = fd;
-	new->lim = content;
-    new->in_cmd = nb_cmd;
-	new->next = NULL;
-	return (new);
-}
-
-void	ft_stock_here_doc(t_heredoc **lst, t_heredoc *new_link)
-{
-	if (!lst)
-		return ;
-	if (!*lst)
-		*lst = new_link;
-	else
-		(ft_lstlast_here_doc(*lst))->next = new_link;
-}
-
-void print_list_here_doc(t_heredoc *lst)
-{
-    if (!lst)
-		return ;
-    while(lst)
-    {
-        printf("string: %s\nin_cmd = %d\n", lst->lim, lst->in_cmd);
-        lst = lst->next;
-    }
-    return ;
-}
 
 void here_doc_loop(t_data *data, char *lim, int *pipe)
 {
@@ -74,7 +29,7 @@ void here_doc_loop(t_data *data, char *lim, int *pipe)
     ft_putstr_fd(NULL, pipe[1]);
     close(pipe[1]);
     close(data->curr_here_doc);
-    exit(0);
+    exit(0  );
 }
 
 void init_heredoc(t_data *data, t_heredoc **here_docs, char *lim, int i)
@@ -116,4 +71,32 @@ t_heredoc    *exec_here_docs(t_data *data, t_token **tok)
         tmp = tmp->next;
     }
     return (here_docs);
+}
+void close_here_docs(t_heredoc *h_docs, int size)
+{
+	int i;
+	
+	i = 0;
+	while (i < size)
+	{
+		close(h_docs->fd);
+        free(h_docs->lim);
+        i++;
+	}
+	if (size)
+		free(h_docs);
+	
+}
+
+int	find_heredoc(t_heredoc *h_docs, int size, t_token *tok)
+{
+	int i;
+
+	i = -1;
+	while (++i < size)
+	{
+		if (!ft_strcmp(tok->next->str, h_docs->lim))
+			return (h_docs->fd);
+	}
+	return(-1);
 }

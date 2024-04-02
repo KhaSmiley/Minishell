@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 20:06:40 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/01 20:06:49 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/02 01:34:38 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,24 @@ char *ft_get_new_str_for_env(char *str, t_token *tok)
     tmp_env = tok->env;
     while (str[i])
     {
+        printf("[%c]\n", str[i]);
         if (str[i] == '$' && str[i + 1] == '?')
             printf("RETURN EXIT STATUS\n");
         else if (str[i] == '$' && ft_isdigit(str[i + 1]))
             printf("can't expand digit after $\n");
         else if (str[i] == '$' && (str[i + 1] == '\0' || !ft_isalnum(str[i + 1])))
         {
-            add_str = ft_substr(str, i, 1);
-            env_str = ft_strjoin_gnl(env_str, add_str);
-            free(add_str);
+            if (!ft_isalnum(str[i + 1]))
+            {
+                i++;
+                continue ;
+            }
+            else
+            {
+                add_str = ft_substr(str, i, 1);
+                env_str = ft_strjoin_gnl(env_str, add_str);
+                free(add_str);
+            }
         }
         else if (str[i] == '$' && tmp_env->value)
         {

@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 03:45:20 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/01 20:55:28 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/02 02:35:00 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,14 @@ char	*find_first_cmd(t_token **tok)
 int	one_built_in(char **builtin, t_token *tok, t_data *data)
 {
 	int	std_fd[2];
+	t_heredoc *h_docs;
 
 	data->builtin = builtin;
+	h_docs = exec_here_docs(data, &tok);
 	std_fd[0] = dup(STDIN_FILENO);
 	std_fd[1] = dup(STDOUT_FILENO);
 	redirection(data, 0);
-	redir_files(tok, 0, data);
+	redir_files(tok, 0, h_docs, data);
 	lets_builtin(data, builtin);
 	if (ft_strcmp(builtin[0], "unset") == 0)
 		return (free(builtin[0]), 0);

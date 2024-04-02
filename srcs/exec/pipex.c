@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 15:43:05 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/02 00:20:55 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/02 04:16:56 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	close_fds(t_data *data)
 		close(data->pipe_fd[1]);
 }
 
-void	redir_files(t_token *tok, int i, t_data *data)
+void	redir_files(t_token *tok, int i,t_heredoc *h_docs, t_data *data)
 {
 	int		fd;
 	int		nb_pipe;
@@ -58,15 +58,19 @@ void	redir_files(t_token *tok, int i, t_data *data)
 			fd = open(tmp->next->str, O_CREAT | O_RDWR | O_APPEND, 0666);
 		else if (tmp->type == LESS)
 			fd = open(tmp->next->str, O_RDONLY);
+		else if (tmp->type == DLESS)
+			fd = find_heredoc(h_docs, ft_lstsize_hdoc(h_docs), tmp);
 		if (fd == -1)
 			quit_file_error(fd, tok, data);
 		if (tmp->type == GREATER || tmp->type == DGREATER)
 			dup2(fd, STDOUT_FILENO);
-		else if (tmp->type == LESS)
+		else
 			dup2(fd, STDIN_FILENO);
+		// if (tmp->type != DLESS)
+		// 	close(fd);
 		tmp = tmp->next;
 	}
-	close(fd);
+	// close_here_docs(h_docs, ft_lstsize_hdoc(h_docs));
 }
 
 void	redirection(t_data *data, int i)
@@ -134,11 +138,11 @@ void	child_process(t_data *data, t_token **tok, t_heredoc *h_docs, int i)
 
 	data->cmd = tok_to_tab(tok, i);
 	redirection(data, i);
+	redir_files(*tok, i, h_docs, data);
 	if (!data->cmd)
 		return (free_tab(data->cmd), exit(1));
 	if (!data->cmd[0])
 		return (ft_printf("minishell: : command not found\n"), free_tab(data->cmd),  free_tok(tok), free_export(data->env_export), exit(1));
-	redir_files(*tok, i, data);
 	if (to_builtin_or_not_to_builtin(data->cmd[0]))
 	{
 		lets_builtin(data, data->cmd);
@@ -168,7 +172,6 @@ int	exec_pipe(t_data *data, t_token **tok)
 	t_heredoc *here_docs;
 
 	here_docs = exec_here_docs(data, tok);
-	//print_list_here_doc(here_docs);
 	i = -1;
 	while (++i < data->nb_cmd)
 	{

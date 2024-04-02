@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/02 00:26:29 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/02 04:14:58 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,18 @@ void	handle_signals(void)
 	sigaction(SIGINT, &sa, NULL);
 }
 
+int	empty_str(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str && (str[i] == ' ' || str[i] == '\t'))
+		i++;
+	if (!str[i])
+		return (1);
+	return (0);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	static t_data	data = {0};
@@ -52,6 +64,11 @@ int	main(int argc, char **argv, char **envp)
 		if (!*input)
 			continue ;
 		add_history(input);
+		if (empty_str(input))
+		{
+			free(input);
+			continue;
+		}
 		if (parsing_and_stock_input(input, &tok, &data))
 		{
 			printf("ERROR\n");
@@ -66,7 +83,6 @@ int	main(int argc, char **argv, char **envp)
 			free(input);
 			continue ;
 		}
-		printf("last sig_return: %d\n", sig_return);
 		exec_pipe(&data, &tok);
 		free(input);
 		free_tok(&tok);
@@ -75,6 +91,5 @@ int	main(int argc, char **argv, char **envp)
 	free_export(data.env_export);
 	free_tok(&tok);
 	rl_clear_history();
-	printf("last sig_return: %d\n", sig_return);
 	return (0);
 }

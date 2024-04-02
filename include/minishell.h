@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/02 00:27:45 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/02 03:00:16 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <sys/wait.h>
 # include <unistd.h>
-# include <signal.h>
 
 typedef struct s_token
 {
@@ -70,6 +70,7 @@ typedef struct s_data
 {
 	char				*input;
 	char				**envp_cpy;
+	int					only_hd;
 	int					tmp_fd;
 	int					argc;
 	int					count_tab;
@@ -166,7 +167,8 @@ int						check_quotes_open(char *input);
 
 /* syntax.c */
 
-int						parsing_and_stock_input(char *input, t_token **tok, t_data *data);
+int						parsing_and_stock_input(char *input, t_token **tok,
+							t_data *data);
 int						ft_syntax(t_token **tok);
 int						ft_syntax_pipe(t_token *tok);
 int						ft_syntax_redir(t_token *tok);
@@ -187,7 +189,8 @@ void					child_process(t_data *data, t_token **tok,
 							t_heredoc *h_docs, int i);
 int						exec_pipe(t_data *data, t_token **tok);
 void					redirection(t_data *data, int i);
-void					redir_files(t_token *tok, int i, t_data *data);
+void					redir_files(t_token *tok, int i, t_heredoc *h_docs,
+							t_data *data);
 void					parent_process(t_data *data, int i);
 void					close_fds(t_data *data);
 void					reset_std_fd(void);
@@ -259,8 +262,19 @@ void					ft_unset(t_data *data, char **args);
 
 /* here_doc.c */
 
+void					here_doc_loop(t_data *data, char *lim, int *pipe);
+void					init_heredoc(t_data *data, t_heredoc **here_docs,
+							char *lim, int i);
 t_heredoc				*exec_here_docs(t_data *data, t_token **tok);
+void					close_here_docs(t_heredoc *h_docs, int size);
+int						find_heredoc(t_heredoc *h_docs, int size, t_token *tok);
+
+/* here_docs_utils.c */
+
+t_heredoc				*ft_lstlast_here_doc(t_heredoc *lst);
+t_heredoc				*ft_lstnew_here_doc(int fd, char *content, int nb_cmd);
+void					ft_stock_here_doc(t_heredoc **lst, t_heredoc *new_link);
 void					print_list_here_doc(t_heredoc *lst);
-void					close_heredocs(t_heredoc *h_doc);
+int						ft_lstsize_hdoc(t_heredoc *h_docs);
 
 #endif

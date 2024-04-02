@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/04/01 20:44:12 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/02 04:12:37 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ char **tok_to_tab(t_token **tok, int nb_pipe)
     char **tab;
     int i;
     int count_pipe;
-
     count_pipe = 0;
     i = 0;
+
     tab = malloc(sizeof(char *) * (10));
 	if (!tab)
 	{
@@ -59,19 +59,9 @@ char **tok_to_tab(t_token **tok, int nb_pipe)
     }
     while (tmp && tmp->type != PIPE)
     {
-		if (tmp->type == GREATER || tmp->type == LESS || tmp->type == DGREATER)
-		{
+		if (tmp->type == GREATER || tmp->type == LESS || tmp->type == DGREATER || tmp->type == DLESS)
 			tmp = tmp->next;
-			tmp = tmp->next;
-			continue ;
-		}
-		if (tmp->type == DGREATER)
-		{
-			tmp = tmp->next;
-			tmp = tmp->next;
-			continue ;
-		}
-        if (tmp->type == WORD)
+        else if (tmp->type == WORD)
         {
             if (tmp->next && tmp->str[0] == '\0')
             {
@@ -79,8 +69,7 @@ char **tok_to_tab(t_token **tok, int nb_pipe)
                 if (tmp->type == PIPE)
                     break;
             }
-            tab[i] = ft_strdup(tmp->str);
-            i++;
+            tab[i++] = ft_strdup(tmp->str);
         }
         tmp = tmp->next;
     }
