@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/02 04:14:58 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/03 18:55:06 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,19 @@ int	empty_str(char *str)
 	return (0);
 }
 
+t_data *simpleton(){
+	static t_data data = {0};
+	return &data;
+}
+
 int	main(int argc, char **argv, char **envp)
 {
-	static t_data	data = {0};
+	t_data	data = {0};
 	t_token			*tok;
 	char			*input;
 
 	(void)argv;
+	(void)argc;
 	tok = NULL;
 	ft_envp_copy_export(&data, envp);
 	while (1)
@@ -73,6 +79,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			printf("ERROR\n");
 			free(input);
+			data.status = 2;
 			continue ;
 		}
 		init_data(argc, &data, tok);
@@ -86,10 +93,10 @@ int	main(int argc, char **argv, char **envp)
 		exec_pipe(&data, &tok);
 		free(input);
 		free_tok(&tok);
+		close(data.pipe_fd[0]);
 	}
-	close(data.pipe_fd[0]);
 	free_export(data.env_export);
 	free_tok(&tok);
 	rl_clear_history();
-	return (0);
+	return (data.status);
 }

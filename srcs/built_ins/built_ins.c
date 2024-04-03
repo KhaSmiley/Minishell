@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 00:49:03 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/01 20:42:48 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/03 17:57:51 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	ft_cd(char **cmd, t_data *data)
 	ret = chdir(path);
 	if (ret == -1)
 	{
-		printf("cd: %s: No such file or directory\n", cmd[1]);
+		ft_printf("cd: %s: No such file or directory\n", cmd[1]);
 		return (0);
 	}
 	return (1);

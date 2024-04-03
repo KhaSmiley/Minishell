@@ -6,13 +6,13 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 05:04:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/02 04:10:56 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/03 02:47:01 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void here_doc_loop(t_data *data, char *lim, int *pipe)
+void here_doc_loop(t_data *data, char *lim, int *pipe, t_token **tok, t_heredoc *h_docs)
 {
     char *buf;
     int i;
@@ -29,14 +29,19 @@ void here_doc_loop(t_data *data, char *lim, int *pipe)
     ft_putstr_fd(NULL, pipe[1]);
     close(pipe[1]);
     close(data->curr_here_doc);
-    exit(0  );
+    free_tok(tok);
+    free_export(data->env_export);
+    close_here_docs(h_docs, ft_lstsize_hdoc(h_docs));
+    exit(0);
 }
 
-void init_heredoc(t_data *data, t_heredoc **here_docs, char *lim, int i)
+void init_heredoc(t_data *data, t_heredoc **here_docs, char *lim, int i, t_token **tok)
 {
     int pid;
+    int j;
     int pipes[2];
 
+    j = 0;
     if(pipe(pipes) < 0)
         return ;
     ft_stock_here_doc(here_docs, ft_lstnew_here_doc(pipes[0], lim, i));
@@ -44,9 +49,13 @@ void init_heredoc(t_data *data, t_heredoc **here_docs, char *lim, int i)
     if (!pid)
     {
         data->curr_here_doc = pipes[1];
-        here_doc_loop(data, lim, pipes);
+        here_doc_loop(data, lim, pipes, tok, *here_docs);
     }
-    wait(NULL);
+    while (j < ft_lstsize_hdoc(*here_docs))
+    {
+        waitpid(pid, NULL, 0);
+        j++;
+    }    
     close(pipes[1]);
 }
 
@@ -66,7 +75,7 @@ t_heredoc    *exec_here_docs(t_data *data, t_token **tok)
             i++;
         if (tmp->type == DLESS)
         {
-            init_heredoc(data, &here_docs, tmp->next->str, i);
+            init_heredoc(data, &here_docs, tmp->next->str, i, tok);
         }
         tmp = tmp->next;
     }
@@ -80,7 +89,6 @@ void close_here_docs(t_heredoc *h_docs, int size)
 	while (i < size)
 	{
 		close(h_docs->fd);
-        free(h_docs->lim);
         i++;
 	}
 	if (size)

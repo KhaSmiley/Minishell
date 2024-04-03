@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/02 03:00:16 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/03 17:08:30 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,11 @@ typedef struct s_data
 	int					curr_here_doc;
 	char				**builtin;
 	char				**cmd;
+
+	int					status;
 	t_export			*env_export;
 }						t_data;
+t_data *simpleton();
 
 # include "../libft/libft.h"
 # include <fcntl.h>
@@ -94,6 +97,23 @@ typedef struct s_data
 # include <unistd.h>
 
 char					**ft_envp_copy_to_tab(t_data *data);
+char					*find_new_str_env(char *str, int *i, t_env *tmp);
+// char *find_new_str_env(char *str, int *i, t_data *data);
+// char *ft_strjoin_you(char *s1, char *s2);
+char					*ft_get_new_str_for_env(char *str, t_env *tmp);
+
+/* Y */
+
+void	ft_expand_str_y(t_token *tok, t_data *data);
+char	*to_next_double_q(char *str, int *i);
+char *ft_find_value_env_new(char *str, int *i, t_data *data);
+char *double_quote(char *str, int *i, t_data *data);
+char *single_quote(char *str, int *i);
+int ft_strl(char *str);
+char *ft_strjoin_you(char *s1, char *s2);
+char *find_new_str_env_y(char *str, int *i, t_data *data);
+char *normal(char *str, int *i);
+char *ft_get_new_str_for_env_y(char *str, t_data *data);
 
 /* expand.c */
 
@@ -123,7 +143,7 @@ int						ft_isalnum_env(int c);
 /* expand_after_quotes.c */
 
 void					find_str_to_expand(t_token **tok);
-char					*ft_get_new_str_for_env(char *str, t_token *tok);
+// char					*ft_get_new_str_for_env(char *str, t_token *tok);
 char					*ft_strjoin_env(char const *s1, char const *s2);
 
 /* -------------------------- UTILS -------------------------- */
@@ -262,9 +282,10 @@ void					ft_unset(t_data *data, char **args);
 
 /* here_doc.c */
 
-void					here_doc_loop(t_data *data, char *lim, int *pipe);
+void					here_doc_loop(t_data *data, char *lim, int *pipe,
+							t_token **tok, t_heredoc *h_docs);
 void					init_heredoc(t_data *data, t_heredoc **here_docs,
-							char *lim, int i);
+							char *lim, int i, t_token **tok);
 t_heredoc				*exec_here_docs(t_data *data, t_token **tok);
 void					close_here_docs(t_heredoc *h_docs, int size);
 int						find_heredoc(t_heredoc *h_docs, int size, t_token *tok);

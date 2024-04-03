@@ -17,10 +17,6 @@ SRCS_NAMES		=	minishell.c \
 					parsing/tokens.c \
 					parsing/quotes.c \
 					parsing/quotes_utils.c \
-					expand/expand.c \
-					expand/expand_utils.c \
-					expand/expand_utils_two.c \
-					expand/expand_after_quotes.c \
 					utils/memory.c \
 					utils/tab_utils.c \
 					exec/pipex.c \
@@ -33,7 +29,9 @@ SRCS_NAMES		=	minishell.c \
 					built_ins/built_ins_utils.c \
 					built_ins/export.c \
 					built_ins/export_utils.c \
-					built_ins/unset.c
+					built_ins/unset.c \
+					expand/expand.c \
+					expand/expand_utils_two.c
 
 OBJS_NAMES		=	${SRCS_NAMES:.c=.o}
 

@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 01:06:11 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/02 01:34:08 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/03 18:01:26 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	ft_find_end(char *str, char flag_quotes, int i)
 	while (str[i])
 	{
 		i++;
-		if ((str[i] == '\0') || ((str[i] == flag_quotes) && str[i + 1] == ' '))
+		if ((str[i] == '\0') || ((str[i] == flag_quotes) && (str[i + 1] == ' ' || str[i + 1] == '\t')))
 			return (i);
 	}
 	return (i);

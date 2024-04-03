@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 02:18:19 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/31 06:14:40 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/03 17:21:59 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,24 +81,25 @@ int ft_strlen_from_char(char *str, char c)
         i++;
     return (i);
 }
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_find_value(char *key, t_export *env)
 {
-	int		s_len;
-	char	*str;
+	int		i;
+	char	*stock;
+	t_export *tmp;
 
-	if (!s1)
-		return (NULL);
-	s_len = ft_strlen(s1) + ft_strlen(s2);
-	str = malloc(sizeof(char) * ((s_len + 1)));
-	if (!str)
+	i = 0;
+	tmp = env;
+	while (tmp)
 	{
-		return (NULL);
+		if (ft_strcmp(tmp->key, key) == 0)
+		{
+			stock = ft_strdup(tmp->value);
+			if (!stock)
+				return (NULL);
+			return (stock);
+		}
+		tmp = tmp->next;
 	}
-	ft_strlcpy(str, (char *)s1, (ft_strlen(s1) + 1));
-	ft_strlcat(str, (char *)s2, s_len + 1);
-	return (str);
+	return (ft_strdup(""));
 }
 // Function to copy the envp and not to use the original one so we can modify it with export and set and unset
-
-
-

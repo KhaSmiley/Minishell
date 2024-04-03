@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:38 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/02 00:26:35 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/03 19:00:13 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,11 @@ int	parsing_and_stock_input(char *input, t_token **tok, t_data *data)
 	tmp = find_token(input);
     if (ft_syntax(&tmp))
 		return (1);
-	ft_expand_str(tmp, data);
+        
+	ft_expand_str_y(tmp, data);
 	fix_quotes_token(tmp);
-	find_str_to_expand(&tmp);
 	*tok = tmp;
+    print_list(*tok);
 	return (0);
 }
 
