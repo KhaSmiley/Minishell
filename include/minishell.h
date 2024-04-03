@@ -214,6 +214,7 @@ void					redir_files(t_token *tok, int i, t_heredoc *h_docs,
 void					parent_process(t_data *data, int i);
 void					close_fds(t_data *data);
 void					reset_std_fd(void);
+void					file_error(t_token *tok, t_data *data, char *str);
 
 /* utils_exec_two.c */
 
