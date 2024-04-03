@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 17:57:34 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/28 23:46:15 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/03 17:06:21 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,7 @@ char				**ft_split(char const *s, char c);
 int					ft_count_word(char const *s1, char c);
 int					ft_strncmp(const char *s1, const char *s2, size_t size);
 int					ft_isdigit(int c);
+int					ft_isalpha(int c);
+char				*ft_itoa(int n);
 
 #endif

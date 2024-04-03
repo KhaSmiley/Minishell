@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 15:13:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/31 06:12:57 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/03 17:40:16 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,8 @@ void ft_export(t_data *data, char **args)
 	{
 		if (ft_check_syntax_key(args[i]))
 		{
-			printf("export: `%s': not a valid identifier\n", args[i]);
+			ft_printf("export: `%s': not a valid identifier\n", args[i]);
+			data->status = 1;
 			i++;
 			continue;
 		}

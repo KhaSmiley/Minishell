@@ -17,22 +17,21 @@ SRCS_NAMES		=	minishell.c \
 					parsing/tokens.c \
 					parsing/quotes.c \
 					parsing/quotes_utils.c \
-					expand/expand.c \
-					expand/expand_utils.c \
-					expand/expand_utils_two.c \
-					expand/expand_after_quotes.c \
 					utils/memory.c \
 					utils/tab_utils.c \
 					exec/pipex.c \
 					exec/exec_prep.c \
 					exec/utils_exec_two.c \
 					exec/utils_exec.c \
+					exec/here_docs.c \
+					exec/here_docs_utils.c \
 					built_ins/built_ins.c \
 					built_ins/built_ins_utils.c \
 					built_ins/export.c \
 					built_ins/export_utils.c \
 					built_ins/unset.c \
-					exec/here_docs.c \
+					expand/expand.c \
+					expand/expand_utils_two.c
 
 OBJS_NAMES		=	${SRCS_NAMES:.c=.o}
 
@@ -84,6 +83,9 @@ fclean:	clean
 	rm -rf ${NAME}
 
 re:	fclean all
+
+leaks: all
+	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --suppressions=del.supp  ./minishell
 
 .PHONY:	all clean fclean re
 # .SILENT:
