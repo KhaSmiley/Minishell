@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 23:15:53 by lbarry            #+#    #+#             */
-/*   Updated: 2024/03/16 01:13:00 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/03 16:36:06 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ t_token *fix_quotes_token(t_token *tok)
 		{
 			remove_quotes(tmp->str);
 			if (tmp->str[0] == '\0')
-				tmp->type = EMPTY;
+				tmp->type = WORD;
 		}
 		tmp = tmp->next;
 	}

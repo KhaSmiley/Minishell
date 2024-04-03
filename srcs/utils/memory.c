@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 21:55:28 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/01 20:50:15 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/03 03:26:24 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	free_tok(t_token **tok)
 		*tok = (*tok)->next;
 		free(tmp->str);
 		tmp->str = NULL;
-		free_tok_env(tmp->env);
+		// free_tok_env(tmp->env);
 		free(tmp);
 		tmp = NULL;
 	}

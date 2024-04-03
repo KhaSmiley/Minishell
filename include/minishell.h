@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/03 20:19:31 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/03 17:08:30 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <sys/wait.h>
 # include <unistd.h>
-# include <signal.h>
 
 typedef struct s_token
 {
@@ -70,6 +70,7 @@ typedef struct s_data
 {
 	char				*input;
 	char				**envp_cpy;
+	int					only_hd;
 	int					tmp_fd;
 	int					argc;
 	int					count_tab;
@@ -79,8 +80,11 @@ typedef struct s_data
 	int					curr_here_doc;
 	char				**builtin;
 	char				**cmd;
+
+	int					status;
 	t_export			*env_export;
 }						t_data;
+t_data *simpleton();
 
 # include "../libft/libft.h"
 # include <fcntl.h>
@@ -93,6 +97,23 @@ typedef struct s_data
 # include <unistd.h>
 
 char					**ft_envp_copy_to_tab(t_data *data);
+char					*find_new_str_env(char *str, int *i, t_env *tmp);
+// char *find_new_str_env(char *str, int *i, t_data *data);
+// char *ft_strjoin_you(char *s1, char *s2);
+char					*ft_get_new_str_for_env(char *str, t_env *tmp);
+
+/* Y */
+
+void	ft_expand_str_y(t_token *tok, t_data *data);
+char	*to_next_double_q(char *str, int *i);
+char *ft_find_value_env_new(char *str, int *i, t_data *data);
+char *double_quote(char *str, int *i, t_data *data);
+char *single_quote(char *str, int *i);
+int ft_strl(char *str);
+char *ft_strjoin_you(char *s1, char *s2);
+char *find_new_str_env_y(char *str, int *i, t_data *data);
+char *normal(char *str, int *i);
+char *ft_get_new_str_for_env_y(char *str, t_data *data);
 
 /* expand.c */
 
@@ -122,7 +143,7 @@ int						ft_isalnum_env(int c);
 /* expand_after_quotes.c */
 
 void					find_str_to_expand(t_token **tok);
-char					*ft_get_new_str_for_env(char *str, t_token *tok);
+// char					*ft_get_new_str_for_env(char *str, t_token *tok);
 char					*ft_strjoin_env(char const *s1, char const *s2);
 
 /* -------------------------- UTILS -------------------------- */
@@ -166,7 +187,8 @@ int						check_quotes_open(char *input);
 
 /* syntax.c */
 
-int						parsing_and_stock_input(char *input, t_token **tok, t_data *data);
+int						parsing_and_stock_input(char *input, t_token **tok,
+							t_data *data);
 int						ft_syntax(t_token **tok);
 int						ft_syntax_pipe(t_token *tok);
 int						ft_syntax_redir(t_token *tok);
@@ -187,7 +209,8 @@ void					child_process(t_data *data, t_token **tok,
 							t_heredoc *h_docs, int i);
 int						exec_pipe(t_data *data, t_token **tok);
 void					redirection(t_data *data, int i);
-void					redir_files(t_token *tok, int i, t_data *data);
+void					redir_files(t_token *tok, int i, t_heredoc *h_docs,
+							t_data *data);
 void					parent_process(t_data *data, int i);
 void					close_fds(t_data *data);
 void					reset_std_fd(void);
@@ -260,8 +283,20 @@ void					ft_unset(t_data *data, char **args);
 
 /* here_doc.c */
 
+void					here_doc_loop(t_data *data, char *lim, int *pipe,
+							t_token **tok, t_heredoc *h_docs);
+void					init_heredoc(t_data *data, t_heredoc **here_docs,
+							char *lim, int i, t_token **tok);
 t_heredoc				*exec_here_docs(t_data *data, t_token **tok);
+void					close_here_docs(t_heredoc *h_docs, int size);
+int						find_heredoc(t_heredoc *h_docs, int size, t_token *tok);
+
+/* here_docs_utils.c */
+
+t_heredoc				*ft_lstlast_here_doc(t_heredoc *lst);
+t_heredoc				*ft_lstnew_here_doc(int fd, char *content, int nb_cmd);
+void					ft_stock_here_doc(t_heredoc **lst, t_heredoc *new_link);
 void					print_list_here_doc(t_heredoc *lst);
-void					close_heredocs(t_heredoc *h_doc);
+int						ft_lstsize_hdoc(t_heredoc *h_docs);
 
 #endif

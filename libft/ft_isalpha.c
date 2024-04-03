@@ -1,39 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tab_utils.c                                        :+:      :+:    :+:   */
+/*   ft_isalpha.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/28 21:23:47 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/02 16:48:09 by kboulkri         ###   ########.fr       */
+/*   Created: 2024/04/02 21:28:41 by kboulkri          #+#    #+#             */
+/*   Updated: 2024/04/02 21:28:43 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "libft.h"
 
-void	free_tab(char **tab)
+int	ft_isalpha(int c)
 {
-	int	i;
-
-	i = 0;
-	while (tab[i] != NULL)
+	if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122))
 	{
-		if (tab[i])
-			free(tab[i]);
-		i++;
+		return (1);
 	}
-	free(tab);
-}
-
-void	print_tab(char **tab)
-{
-	int	i;
-
-	i = 0;
-	while (tab[i])
-	{
-		printf("%s\n", tab[i]);
-		i++;
-	}
+	return (0);
 }
