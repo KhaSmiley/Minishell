@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/03 17:08:30 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/03 20:41:30 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,11 +162,17 @@ t_token					*ft_lstnew(char *content, int type);
 void					ft_stock(t_token **lst, t_token *new_link);
 t_token					*ft_lstlast(t_token *lst);
 void					free_list(t_token **tok);
+int						ft_lstsize(t_export *env);
 
 /* tab_utils.c */
 
 void					free_tab(char **tab);
 void					print_tab(char **tab);
+
+/* signals.c */
+
+void					handle_signals(void);
+void					sigint_handler(int signum);
 
 /* ------------------------- PARSING ------------------------- */
 
