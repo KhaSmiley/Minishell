@@ -3,36 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/03 18:55:06 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/03 20:57:53 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-int	sig_return;
-
-// handle ctrl C SIGINT with sigaction
-void	ctrl_c(int signum)
-{
-	(void)signum;
-	write(1, "\n", 1);
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
-	sig_return = 130;
-}
-
-void	handle_signals(void)
-{
-	struct sigaction	sa;
-
-	sa.sa_handler = &(ctrl_c);
-	sa.sa_flags = 0;
-	sigaction(SIGINT, &sa, NULL);
-}
 
 int	empty_str(char *str)
 {
@@ -46,7 +24,8 @@ int	empty_str(char *str)
 	return (0);
 }
 
-t_data *simpleton(){
+t_data *simpleton(void)
+{
 	static t_data data = {0};
 	return &data;
 }
