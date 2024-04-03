@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/02 00:27:45 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/03 20:19:31 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,6 +191,7 @@ void					redir_files(t_token *tok, int i, t_data *data);
 void					parent_process(t_data *data, int i);
 void					close_fds(t_data *data);
 void					reset_std_fd(void);
+void					file_error(t_token *tok, t_data *data, char *str);
 
 /* utils_exec_two.c */
 

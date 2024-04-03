@@ -6,22 +6,21 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 15:43:05 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/02 00:20:55 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/03 20:21:58 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	quit_file_error(int fd, t_token *tok, t_data *data)
+void	file_error(t_token *tok, t_data *data, char *str)
 {
-	fprintf(stderr, "%d -> Error FD\n", fd);
+	fprintf(stderr, "%s: No such file or directory\n", str);
 	free_tok(&tok);
 	if (data->builtin)
 		free_tab(data->builtin);
 	if (data->cmd)
 		free_tab(data->cmd);
 	close_fds(data);
-	exit(0);
 }
 void	close_fds(t_data *data)
 {
@@ -59,7 +58,7 @@ void	redir_files(t_token *tok, int i, t_data *data)
 		else if (tmp->type == LESS)
 			fd = open(tmp->next->str, O_RDONLY);
 		if (fd == -1)
-			quit_file_error(fd, tok, data);
+			file_error(tok, data, tmp->next->str);
 		if (tmp->type == GREATER || tmp->type == DGREATER)
 			dup2(fd, STDOUT_FILENO);
 		else if (tmp->type == LESS)
