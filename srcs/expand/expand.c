@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_y.c                                         :+:      :+:    :+:   */
+/*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 22:12:21 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/03 17:05:32 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/04 03:57:30 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ char *double_quote(char *str, int *i, t_data *data)
 
 	env_str = NULL;
 	(*i)++;
+    env_str = ft_strjoin_you(env_str, ft_strdup("\""));
 	while (str[*i] != '"')
 	{
 		if (str[*i] == '$')
@@ -130,6 +131,21 @@ char *ft_strjoin_you(char *s1, char *s2)
 	return (res);
 }
 
+
+int	is_last(char *str, int i)
+{
+	int	count;
+
+	count = 0;
+	while (str[i])
+	{
+		if (str[i] == '"')
+			count++;
+		i++;
+	}
+	return (count % 2);
+}
+
 char *find_new_str_env_y(char *str, int *i, t_data *data)
 {
     (*i)++;
@@ -143,7 +159,7 @@ char *find_new_str_env_y(char *str, int *i, t_data *data)
         (*i)++;
         return (ft_itoa(data->status));
     }
-    if (str[*i] == '\'' || str[*i] == '"')
+    if ((str[*i] == '\'' || str[*i] == '"') && !is_last(str, *i))
         return(ft_strdup(""));
     if (!ft_isalpha(str[*i]) && str[*i] != '_')
         return (ft_strdup("$"));
