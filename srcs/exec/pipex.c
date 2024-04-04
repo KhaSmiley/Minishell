@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 15:43:05 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/04 04:02:12 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/04 16:32:29 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ void	child_process(t_data *data, t_token **tok, t_heredoc *h_docs, int i)
 
 	data->cmd = tok_to_tab(tok, i);
 	redirection(data, i);
-	redir_files(*tok, i, h_docs, data);
+	if (!redir_files(*tok, i, h_docs, data))
+		return (free_export(data->env_export), exit(1));
 	if (!data->cmd)
 		return (free_tok(tok), free(data->input), free_export(data->env_export), exit(0));
 	if (!data->cmd[0])
@@ -60,7 +61,7 @@ void	child_process(t_data *data, t_token **tok, t_heredoc *h_docs, int i)
 	}
 	path = complete_path(data, data->cmd[0]);
 	if (!path)
-		return (ft_printf("minishell: %s: command path not found\n", data->cmd[0]), free_tab(data->cmd), free_tok(tok), free_export(data->env_export), exit(127));
+		return (ft_printf("minishell: %s: command not found\n", data->cmd[0]), free_tab(data->cmd), free_tok(tok), free_export(data->env_export), exit(127));
 	tab = ft_envp_copy_to_tab(data);
 	if (path)
 		execve(path, data->cmd, tab);

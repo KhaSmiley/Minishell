@@ -6,13 +6,11 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 20:38:15 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/03 20:42:32 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/04 17:03:42 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-int	sig_return;
 
 // handle ctrl C SIGINT with sigaction
 void	sigint_handler(int signum)
@@ -22,7 +20,10 @@ void	sigint_handler(int signum)
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
-	sig_return = 130;
+	if (!g_sig_return)
+		g_sig_return = 130;
+	else
+		g_sig_return = 0;
 }
 
 void	handle_signals(void)

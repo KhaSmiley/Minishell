@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 20:35:59 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/03 20:37:17 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/04 16:01:14 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,17 @@
 
 void	file_error(t_token *tok, t_data *data, char *str)
 {
-	fprintf(stderr, "%s: No such file or directory\n", str);
+	if (access(str, F_OK) == 0)
+	{
+		fprintf(stderr, "%s: Permission denied\n", str);
+		data->status = 1;
+	}
+	else
+	{
+		fprintf(stderr, "%s: No such file or directory\n", str);
+		data->status = 0;
+	}
 	free_tok(&tok);
-	if (data->builtin)
-		free_tab(data->builtin);
 	if (data->cmd)
 		free_tab(data->cmd);
 	close_fds(data);
@@ -32,7 +39,7 @@ void	close_fds(t_data *data)
 		close(data->pipe_fd[1]);
 }
 
-void	redir_files(t_token *tok, int i,t_heredoc *h_docs, t_data *data)
+int	redir_files(t_token *tok, int i,t_heredoc *h_docs, t_data *data)
 {
 	int		fd;
 	int		nb_pipe;
@@ -64,7 +71,10 @@ void	redir_files(t_token *tok, int i,t_heredoc *h_docs, t_data *data)
 		else if (tmp->type == DLESS)
 			fd = find_heredoc(h_docs, ft_lstsize_hdoc(h_docs), tmp);
 		if (fd == -1)
+		{
 			file_error(tok, data, tmp->next->str);
+			return (0);
+		}
 		if (tmp->type == GREATER || tmp->type == DGREATER)
 			dup2(fd, STDOUT_FILENO);
 		else
@@ -74,6 +84,7 @@ void	redir_files(t_token *tok, int i,t_heredoc *h_docs, t_data *data)
 		tmp = tmp->next;
 	}
 	close_here_docs(h_docs, ft_lstsize_hdoc(h_docs));
+	return (1);
 }
 
 void	redirection(t_data *data, int i)
