@@ -58,7 +58,7 @@ all:	${NAME}
 $(NAME): $(DIR_OBJS) $(OBJS)
 	make -C libft
 	$(CC) $(CFLAGS) ${INC} $(CDFLAGS) $(OBJS) $(LIB) -lreadline -o $(NAME)
-	@ echo "WE GOT THIS"  | toilet -f future -F border --gay
+	@ echo "MINI HELL IS NEARLY OVER"  | toilet -f future -F border --gay
 
 $(OBJS): | $(DIR_OBJS)
 
