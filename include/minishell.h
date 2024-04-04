@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/04 15:20:11 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/04 16:23:53 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <string.h>
 # include <sys/wait.h>
 # include <unistd.h>
+
 
 typedef struct s_token
 {
@@ -80,21 +81,12 @@ typedef struct s_data
 	int					curr_here_doc;
 	char				**builtin;
 	char				**cmd;
-
 	int					status;
 	t_export			*env_export;
 }						t_data;
-t_data *simpleton();
 
-# include "../libft/libft.h"
-# include <fcntl.h>
-# include <readline/history.h>
-# include <readline/readline.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <string.h>
-# include <sys/wait.h>
-# include <unistd.h>
+t_data	*simpleton();
+extern int	g_sig_return;
 
 char					**ft_envp_copy_to_tab(t_data *data);
 char					*find_new_str_env(char *str, int *i, t_env *tmp);

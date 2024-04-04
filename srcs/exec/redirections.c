@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 20:35:59 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/04 15:19:37 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/04 16:01:14 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,17 @@
 
 void	file_error(t_token *tok, t_data *data, char *str)
 {
-	fprintf(stderr, "%s: No such file or directory\n", str);
+	if (access(str, F_OK) == 0)
+	{
+		fprintf(stderr, "%s: Permission denied\n", str);
+		data->status = 1;
+	}
+	else
+	{
+		fprintf(stderr, "%s: No such file or directory\n", str);
+		data->status = 0;
+	}
 	free_tok(&tok);
-	if (data->builtin)
-		free_tab(data->builtin);
 	if (data->cmd)
 		free_tab(data->cmd);
 	close_fds(data);

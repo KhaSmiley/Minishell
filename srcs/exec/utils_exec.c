@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 16:39:11 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/31 06:31:48 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/04 16:24:58 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ char	*complete_path(t_data *data, char *cmd)
 		free(path);
 		i++;
 	}
-	return (free_tab(tmp), ft_printf("%s: complete path command not found\n", cmd), NULL);
+	return (free_tab(tmp), NULL);
 }
 
 void	init_data(int argc, t_data *data, t_token *tok)

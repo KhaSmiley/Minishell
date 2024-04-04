@@ -6,11 +6,13 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/04 15:05:09 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/04 16:44:51 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+int	g_sig_return;
 
 int	empty_str(char *str)
 {
@@ -24,7 +26,7 @@ int	empty_str(char *str)
 	return (0);
 }
 
-t_data *simpleton(void)
+t_data	*simpleton(void)
 {
 	static t_data data = {0};
 	return &data;
@@ -43,6 +45,7 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		handle_signals();
+		g_sig_return = 0;
 		input = readline("baznboul> ");
 		if (input == NULL)
 		{
