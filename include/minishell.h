@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/04 16:23:53 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/04 20:29:53 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 # include <string.h>
 # include <sys/wait.h>
 # include <unistd.h>
-
 
 typedef struct s_token
 {
@@ -88,7 +87,6 @@ typedef struct s_data
 t_data	*simpleton();
 extern int	g_sig_return;
 
-char					**ft_envp_copy_to_tab(t_data *data);
 char					*find_new_str_env(char *str, int *i, t_env *tmp);
 // char *find_new_str_env(char *str, int *i, t_data *data);
 // char *ft_strjoin_you(char *s1, char *s2);
@@ -160,6 +158,7 @@ int						ft_lstsize(t_export *env);
 
 void					free_tab(char **tab);
 void					print_tab(char **tab);
+char					**ft_envp_copy_to_tab(t_data *data);
 
 /* signals.c */
 
@@ -239,6 +238,7 @@ int						get_outfile(t_data *data, t_token **tok, int nb_pipe);
 
 t_heredoc				*exec_here_docs(t_data *data, t_token **tok);
 void					print_list_here_doc(t_heredoc *lst);
+void					sigint_hd(int signum);
 
 /* ------------------------- BUILT INS ------------------------ */
 

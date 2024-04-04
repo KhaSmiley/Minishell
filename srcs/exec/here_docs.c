@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_docs.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 05:04:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/03 02:47:01 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/04 21:45:44 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,22 @@ void here_doc_loop(t_data *data, char *lim, int *pipe, t_token **tok, t_heredoc 
 {
     char *buf;
     int i;
+	int line;
 
     i = 0;
+	line = 1;
     close(pipe[0]);
     while (1)
     {
         buf = readline("> ");
-        if (!buf || !ft_strcmp(buf, lim))
+		line++;
+        if (!ft_strcmp(buf, lim))
             break;
+		if (!buf)
+		{
+			ft_printf("warning: here-doc at line %d delimited by end-of-file (wanted '%s')\n", line, lim);
+			break;
+		}
         ft_putstr_fd(buf, pipe[1]);
     }
     ft_putstr_fd(NULL, pipe[1]);
@@ -45,9 +53,11 @@ void init_heredoc(t_data *data, t_heredoc **here_docs, char *lim, int i, t_token
     if(pipe(pipes) < 0)
         return ;
     ft_stock_here_doc(here_docs, ft_lstnew_here_doc(pipes[0], lim, i));
-    pid = fork();
+	signal(SIGINT, SIG_IGN);
+	pid = fork();
     if (!pid)
     {
+		signal(SIGINT, &sigint_hd);
         data->curr_here_doc = pipes[1];
         here_doc_loop(data, lim, pipes, tok, *here_docs);
     }
@@ -55,7 +65,9 @@ void init_heredoc(t_data *data, t_heredoc **here_docs, char *lim, int i, t_token
     {
         waitpid(pid, NULL, 0);
         j++;
-    }    
+    }
+	signal(SIGINT, &sigint_handler);
+	close(pipes[0]);
     close(pipes[1]);
 }
 
@@ -84,7 +96,7 @@ t_heredoc    *exec_here_docs(t_data *data, t_token **tok)
 void close_here_docs(t_heredoc *h_docs, int size)
 {
 	int i;
-	
+
 	i = 0;
 	while (i < size)
 	{
@@ -93,7 +105,7 @@ void close_here_docs(t_heredoc *h_docs, int size)
 	}
 	if (size)
 		free(h_docs);
-	
+
 }
 
 int	find_heredoc(t_heredoc *h_docs, int size, t_token *tok)
