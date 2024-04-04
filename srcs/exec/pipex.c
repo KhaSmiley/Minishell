@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 15:43:05 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/03 19:23:30 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/04 03:37:34 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ void	child_process(t_data *data, t_token **tok, t_heredoc *h_docs, int i)
 	tab = ft_envp_copy_to_tab(data);
 	if (path)
 		execve(path, data->cmd, tab);
-	return (printf("COMMAND NOT FOUND\n"), free_tab(data->cmd), free(path), free_tok(tok), free_export(data->env_export), exit(127));
+	return (free_tab(data->cmd), free(path), free_tok(tok), free_export(data->env_export), exit(127));
 }
 
 void	parent_process(t_data *data, int i)
