@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 15:43:05 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/04 04:02:12 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/04 15:18:58 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ void	child_process(t_data *data, t_token **tok, t_heredoc *h_docs, int i)
 
 	data->cmd = tok_to_tab(tok, i);
 	redirection(data, i);
-	redir_files(*tok, i, h_docs, data);
+	if (!redir_files(*tok, i, h_docs, data))
+		return (free_tab(data->cmd), free_tok(tok), free_export(data->env_export), exit(1));
 	if (!data->cmd)
 		return (free_tok(tok), free(data->input), free_export(data->env_export), exit(0));
 	if (!data->cmd[0])

@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/03 20:41:30 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/04 15:20:11 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,7 +215,7 @@ void					child_process(t_data *data, t_token **tok,
 							t_heredoc *h_docs, int i);
 int						exec_pipe(t_data *data, t_token **tok);
 void					redirection(t_data *data, int i);
-void					redir_files(t_token *tok, int i, t_heredoc *h_docs,
+int						redir_files(t_token *tok, int i, t_heredoc *h_docs,
 							t_data *data);
 void					parent_process(t_data *data, int i);
 void					close_fds(t_data *data);

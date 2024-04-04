@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 20:35:59 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/03 20:37:17 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/04 15:19:37 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	close_fds(t_data *data)
 		close(data->pipe_fd[1]);
 }
 
-void	redir_files(t_token *tok, int i,t_heredoc *h_docs, t_data *data)
+int	redir_files(t_token *tok, int i,t_heredoc *h_docs, t_data *data)
 {
 	int		fd;
 	int		nb_pipe;
@@ -64,7 +64,10 @@ void	redir_files(t_token *tok, int i,t_heredoc *h_docs, t_data *data)
 		else if (tmp->type == DLESS)
 			fd = find_heredoc(h_docs, ft_lstsize_hdoc(h_docs), tmp);
 		if (fd == -1)
+		{
 			file_error(tok, data, tmp->next->str);
+			return (0);
+		}
 		if (tmp->type == GREATER || tmp->type == DGREATER)
 			dup2(fd, STDOUT_FILENO);
 		else
@@ -74,6 +77,7 @@ void	redir_files(t_token *tok, int i,t_heredoc *h_docs, t_data *data)
 		tmp = tmp->next;
 	}
 	close_here_docs(h_docs, ft_lstsize_hdoc(h_docs));
+	return (1);
 }
 
 void	redirection(t_data *data, int i)
