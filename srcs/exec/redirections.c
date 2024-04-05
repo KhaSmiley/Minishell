@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 20:35:59 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/05 04:21:10 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/05 19:29:30 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,6 @@ void	file_error(t_token *tok, t_data *data, char *str)
 		fprintf(stderr, "%s: No such file or directory\n", str);
 		data->status = 0;
 	}
-	free_tok(&tok);
-	if (data->cmd)
-		free_tab(data->cmd);
 	close_fds(data);
 }
 void	close_fds(t_data *data)
@@ -77,7 +74,7 @@ int	redir_files(t_token *tok, int i, t_heredoc *h_docs, t_data *data)
 		}
 		if (tmp->type == GREATER || tmp->type == DGREATER)
 			dup2(fd, STDOUT_FILENO);
-		else
+		else if (tmp->type == LESS || tmp->type == DLESS)
 			dup2(fd, STDIN_FILENO);
 		if (tmp->type != DLESS)
 			close(fd);
