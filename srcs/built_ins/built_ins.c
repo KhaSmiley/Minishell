@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 00:49:03 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/05 05:43:54 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/05 19:19:35 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,7 +193,6 @@ int	ft_exit_no_fork(char **args, t_data *data, t_token **tok)
 	{
 		if (!ft_exit_atoi(args[1]))
 		{
-			printf("ICI>\n");
 			ft_printf("exit : %s: numeric argument required\n", args[1]);
 			clear_exit_no_fork(data, args, tok);
 			exit(2);
