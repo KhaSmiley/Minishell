@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 06:00:30 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/03 17:44:18 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/05 04:20:56 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 void	ft_delone_unset(t_export **env, char *key)
 {
-	t_export *tmp;
+	t_export	*tmp;
+	t_export	*prev;
 
-	t_export *prev = *env;
+	prev = *env;
 	// si ma tete == le noeud a supprimer
 	if (env && !ft_strcmp((*env)->key, key))
 	{
@@ -45,9 +46,9 @@ void	ft_delone_unset(t_export **env, char *key)
 	}
 }
 
-void ft_unset(t_data *data, char **args)
+void	ft_unset(t_data *data, char **args)
 {
-	int i;
+	int	i;
 
 	i = 1;
 	if (!args[i])

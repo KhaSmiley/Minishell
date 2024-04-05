@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 23:15:53 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/03 16:36:06 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/05 04:21:27 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,10 @@ int	manage_quote_errors(char *input)
 	return (1);
 }
 
-t_token *fix_quotes_token(t_token *tok)
+t_token	*fix_quotes_token(t_token *tok)
 {
-	t_token *tmp;
-	int i;
+	t_token	*tmp;
+	int		i;
 
 	tmp = tok;
 	i = 0;

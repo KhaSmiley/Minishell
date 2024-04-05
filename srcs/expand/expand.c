@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 22:12:21 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/04 16:53:37 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/05 04:21:22 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 void	ft_expand_str_y(t_token *tok, t_data *data)
 {
-    t_token *tmp;
+	t_token	*tmp;
 
 	if (!tok)
 		return ;
-    tmp = tok;
-    while (tmp)
+	tmp = tok;
+	while (tmp)
 	{
 		if (tmp->type == WORD)
 		{
@@ -38,37 +38,36 @@ char	*to_next_double_q(char *str, int *i)
 	return (ft_substr(str, start, *i - start));
 }
 
-char *ft_find_value_env_new(char *str, int *i, t_data *data)
+char	*ft_find_value_env_new(char *str, int *i, t_data *data)
 {
-    char *key;
-    char *value;
-    int start;
-    int j;
+	char	*key;
+	char	*value;
+	int		start;
+	int		j;
 
-    j = 0;
-    start = *i;
-    key = malloc(sizeof (char) * 100);
-    while(ft_isalnum(str[*i]) || str[*i] == '_')
-    {
-        key[j] = str[*i];
-        (*i)++;
-        j++;
-    }
-    key[j] = '\0';
-    value = ft_find_value(key, data->env_export);
-    if (!value)
-        return (free(key), ft_strdup(""));
-    return (free(key), ft_strdup(value));
-
+	j = 0;
+	start = *i;
+	key = malloc(sizeof(char) * 100);
+	while (ft_isalnum(str[*i]) || str[*i] == '_')
+	{
+		key[j] = str[*i];
+		(*i)++;
+		j++;
+	}
+	key[j] = '\0';
+	value = ft_find_value(key, data->env_export);
+	if (!value)
+		return (free(key), ft_strdup(""));
+	return (free(key), ft_strdup(value));
 }
 
-char *double_quote(char *str, int *i, t_data *data)
+char	*double_quote(char *str, int *i, t_data *data)
 {
-    char	*env_str;
+	char	*env_str;
 
 	env_str = NULL;
 	(*i)++;
-    env_str = ft_strjoin_you(env_str, ft_strdup("\""));
+	env_str = ft_strjoin_you(env_str, ft_strdup("\""));
 	while (str[*i] != '"')
 	{
 		if (str[*i] == '$')
@@ -81,31 +80,31 @@ char *double_quote(char *str, int *i, t_data *data)
 	return (ft_strjoin_you(env_str, ft_strdup("\"")));
 }
 
-char *single_quote(char *str, int *i)
+char	*single_quote(char *str, int *i)
 {
-    int start;
+	int	start;
 
-    start = *i;
-    (*i)++;
-    while (str[*i] != '\'')
-        (*i)++;
-    (*i)++;
-    return (ft_substr(str, start, *i - start));
+	start = *i;
+	(*i)++;
+	while (str[*i] != '\'')
+		(*i)++;
+	(*i)++;
+	return (ft_substr(str, start, *i - start));
 }
 
-int ft_strl(char *str)
+int	ft_strl(char *str)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    if (!str)
-        return (i);
-    while(str[i])
-        i++;
-    return (i);
+	i = 0;
+	if (!str)
+		return (i);
+	while (str[i])
+		i++;
+	return (i);
 }
 
-char *ft_strjoin_you(char *s1, char *s2)
+char	*ft_strjoin_you(char *s1, char *s2)
 {
 	int		i;
 	char	*res;
@@ -128,10 +127,9 @@ char *ft_strjoin_you(char *s1, char *s2)
 	}
 	res[i] = 0;
 	free(s1);
-    free(s2);
+	free(s2);
 	return (res);
 }
-
 
 int	is_last(char *str, int i)
 {
@@ -147,58 +145,59 @@ int	is_last(char *str, int i)
 	return (count % 2);
 }
 
-char *find_new_str_env_y(char *str, int *i, t_data *data)
+char	*find_new_str_env_y(char *str, int *i, t_data *data)
 {
-    (*i)++;
-    if (ft_isdigit(str[*i]))
-    {
-        (*i)++;
-        return (ft_strdup(""));
-    }
-    if (str[*i] == '?')
-    {
-        (*i)++;
+	(*i)++;
+	if (ft_isdigit(str[*i]))
+	{
+		(*i)++;
+		return (ft_strdup(""));
+	}
+	if (str[*i] == '?')
+	{
+		(*i)++;
 		if (g_sig_return)
 			return (ft_itoa(g_sig_return));
 		return (ft_itoa(data->status));
-    }
-    if ((str[*i] == '\'' || str[*i] == '"') && !is_last(str, *i))
-        return(ft_strdup(""));
-    if (!ft_isalpha(str[*i]) && str[*i] != '_')
-        return (ft_strdup("$"));
-    return(ft_find_value_env_new(str, i, data));
+	}
+	if ((str[*i] == '\'' || str[*i] == '"') && !is_last(str, *i))
+		return (ft_strdup(""));
+	if (!ft_isalpha(str[*i]) && str[*i] != '_')
+		return (ft_strdup("$"));
+	return (ft_find_value_env_new(str, i, data));
 }
-char *normal(char *str, int *i)
+char	*normal(char *str, int *i)
 {
-    int start;
+	int	start;
 
-    start = *i;
-    while (str[*i] && str[*i] != '"' && str[*i] != '$' && str[*i] != '\'')
-        (*i)++;
-    return (ft_substr(str, start, *i - start));
+	start = *i;
+	while (str[*i] && str[*i] != '"' && str[*i] != '$' && str[*i] != '\'')
+		(*i)++;
+	return (ft_substr(str, start, *i - start));
 }
 
-char *ft_get_new_str_for_env_y(char *str, t_data *data)
+char	*ft_get_new_str_for_env_y(char *str, t_data *data)
 {
-    char *env_str;
-    int i;
+	char	*env_str;
+	int		i;
 
-    i = 0;
-    env_str = NULL;
-    while (str[i])
-    {
-        if (str[i] == '\'')
-            env_str = ft_strjoin_you(env_str, single_quote(str, &i));
-        if (str[i] == '\"')
-            env_str = ft_strjoin_you(env_str, double_quote(str, &i, data));
-        if (str[i] == '$')
+	i = 0;
+	env_str = NULL;
+	while (str[i])
+	{
+		if (str[i] == '\'')
+			env_str = ft_strjoin_you(env_str, single_quote(str, &i));
+		if (str[i] == '\"')
+			env_str = ft_strjoin_you(env_str, double_quote(str, &i, data));
+		if (str[i] == '$')
 		{
-            env_str = ft_strjoin_you(env_str, find_new_str_env_y(str, &i, data));
+			env_str = ft_strjoin_you(env_str, find_new_str_env_y(str, &i,
+						data));
 			data->status = 0;
 		}
 		else
-            env_str = ft_strjoin_you(env_str, normal(str, &i));
-    }
-    free(str);
-    return (env_str);
+			env_str = ft_strjoin_you(env_str, normal(str, &i));
+	}
+	free(str);
+	return (env_str);
 }

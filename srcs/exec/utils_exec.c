@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 16:39:11 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/04 16:24:58 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/05 04:21:16 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ int	ft_access(char *path)
 
 char	*find_envp_path(t_export *env)
 {
-	char	*path;
-	t_export *tmp;
+	char		*path;
+	t_export	*tmp;
 
 	tmp = env;
 	while (tmp)

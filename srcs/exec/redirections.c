@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 20:35:59 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/04 16:01:14 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/05 04:21:10 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	close_fds(t_data *data)
 		close(data->pipe_fd[1]);
 }
 
-int	redir_files(t_token *tok, int i,t_heredoc *h_docs, t_data *data)
+int	redir_files(t_token *tok, int i, t_heredoc *h_docs, t_data *data)
 {
 	int		fd;
 	int		nb_pipe;
@@ -55,7 +55,7 @@ int	redir_files(t_token *tok, int i,t_heredoc *h_docs, t_data *data)
 			nb_pipe++;
 		tmp = tmp->next;
 	}
-	while(tmp && tmp->type != PIPE)
+	while (tmp && tmp->type != PIPE)
 	{
 		if (tmp->type == WORD)
 		{
@@ -69,7 +69,7 @@ int	redir_files(t_token *tok, int i,t_heredoc *h_docs, t_data *data)
 		else if (tmp->type == LESS)
 			fd = open(tmp->next->str, O_RDONLY);
 		else if (tmp->type == DLESS)
-			fd = find_heredoc(h_docs, ft_lstsize_hdoc(h_docs), tmp);
+			fd = find_heredoc(h_docs, data, tmp);
 		if (fd == -1)
 		{
 			file_error(tok, data, tmp->next->str);
@@ -83,7 +83,7 @@ int	redir_files(t_token *tok, int i,t_heredoc *h_docs, t_data *data)
 			close(fd);
 		tmp = tmp->next;
 	}
-	close_here_docs(h_docs, ft_lstsize_hdoc(h_docs));
+	close_heredocs(h_docs, data->nb_hd);
 	return (1);
 }
 

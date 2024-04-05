@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 01:06:11 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/04 03:58:44 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/05 04:21:32 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,12 @@ int	alloc_token(t_token **tok, char *longchev, char *str, int i)
 	if (str[i + 1] == longchev[0])
 	{
 		redirection = ft_strdup(longchev);
-        if (!redirection)
-            return (-1);
+		if (!redirection)
+			return (-1);
 		ft_stock(tok, ft_lstnew(redirection, ft_tokenizer(redirection)));
 		return (1);
 	}
-    redirection = ft_strdup(&longchev[1]);
+	redirection = ft_strdup(&longchev[1]);
 	if (!redirection)
 		return (-1);
 	ft_stock(tok, ft_lstnew(redirection, ft_tokenizer(redirection)));
@@ -70,7 +70,8 @@ int	ft_find_end(char *str, char flag_quotes, int i)
 	while (str[i])
 	{
 		i++;
-		if ((str[i] == '\0') || ((str[i] == flag_quotes) && (str[i + 1] == ' ' || str[i + 1] == '\t')))
+		if ((str[i] == '\0') || ((str[i] == flag_quotes) && (str[i + 1] == ' '
+					|| str[i + 1] == '\t')))
 			return (i);
 	}
 	return (i);
@@ -112,14 +113,20 @@ char	*tonegatif(char *str)
 
 char	*isaword(char *str, int *i)
 {
-    int j = 0;
-    char *word;
+	int		j;
+	char	*word;
+
+	j = 0;
 	word = ft_calloc(word_size(str, *i) + 1, 1);
 	if (!word)
 		return (NULL);
 	while (ft_strchr(" \t><|\0", str[*i]) == 0)
+	{
 		word[j++] = str[(*i)++];
-    return (word);
+	}
+	if (str[*i])
+		(*i)--;
+	return (word);
 }
 
 t_token	*find_token(char *str)
@@ -137,7 +144,9 @@ t_token	*find_token(char *str)
 		else if (str[i] == '>')
 			i += alloc_token(&tok, ">>", str, i);
 		else if (str[i] == '|')
+		{
 			ft_stock(&tok, ft_lstnew(ft_strdup("|"), PIPE));
+		}
 		else if (str[i] == ' ' || str[i] == '\t')
 			ft_tokenizer(" ");
 		else

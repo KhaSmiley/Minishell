@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 17:57:34 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/03 17:06:21 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/05 04:07:04 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ char				*ft_strjoin_gnl(char *s1, char *s2);
 
 /* libft */
 
+int					ft_atoi(const char *str);
 void				free_tab(char **tab);
 int					ft_isalnum(int c);
 void				ft_bzero(void *s, size_t n);

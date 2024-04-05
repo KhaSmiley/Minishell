@@ -5,9 +5,9 @@
 // if only one type of quotes- remove them
 // if both types of quotes- only remove outside ones
 
-int check_closure(char *str, int i, char quote, int flag)
+int	check_closure(char *str, int i, char quote, int flag)
 {
-	char other;
+	char	other;
 
 	if (!str)
 		return (-2);
@@ -125,7 +125,3 @@ int	check_quotes_open(char *input)
 	}
 	return (1);
 }
-
-
-
-
