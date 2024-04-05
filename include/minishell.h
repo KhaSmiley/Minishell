@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/05 05:26:26 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/05 17:12:22 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ enum
 typedef struct s_data
 {
 	char			*input;
+	int				minishell_line_no;
 	char			**envp_cpy;
 	int				nb_hd;
 	int				only_hd;
@@ -165,6 +166,7 @@ char					**ft_envp_copy_to_tab(t_data *data);
 
 void				handle_signals(void);
 void				sigint_handler(int signum);
+void				sigint_hd(int signum);
 
 /* ------------------------- PARSING ------------------------- */
 
@@ -206,12 +208,14 @@ int					ft_tokenizer(char *token);
 void				child_process(t_data *data, t_token **tok,
 						t_heredoc *h_docs, int i);
 int					exec_pipe(t_data *data, t_token **tok);
+void				parent_process(t_data *data, int i);
+
+/* redirections.c */
+
 void				redirection(t_data *data, int i);
 int					redir_files(t_token *tok, int i, t_heredoc *h_docs,
 						t_data *data);
-void				parent_process(t_data *data, int i);
 void				close_fds(t_data *data);
-void				reset_std_fd(void);
 void				file_error(t_token *tok, t_data *data, char *str);
 
 /* utils_exec_two.c */
@@ -237,9 +241,13 @@ int					get_outfile(t_data *data, t_token **tok, int nb_pipe);
 
 /* here_doc.c */
 
-t_heredoc			*exec_here_docs(t_data *data, t_token **tok);
-void				  print_list_here_doc(t_heredoc *lst);
-void					sigint_hd(int signum);
+void				find_nb_hdoc(t_token *tok, t_data *data);
+void				init_here_doc(t_heredoc *h_docs, t_token **tok, t_data *data);
+void				write_hdocs(char *lim, int pipe, t_data *data);
+void				exec_hdocs(t_heredoc *h_docs, t_data *data, int *i, t_token **tok);
+void				close_heredocs(t_heredoc *h_docs, int limit);
+t_heredoc			*here_doc_launch(t_data *data, t_token **tok);
+int					find_heredoc(t_heredoc *h_docs, t_data *data, t_token *tmp);
 
 /* ------------------------- BUILT INS ------------------------ */
 
@@ -283,18 +291,5 @@ t_export			*ft_lstnew_export(char *key, char *value);
 
 void				ft_unset(t_data *data, char **args);
 
-/* here_doc.c */
-
-t_heredoc			*here_doc_launch(t_data *data, t_token **tok);
-int					find_heredoc(t_heredoc *h_docs, t_data *data, t_token *tmp);
-void				close_heredocs(t_heredoc *h_docs, int limit);
-
-/* here_docs_utils.c */
-
-t_heredoc			*ft_lstlast_here_doc(t_heredoc *lst);
-t_heredoc			*ft_lstnew_here_doc(int fd, char *content);
-void				ft_stock_here_doc(t_heredoc **lst, t_heredoc *new_link);
-void				print_list_here_doc(t_heredoc *lst);
-int					ft_lstsize_hdoc(t_heredoc *h_docs);
 
 #endif

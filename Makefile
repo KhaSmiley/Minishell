@@ -25,7 +25,6 @@ SRCS_NAMES		=	minishell.c \
 					exec/utils_exec_two.c \
 					exec/utils_exec.c \
 					exec/here_docs.c \
-					exec/here_docs_utils.c \
 					exec/redirections.c \
 					built_ins/built_ins.c \
 					built_ins/built_ins_utils.c \
