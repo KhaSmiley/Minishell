@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 00:49:03 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/05 19:19:35 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/05 21:02:27 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	ft_cd(char **cmd, t_data *data)
 	{
 		path = get_home_env(data->env_export);
 		if (!path)
-			return (printf("cd no args, HOME not found\n"), 0);
+			return (ft_printf("cd no args, HOME not found\n"), 0);
 	}
 	else
 		path = cmd[1];
@@ -86,6 +86,13 @@ int	ft_cd(char **cmd, t_data *data)
 	if (ret == -1)
 	{
 		ft_printf("cd: %s: No such file or directory\n", cmd[1]);
+		data->status = 1;
+		return (0);
+	}
+	if (cmd[2])
+	{
+		ft_printf("cd : too many arguments");
+		data->status = 1;
 		return (0);
 	}
 	return (1);
@@ -200,6 +207,7 @@ int	ft_exit_no_fork(char **args, t_data *data, t_token **tok)
 	}
 	if (i > 2)
 	{
+		data->status = 1;
 		ft_printf("exit: too many arguments\n");
 		return (1);
 	}
