@@ -1,28 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_exec_two.c                                   :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/04 18:43:40 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/05 04:21:14 by kboulkri         ###   ########.fr       */
+/*   Created: 2023/05/06 22:10:01 by kboulkri          #+#    #+#             */
+/*   Updated: 2024/04/05 04:06:29 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "libft.h"
 
-int	ft_strlen_from(int i, char *str)
+int	ft_atoi(const char *str)
 {
-	while (str[i])
+	int	i;
+	int	sign;
+	int	result;
+
+	sign = 1;
+	result = 0;
+	i = 0;
+	while ((str[i] >= 8 && str[i] <= 13) || str[i] == 32 || str[i] == 13)
+	{
 		i++;
-	return (i);
-}
-
-char	*ft_strdup_access(char *cmd)
-{
-	if (ft_access(cmd) == 1)
-		return (cmd);
-	else
-		return (ft_printf("%s: dup access command not found\n", cmd), NULL);
+	}
+	if (str[i] == 45 || str[i] == 43)
+	{
+		if (str[i] == 45)
+			sign *= -1;
+		i++;
+	}
+	while (str[i] >= 48 && str[i] <= 57)
+	{
+		result = result * 10 + str[i] - 48;
+		i++;
+	}
+	return (result * sign);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 20:38:15 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/04 21:48:17 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/05 06:02:40 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,5 @@ void	handle_signals(void)
 
 	sa.sa_handler = &(sigint_handler);
 	sa.sa_flags = 0;
-	sigaction(SIGINT, &sa, NULL);
+	// sigaction(SIGINT, &sa, NULL);
 }

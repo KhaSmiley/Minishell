@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/04 20:22:05 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/05 04:59:28 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,6 @@ int	empty_str(char *str)
 	return (0);
 }
 
-t_data	*simpleton(void)
-{
-	static t_data data = {0};
-	return &data;
-}
-
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	data = {0};
@@ -49,7 +43,6 @@ int	main(int argc, char **argv, char **envp)
 		input = readline("baznboul> ");
 		if (input == NULL)
 		{
-			ft_printf("exit\n");
 			break ;
 		}
 		if (!*input)

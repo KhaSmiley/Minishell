@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 03:40:10 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/03 20:36:31 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/05 04:21:36 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,19 +56,19 @@ void	print_list(t_token *lst)
 	return ;
 }
 
-int ft_lstsize(t_export *env)
+int	ft_lstsize(t_export *env)
 {
-    t_export *tmp;
-    int i;
+	t_export	*tmp;
+	int			i;
 
-    i = 0;
-    if (!env)
-        return (i);
-    tmp = env;
-    while (tmp)
-    {
-        i++;
-        tmp = tmp->next;
-    }
-    return (i);
+	i = 0;
+	if (!env)
+		return (i);
+	tmp = env;
+	while (tmp)
+	{
+		i++;
+		tmp = tmp->next;
+	}
+	return (i);
 }

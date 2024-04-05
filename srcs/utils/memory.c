@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 21:55:28 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/03 03:26:24 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/05 04:21:38 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	free_tok_env(t_env *my_env)
 		free(tmp);
 	}
 }
-
 
 void	free_tok(t_token **tok)
 {

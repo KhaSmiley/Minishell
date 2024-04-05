@@ -6,11 +6,11 @@
 #    By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/10 15:37:48 by kboulkri          #+#    #+#              #
-#    Updated: 2024/04/03 17:06:30 by kboulkri         ###   ########.fr        #
+#    Updated: 2024/04/05 04:06:46 by kboulkri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS = ft_isalpha.c ft_isdigit.c free_tab.c ft_isalnum.c ft_itoa.c ft_bzero.c ft_calloc.c ft_convert_base.c ft_printf.c ft_putnbr.c ft_putstr_fd.c ft_split.c ft_strchr.c ft_strcmp.c ft_strdup.c ft_strjoin.c ft_strlcat.c ft_strlcpy.c ft_strlen.c ft_strncmp.c ft_substr.c get_next_line.c get_next_line_utils.c
+SRCS = ft_atoi.c ft_isalpha.c ft_isdigit.c free_tab.c ft_isalnum.c ft_itoa.c ft_bzero.c ft_calloc.c ft_convert_base.c ft_printf.c ft_putnbr.c ft_putstr_fd.c ft_split.c ft_strchr.c ft_strcmp.c ft_strdup.c ft_strjoin.c ft_strlcat.c ft_strlcpy.c ft_strlen.c ft_strncmp.c ft_substr.c get_next_line.c get_next_line_utils.c
 
 OBJS	=	$(SRCS:.c=.o)
 
