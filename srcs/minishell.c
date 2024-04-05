@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/05 04:59:28 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/05 16:59:59 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	tok = NULL;
 	ft_envp_copy_export(&data, envp);
+	data.minishell_line_no = 1;
 	while (1)
 	{
 		handle_signals();
@@ -43,6 +44,7 @@ int	main(int argc, char **argv, char **envp)
 		input = readline("baznboul> ");
 		if (input == NULL)
 		{
+			ft_printf("exit\n");
 			break ;
 		}
 		if (!*input)
@@ -72,6 +74,7 @@ int	main(int argc, char **argv, char **envp)
 		free(input);
 		free_tok(&tok);
 		close(data.pipe_fd[0]);
+		data.minishell_line_no++;
 	}
 	free_export(data.env_export);
 	free_tok(&tok);
