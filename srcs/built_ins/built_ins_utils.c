@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_ins_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 03:45:20 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/05 05:41:31 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/05 19:26:53 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,21 +51,27 @@ int	one_built_in(char **builtin, t_token *tok, t_data *data)
 {
 	t_heredoc	*h_docs;
 
-	data->builtin = builtin;
-	h_docs = here_doc_launch(data, &tok);
 	data->std_fd[0] = dup(STDIN_FILENO);
 	data->std_fd[1] = dup(STDOUT_FILENO);
-	redirection(data, 0);
-	redir_files(tok, 0, h_docs, data);
+	data->builtin = builtin;
+	h_docs = here_doc_launch(data, &tok);
+	if (!redir_files(tok, 0, h_docs, data))
+	{
+		dup2(data->std_fd[0], STDIN_FILENO);
+		dup2(data->std_fd[1], STDOUT_FILENO);
+		close(data->std_fd[0]);
+		close(data->std_fd[1]);
+		return (0);
+	}
 	lets_builtin_no_fork(data, builtin, &tok);
 	if (ft_strcmp(builtin[0], "unset") == 0)
-		return (free(builtin[0]), 0);
+		return (free(builtin[0]), 1);
 	free_tab(builtin);
 	dup2(data->std_fd[0], STDIN_FILENO);
 	dup2(data->std_fd[1], STDOUT_FILENO);
 	close(data->std_fd[0]);
 	close(data->std_fd[1]);
-	return (0);
+	return (1);
 }
 
 char	*get_home_env(t_export *env)
