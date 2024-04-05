@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   memory.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 21:55:28 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/05 04:21:38 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/05 18:31:33 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	free_tok(t_token **tok)
 		*tok = (*tok)->next;
 		free(tmp->str);
 		tmp->str = NULL;
-		// free_tok_env(tmp->env);
 		free(tmp);
 		tmp = NULL;
 	}
