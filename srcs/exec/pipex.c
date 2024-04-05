@@ -12,33 +12,6 @@
 
 #include "../include/minishell.h"
 
-char	**ft_envp_copy_to_tab(t_data *data)
-{
-	t_export	*tmp;
-	char		*new_str;
-	char		**tab;
-	int			size;
-	int			i;
-
-	i = 0;
-	tmp = data->env_export;
-	size = ft_lstsize(data->env_export);
-	tab = NULL;
-	tab = malloc(sizeof(char *) * (size + 1));
-	while (tmp)
-	{
-		new_str = NULL;
-		new_str = ft_strjoin(tmp->key, "=");
-		new_str = ft_strjoin_gnl(new_str, tmp->value);
-		tab[i] = ft_strdup(new_str);
-		free(new_str);
-		tmp = tmp->next;
-		i++;
-	}
-	tab[i] = NULL;
-	return (tab);
-}
-
 void	child_process(t_data *data, t_token **tok, t_heredoc *h_docs, int i)
 {
 	char	*path;

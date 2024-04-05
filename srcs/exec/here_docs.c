@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   here_docs.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 02:59:29 by kboulkri          #+#    #+#             */
 /*   Updated: 2024/04/05 07:20:49 by kboulkri         ###   ########.fr       */
@@ -32,7 +32,7 @@ void	init_here_doc(t_heredoc *h_docs, t_token **tok, t_data *data)
 {
 	t_token	*tmp;
 	int		i;
-
+  
 	tmp = *tok;
 	i = 0;
 	while (i < data->nb_hd)
@@ -47,6 +47,7 @@ void	init_here_doc(t_heredoc *h_docs, t_token **tok, t_data *data)
 		tmp = tmp->next;
 	}
 }
+
 void	write_hdocs(char *lim, int pipe)
 {
 	char	*line;
@@ -122,6 +123,7 @@ t_heredoc	*here_doc_launch(t_data *data, t_token **tok)
 	pid = fork();
 	i = 0;
 	if (pid == 0)
+    // mets les signaux
 		exec_hdocs(h_docs, data, &i, tok);
 	else if (pid > 0)
 	{

@@ -85,9 +85,9 @@ typedef struct s_data
 	t_export		*env_export;
 }					t_data;
 
+t_data	*simpleton();
 extern int g_sig_return ;
 
-char				**ft_envp_copy_to_tab(t_data *data);
 char				*find_new_str_env(char *str, int *i, t_env *tmp);
 // char *find_new_str_env(char *str, int *i, t_data *data);
 // char *ft_strjoin_you(char *s1, char *s2);
@@ -157,8 +157,9 @@ int					ft_lstsize(t_export *env);
 
 /* tab_utils.c */
 
-void				free_tab(char **tab);
-void				print_tab(char **tab);
+void					free_tab(char **tab);
+void					print_tab(char **tab);
+char					**ft_envp_copy_to_tab(t_data *data);
 
 /* signals.c */
 
@@ -237,7 +238,8 @@ int					get_outfile(t_data *data, t_token **tok, int nb_pipe);
 /* here_doc.c */
 
 t_heredoc			*exec_here_docs(t_data *data, t_token **tok);
-void				print_list_here_doc(t_heredoc *lst);
+void				  print_list_here_doc(t_heredoc *lst);
+void					sigint_hd(int signum);
 
 /* ------------------------- BUILT INS ------------------------ */
 
@@ -251,6 +253,7 @@ int					ft_env(t_data *data);
 int					ft_echo(char **cmd);
 int					ft_exit_no_fork(char **args, t_data *data, t_token **tok);
 int					ft_exit_fork(char **args, t_data *data, t_token **tok);
+
 /* built_ins_utils.c */
 
 int					to_builtin_or_not_to_builtin(char *cmd);
