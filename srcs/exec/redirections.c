@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 20:35:59 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/05 19:29:30 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/05 20:51:16 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	file_error(t_token *tok, t_data *data, char *str)
 {
+	(void)tok;
 	if (access(str, F_OK) == 0)
 	{
 		fprintf(stderr, "%s: Permission denied\n", str);
@@ -22,7 +23,7 @@ void	file_error(t_token *tok, t_data *data, char *str)
 	else
 	{
 		fprintf(stderr, "%s: No such file or directory\n", str);
-		data->status = 0;
+		data->status = 1;
 	}
 	close_fds(data);
 }
