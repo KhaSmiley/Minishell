@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 15:43:05 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/05 07:23:14 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/05 21:39:40 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	child_process(t_data *data, t_token **tok, t_heredoc *h_docs, int i)
 	if (path)
 		execve(path, data->cmd, tab);
 	return (free_tab(data->cmd), free(path), free_tok(tok),
-		free_export(data->env_export), exit(127));
+		free_export(data->env_export), exit(0));
 }
 
 void	parent_process(t_data *data, int i)
