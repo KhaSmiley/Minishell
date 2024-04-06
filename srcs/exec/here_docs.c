@@ -5,115 +5,145 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/26 05:04:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/30 01:53:09 by lbarry           ###   ########.fr       */
+/*   Created: 2024/04/05 02:59:29 by kboulkri          #+#    #+#             */
+/*   Updated: 2024/04/05 17:28:36 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-t_heredoc *ft_lstlast_here_doc(t_heredoc *lst)
+void	find_nb_hdoc(t_token *tok, t_data *data)
 {
-	if (!lst)
+	t_token	*tmp;
+
+	data->nb_hd = 0;
+	tmp = tok;
+	while (tmp)
+	{
+		if (tmp->type == DLESS)
+		{
+			data->nb_hd++;
+		}
+		tmp = tmp->next;
+	}
+}
+
+void	init_here_doc(t_heredoc *h_docs, t_token **tok, t_data *data)
+{
+	t_token	*tmp;
+	int		i;
+
+	tmp = *tok;
+	i = 0;
+	while (i < data->nb_hd)
+	{
+		if (tmp->type == DLESS)
+		{
+			h_docs[i].in_cmd = i;
+			h_docs[i].lim = tmp->next->str;
+			pipe(h_docs[i].fd);
+			i++;
+		}
+		tmp = tmp->next;
+	}
+}
+
+void	write_hdocs(char *lim, int pipe, t_data *data)
+{
+	char	*line;
+	int		i;
+
+	i = 1;
+	while (1)
+	{
+		line = readline("> ");
+		if (!line)
+		{
+			ft_printf("warning: here-document at line %d delimited by end-of-file (wanted '%s')\n", data->minishell_line_no, lim);
+			break;
+		}
+		if (!ft_strcmp(line, lim))
+			break ;
+		ft_putstr_fd(line, pipe);
+		free(line);
+		i++;
+	}
+	close(pipe);
+}
+
+void	exec_hdocs(t_heredoc *h_docs, t_data *data, int *i, t_token **tok)
+{
+	while (*i < data->nb_hd)
+	{
+		close(h_docs[*i].fd[0]);
+		write_hdocs(h_docs[*i].lim, h_docs[*i].fd[1], data);
+		(*i)++;
+	}
+	// ft_printf("HERE\n");
+	free(h_docs);
+	free_export(data->env_export);
+	free_tok(tok);
+	exit(0);
+}
+void	close_heredocs(t_heredoc *h_docs, int limit)
+{
+	int	i;
+
+	i = 0;
+	while (i < limit)
+	{
+		close(h_docs[i].fd[0]);
+		i++;
+	}
+	if (limit)
+		free(h_docs);
+}
+
+int	find_heredoc(t_heredoc *h_docs, t_data *data, t_token *tmp)
+{
+	int	i;
+
+	i = -1;
+	while (++i < data->nb_hd)
+	{
+		if (!ft_strcmp(h_docs[i].lim, tmp->next->str))
+			return (h_docs[i].fd[0]);
+	}
+	return (-1);
+}
+
+t_heredoc	*here_doc_launch(t_data *data, t_token **tok)
+{
+	int i;
+	t_heredoc *h_docs;
+	int pid;
+
+	i = 0;
+	data->nb_hd = 0;
+	find_nb_hdoc(*tok, data);
+	if (data->nb_hd == 0)
 		return (NULL);
-	while (lst->next)
-		lst = lst->next;
-	return (lst);
-}
-
-t_heredoc	*ft_lstnew_here_doc(int fd, char *content, int nb_cmd)
-{
-	t_heredoc	*new;
-
-	new = malloc(sizeof(*new));
-	if (!new)
+	h_docs = ft_calloc(sizeof(t_heredoc), data->nb_hd);
+	if (!h_docs)
 		return (NULL);
-    new->fd = fd;
-	new->lim = content;
-    new->in_cmd = nb_cmd;
-	new->next = NULL;
-	return (new);
-}
-
-void	ft_stock_here_doc(t_heredoc **lst, t_heredoc *new_link)
-{
-	if (!lst)
-		return ;
-	if (!*lst)
-		*lst = new_link;
-	else
-		(ft_lstlast_here_doc(*lst))->next = new_link;
-}
-
-void print_list_here_doc(t_heredoc *lst)
-{
-    if (!lst)
-		return ;
-    while(lst)
-    {
-        printf("string: %s\nin_cmd = %d\n", lst->lim, lst->in_cmd);
-        lst = lst->next;
-    }
-    return ;
-}
-
-void here_doc_loop(t_data *data, char *lim, int *pipe)
-{
-    char *buf;
-    int i;
-
-    i = 0;
-    close(pipe[0]);
-    while (1)
-    {
-        buf = readline("> ");
-        if (!buf || !ft_strcmp(buf, lim))
-            break;
-        ft_putstr_fd(buf, pipe[1]);
-    }
-    ft_putstr_fd(NULL, pipe[1]);
-    close(pipe[1]);
-    close(data->curr_here_doc);
-    exit(0);
-}
-
-void init_heredoc(t_data *data, t_heredoc **here_docs, char *lim, int i)
-{
-    int pid;
-    int pipes[2];
-
-    if(pipe(pipes) < 0)
-        return ;
-    ft_stock_here_doc(here_docs, ft_lstnew_here_doc(pipes[0], lim, i));
-    pid = fork();
-    if (!pid)
-    {
-        data->curr_here_doc = pipes[1];
-        here_doc_loop(data, lim, pipes);
-    }
-    wait(NULL);
-    close(pipes[1]);
-}
-
-t_heredoc    *exec_here_docs(t_data *data, t_token **tok)
-{
-    t_token *tmp;
-    t_heredoc *here_docs;
-    int i;
-
-
-    i = 0;
-    tmp = *tok;
-    here_docs = NULL;
-    while (tmp)
-    {
-        if (tmp->type == PIPE)
-            i++;
-        if (tmp->type == DLESS)
-        {
-            init_heredoc(data, &here_docs, tmp->next->str, i);
-        }
-        tmp = tmp->next;
-    }
-    return (here_docs);
+	init_here_doc(h_docs, tok, data);
+	signal(SIGINT, SIG_IGN);
+	pid = fork();
+	i = 0;
+	if (pid == 0)
+	{
+		signal(SIGINT, &sigint_hd);
+		exec_hdocs(h_docs, data, &i, tok);
+	}
+	else if (pid > 0)
+	{
+		while (i < data->nb_hd)
+		{
+			// ft_printf("close h_docs\n");
+			close(h_docs[i++].fd[1]);
+		}
+	}
+	waitpid(pid, 0, 0);
+	signal(SIGINT, &sigint_handler);
+	return (h_docs);
 }

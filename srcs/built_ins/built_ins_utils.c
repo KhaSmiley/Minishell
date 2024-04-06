@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 03:45:20 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/01 20:03:42 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/05 19:26:53 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ int	to_builtin_or_not_to_builtin(char *cmd)
 		return (1);
 	else if (!ft_strcmp(cmd, "unset"))
 		return (1);
+	else if (!ft_strcmp(cmd, "exit"))
+		return (1);
 	return (0);
 }
 
@@ -47,34 +49,43 @@ char	*find_first_cmd(t_token **tok)
 
 int	one_built_in(char **builtin, t_token *tok, t_data *data)
 {
-	int	std_fd[2];
+	t_heredoc	*h_docs;
 
+	data->std_fd[0] = dup(STDIN_FILENO);
+	data->std_fd[1] = dup(STDOUT_FILENO);
 	data->builtin = builtin;
-	std_fd[0] = dup(STDIN_FILENO);
-	std_fd[1] = dup(STDOUT_FILENO);
-	redirection(data, 0);
-	redir_files(tok, 0, data);
-	lets_builtin(data, builtin, data->envp_cpy);
+	h_docs = here_doc_launch(data, &tok);
+	if (!redir_files(tok, 0, h_docs, data))
+	{
+		dup2(data->std_fd[0], STDIN_FILENO);
+		dup2(data->std_fd[1], STDOUT_FILENO);
+		close(data->std_fd[0]);
+		close(data->std_fd[1]);
+		return (0);
+	}
+	lets_builtin_no_fork(data, builtin, &tok);
 	if (ft_strcmp(builtin[0], "unset") == 0)
-		return (free(builtin[0]), 0);
+		return (free(builtin[0]), 1);
 	free_tab(builtin);
-	dup2(std_fd[0], STDIN_FILENO);
-	dup2(std_fd[1], STDOUT_FILENO);
-	close(std_fd[0]);
-	close(std_fd[1]);
-	return (0);
+	dup2(data->std_fd[0], STDIN_FILENO);
+	dup2(data->std_fd[1], STDOUT_FILENO);
+	close(data->std_fd[0]);
+	close(data->std_fd[1]);
+	return (1);
 }
 
-char	*get_home_env(char **envp_cpy)
+char	*get_home_env(t_export *env)
 {
-	int		i;
+	t_export	*tmp;
+	int			i;
 
+	tmp = env;
 	i = 0;
-	while (envp_cpy[i])
+	while (tmp)
 	{
-		if (!ft_strncmp(envp_cpy[i], "HOME=", 5))
-			return (envp_cpy[i] + 5);
-		i++;
+		if (!ft_strcmp(tmp->key, "HOME"))
+			return (env->value);
+		tmp = tmp->next;
 	}
 	return (NULL);
 }
@@ -90,8 +101,8 @@ int	check_echo_option(char **args, int i, int j)
 				j++;
 			if (args[i][j] != 'n')
 				return (i - 1);
-			if (args[i][j + 1] != 'n' && args[i][j + 1] != '\0'
-				&& (args[i][j + 1] != ' ' || args[i][j + 1] != '\t'))
+			if (args[i][j + 1] != 'n' && args[i][j + 1] != '\0' && (args[i][j
+					+ 1] != ' ' || args[i][j + 1] != '\t'))
 				return (i - 1);
 			while (args[i][j] == 'n')
 			{

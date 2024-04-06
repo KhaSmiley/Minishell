@@ -12,27 +12,27 @@ DIR_SUBDIRS		=	built_ins \
 DIR_OBJS		=	.objs
 
 SRCS_NAMES		=	minishell.c \
-					utils/lst_utils.c \
 					parsing/syntax.c \
 					parsing/tokens.c \
 					parsing/quotes.c \
 					parsing/quotes_utils.c \
-					expand/expand.c \
-					expand/expand_utils.c \
-					expand/expand_utils_two.c \
-					expand/expand_after_quotes.c \
 					utils/memory.c \
 					utils/tab_utils.c \
+					utils/lst_utils.c \
+					utils/signals.c \
 					exec/pipex.c \
 					exec/exec_prep.c \
 					exec/utils_exec_two.c \
 					exec/utils_exec.c \
+					exec/here_docs.c \
+					exec/redirections.c \
 					built_ins/built_ins.c \
 					built_ins/built_ins_utils.c \
 					built_ins/export.c \
 					built_ins/export_utils.c \
 					built_ins/unset.c \
-					exec/here_docs.c \
+					expand/expand.c \
+					expand/expand_utils_two.c
 
 OBJS_NAMES		=	${SRCS_NAMES:.c=.o}
 
@@ -57,7 +57,7 @@ all:	${NAME}
 $(NAME): $(DIR_OBJS) $(OBJS)
 	make -C libft
 	$(CC) $(CFLAGS) ${INC} $(CDFLAGS) $(OBJS) $(LIB) -lreadline -o $(NAME)
-	@ echo "WE GOT THIS"  | toilet -f future -F border --gay
+	@ echo "MINI HELL IS NEARLY OVER"  | toilet -f future -F border --gay
 
 $(OBJS): | $(DIR_OBJS)
 
@@ -84,6 +84,9 @@ fclean:	clean
 	rm -rf ${NAME}
 
 re:	fclean all
+
+leaks: all
+	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --suppressions=del.supp  ./minishell
 
 .PHONY:	all clean fclean re
 # .SILENT:

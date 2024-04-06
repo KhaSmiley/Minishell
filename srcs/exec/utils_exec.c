@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 16:39:11 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/03/21 15:18:03 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/05 17:01:02 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,20 @@ int	ft_access(char *path)
 	return (0);
 }
 
-char	*find_envp_path(char **envp)
+char	*find_envp_path(t_export *env)
 {
-	int		i;
-	char	*path;
+	char		*path;
+	t_export	*tmp;
 
-	i = 0;
-	while (envp[i])
+	tmp = env;
+	while (tmp)
 	{
-		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
+		if (ft_strcmp(tmp->key, "PATH") == 0)
 		{
-			path = ft_substr(envp[i], 5, ft_strlen_from(5, envp[i]));
+			path = ft_strdup(tmp->value);
 			return (path);
 		}
-		i++;
+		tmp = tmp->next;
 	}
 	return (NULL);
 }
@@ -46,7 +46,7 @@ char	**split_path(t_data *data)
 
 	i = 0;
 	j = 0;
-	path = find_envp_path(data->envp_cpy);
+	path = find_envp_path(data->env_export);
 	if (!path)
 		return (NULL);
 	data->count_tab = ft_count_word(path, ':');
@@ -83,7 +83,7 @@ char	*complete_path(t_data *data, char *cmd)
 		free(path);
 		i++;
 	}
-	return (free_tab(tmp), ft_printf("%s: complete path command not found\n", cmd), NULL);
+	return (free_tab(tmp), NULL);
 }
 
 void	init_data(int argc, t_data *data, t_token *tok)
