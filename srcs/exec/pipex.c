@@ -3,14 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 15:43:05 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/07 02:47:59 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/07 04:30:04 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+char	ft_get_last_char(const char *str)
+{
+	while (*(str) && *(str + 1))
+		++str;
+	return (*str);
+}
+
+int	ft_handle_errors(char **args)
+{
+	struct stat	path_stat;
+
+	stat(args[0], &path_stat);
+	if (!access(args[0], F_OK) && access(args[0], X_OK))
+	{
+		// ft_printf("FIRST\n");
+		return (ft_printf("minishell: %s: %s\n", args[0], strerror(errno)),
+			126);
+	}
+	else if ((!ft_strncmp(args[0], "./", 2) || ft_get_last_char(args[0]) == '/')
+		&& access(args[0], F_OK))
+	{
+		// ft_printf("SECOND\n");
+		return (ft_printf("minishell: %s: %s\n", args[0], strerror(errno)),
+			127);
+	}
+	else if (!access(args[0], F_OK) && (!ft_strncmp(args[0], "./", 2) && S_ISDIR(path_stat.st_mode)))
+	{
+		// ft_printf("THIRD\n");
+		return (ft_printf("minishell: %s: %s\n", args[0], "Is a directory"),
+			126);
+	}
+	else if (ft_strncmp(args[0], "./", 2))
+	{
+		// ft_printf("FIFTH\n");
+		return (ft_printf("minishell: %s: %s\n", args[0], "command not found"),
+			127);
+	}
+	return (0);
+}
 
 void	child_process(t_data *data, t_token **tok, t_heredoc *h_docs, int i)
 {
@@ -23,13 +63,6 @@ void	child_process(t_data *data, t_token **tok, t_heredoc *h_docs, int i)
 	redirection(data, i);
 	if (!redir_files(*tok, i, h_docs, data))
 		return (free_export(data->env_export), exit(1));
-	if (!data->cmd)
-		return (free_tok(tok), free(data->input), free_export(data->env_export),
-			exit(0));
-	if (!data->cmd[0])
-		return (ft_printf("minishell: : command not found\n"),
-			free_tab(data->cmd), free_tok(tok), free_export(data->env_export),
-			exit(127));
 	if (to_builtin_or_not_to_builtin(data->cmd[0]))
 	{
 		lets_builtin(data, data->cmd, tok);
@@ -37,10 +70,10 @@ void	child_process(t_data *data, t_token **tok, t_heredoc *h_docs, int i)
 			free_export(data->env_export), exit(0));
 	}
 	path = complete_path(data, data->cmd[0]);
-	if (!path)
-		return (ft_printf("minishell: %s: command not found\n", data->cmd[0]),
-			free_tab(data->cmd), free_tok(tok), free_export(data->env_export),
-			exit(127));
+	// if (!path)
+	// 	return (ft_printf("minishell: %s: command not found\n", data->cmd[0]),
+	// 		free_tab(data->cmd), free_tok(tok), free_export(data->env_export),
+	// 		exit(127));
 	// if (access(data->cmd[0], F_OK) == 0)
 	// {
 	// 	if (access(data->cmd[0], R_OK | W_OK | X_OK) == 0)
@@ -51,8 +84,27 @@ void	child_process(t_data *data, t_token **tok, t_heredoc *h_docs, int i)
 	tab = ft_envp_copy_to_tab(data);
 	if (path)
 		execve(path, data->cmd, tab);
-	return (free_tab(data->cmd), free(path), free_tok(tok),
-		free_export(data->env_export), exit(0));
+	data->status = ft_handle_errors(data->cmd);
+	if (path)
+		free(path);
+	free_tab(data->cmd);
+	free_tok(tok);
+	free_tab(tab);
+	free_export(data->env_export);
+	exit(data->status);
+	// if (!path)
+	// 	return (ft_printf("minishell: %s: command not found\n", data->cmd[0]),
+	// 		free_tab(data->cmd), free_tok(tok), free_export(data->env_export),
+	// 		exit(127));
+	// if (!data->cmd)
+	// 	return (free_tok(tok), free(data->input), free_export(data->env_export),
+	// 		exit(0));
+	// if (!data->cmd[0])
+	// 	return (ft_printf("minishell: : command not found\n"),
+	// 		free_tab(data->cmd), free_tok(tok), free_export(data->env_export),
+	// 		exit(127));
+	// return (free(path), free_tok(tok),
+	// 	free_export(data->env_export), exit(0));
 }
 
 void	parent_process(t_data *data, int i)
@@ -62,6 +114,37 @@ void	parent_process(t_data *data, int i)
 		close(data->tmp_fd);
 	data->tmp_fd = data->pipe_fd[0];
 }
+void ft_waitpid_child(t_data *data)
+{
+	int i;
+	
+	i = 0;
+	while (i < data->nb_cmd)
+	{
+		waitpid(data->pid[i++], &data->status, 0);
+		if (WIFEXITED(data->status))
+			data->status = WEXITSTATUS(data->status);
+		else if (WIFSIGNALED(data->status) && WTERMSIG(data->status) == SIGQUIT)
+		{
+			ft_printf("Quit (core dumped)\n");
+			g_sig_return = 131;
+		}
+	}
+}
+
+void ft_close_hd_child(t_data *data, t_heredoc *h_docs)
+{
+	int i;
+
+	i = 0;
+	while (i < data->nb_hd)
+	{
+		close(h_docs[i].fd[0]);
+		i++;
+	}
+	free(h_docs);
+}
+
 
 int	exec_pipe(t_data *data, t_token **tok)
 {
@@ -83,20 +166,8 @@ int	exec_pipe(t_data *data, t_token **tok)
 		else
 			parent_process(data, i);
 	}
-	i = 0;
-	while (i < data->nb_cmd)
-	{
-		waitpid(data->pid[i++], &data->status, 0);
-		if (WIFEXITED(data->status))
-			data->status = WEXITSTATUS(data->status);
-	}
-	i = 0;
-	while (i < data->nb_hd)
-	{
-		close(here_docs[i].fd[0]);
-		i++;
-	}
-	free(here_docs);
+	ft_waitpid_child(data);
+	ft_close_hd_child(data, here_docs);
 	close(data->pipe_fd[0]);
 	return (0);
 }
