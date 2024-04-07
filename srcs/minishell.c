@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/05 19:51:39 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/06 23:50:19 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,10 @@ int	main(int argc, char **argv, char **envp)
 		g_sig_return = 0;
 		input = readline("baznboul> ");
 		if (input == NULL)
+		{
+			ft_printf("exit\n");
 			break ;
+		}
 		if (!*input)
 			continue ;
 		add_history(input);
@@ -54,8 +57,8 @@ int	main(int argc, char **argv, char **envp)
 		}
 		if (parsing_and_stock_input(input, &tok, &data))
 		{
-			printf("ERROR\n");
 			free(input);
+			free_tok(&tok);
 			data.status = 2;
 			continue ;
 		}
