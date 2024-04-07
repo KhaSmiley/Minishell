@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 01:06:11 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/05 04:21:32 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/07 04:54:41 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,20 +30,6 @@ int	ft_tokenizer(char *token)
 		return (WORD);
 }
 
-int	word_size(char *str, int i)
-{
-	int	j;
-
-	j = 0;
-	while (str[i] != ' ' && str[i] != '\t' && str[i] != '>' && str[i] != '<'
-		&& str[i] != '|' && str[i] != '\0')
-	{
-		j++;
-		i++;
-	}
-	return (j);
-}
-
 int	alloc_token(t_token **tok, char *longchev, char *str, int i)
 {
 	int		j;
@@ -63,52 +49,6 @@ int	alloc_token(t_token **tok, char *longchev, char *str, int i)
 		return (-1);
 	ft_stock(tok, ft_lstnew(redirection, ft_tokenizer(redirection)));
 	return (0);
-}
-
-int	ft_find_end(char *str, char flag_quotes, int i)
-{
-	while (str[i])
-	{
-		i++;
-		if ((str[i] == '\0') || ((str[i] == flag_quotes) && (str[i + 1] == ' '
-					|| str[i + 1] == '\t')))
-			return (i);
-	}
-	return (i);
-}
-
-char	*topositif(char *str)
-{
-	int	i;
-
-	i = -1;
-	while (str[++i])
-		if (str[i] < 0)
-			str[i] = -str[i];
-	return (str);
-}
-
-char	*tonegatif(char *str)
-{
-	char	flag_quote;
-	int		i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '\'' || str[i] == '"')
-		{
-			flag_quote = str[i++];
-			while (str[i] != flag_quote)
-			{
-				str[i] = -str[i];
-				i++;
-			}
-		}
-		if (str[i])
-			i++;
-	}
-	return (str);
 }
 
 char	*isaword(char *str, int *i)

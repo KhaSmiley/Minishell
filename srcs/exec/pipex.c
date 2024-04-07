@@ -6,18 +6,11 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 15:43:05 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/07 04:30:04 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/07 06:30:34 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-char	ft_get_last_char(const char *str)
-{
-	while (*(str) && *(str + 1))
-		++str;
-	return (*str);
-}
 
 int	ft_handle_errors(char **args)
 {
@@ -26,26 +19,22 @@ int	ft_handle_errors(char **args)
 	stat(args[0], &path_stat);
 	if (!access(args[0], F_OK) && access(args[0], X_OK))
 	{
-		// ft_printf("FIRST\n");
 		return (ft_printf("minishell: %s: %s\n", args[0], strerror(errno)),
 			126);
 	}
 	else if ((!ft_strncmp(args[0], "./", 2) || ft_get_last_char(args[0]) == '/')
 		&& access(args[0], F_OK))
 	{
-		// ft_printf("SECOND\n");
 		return (ft_printf("minishell: %s: %s\n", args[0], strerror(errno)),
 			127);
 	}
 	else if (!access(args[0], F_OK) && (!ft_strncmp(args[0], "./", 2) && S_ISDIR(path_stat.st_mode)))
 	{
-		// ft_printf("THIRD\n");
 		return (ft_printf("minishell: %s: %s\n", args[0], "Is a directory"),
 			126);
 	}
 	else if (ft_strncmp(args[0], "./", 2))
 	{
-		// ft_printf("FIFTH\n");
 		return (ft_printf("minishell: %s: %s\n", args[0], "command not found"),
 			127);
 	}
@@ -131,20 +120,6 @@ void ft_waitpid_child(t_data *data)
 		}
 	}
 }
-
-void ft_close_hd_child(t_data *data, t_heredoc *h_docs)
-{
-	int i;
-
-	i = 0;
-	while (i < data->nb_hd)
-	{
-		close(h_docs[i].fd[0]);
-		i++;
-	}
-	free(h_docs);
-}
-
 
 int	exec_pipe(t_data *data, t_token **tok)
 {
