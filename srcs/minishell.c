@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/07 18:27:50 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/07 21:14:54 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,18 +63,16 @@ int	main(int argc, char **argv, char **envp)
 			data.status = 2;
 			continue ;
 		}
-		disable_signals();
 		init_data(argc, &data, tok);
 		if (data.nb_cmd == 1 && (to_builtin_or_not_to_builtin(find_first_cmd(&tok))))
 		{
-			if (!one_built_in((tok_to_tab(&tok, 0)), tok, &data))
-			{
-				// free_tok(&tok);
-				// free(input);
-				continue ;
-			}
+			// if fail data-status = 1
+			// in all other cases data-status = 0
+			data.status = 0;
+			one_built_in((tok_to_tab(&tok, 0)), tok, &data);
 			continue ;
 		}
+		disable_signals();
 		exec_pipe(&data, &tok);
 		handle_signals();
 		free(input);

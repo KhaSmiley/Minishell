@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:38 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/07 17:56:30 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/07 22:01:58 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,13 @@ int	ft_syntax_pipe(t_token *tok)
 	else if (tmp->type == WORD)
 	{
 		tmp = tmp->next;
-		if (ft_syntax_word(tmp))
+		if (ft_syntax_word(tmp->next))
 			return (1);
 	}
 	return (0);
 }
 
-int	ft_syntax_redir(t_token                                                                                                                                *tok)
+int	ft_syntax_redir(t_token *tok)
 {
 	t_token	*tmp;
 
@@ -64,7 +64,7 @@ int	ft_syntax_redir(t_token                                                     
 	else if (tmp->type == WORD)
 	{
 		tmp = tmp->next;
-		if (ft_syntax_word(tmp))
+		if (ft_syntax_word(tmp->next))
 			return (1);
 	}
 	return (0);
@@ -82,15 +82,29 @@ int	ft_syntax_word(t_token *tok)
 	if (tmp->type == GREATER || tmp->type == LESS || tmp->type == DGREATER
 		|| tmp->type == DLESS)
 	{
-		tmp = tmp->next;
-		if (ft_syntax_redir(tmp))
+		if (ft_syntax_redir(tmp->next))
+		{
+			if (tmp->next)
+				ft_printf("syntax error near unexpected token '%s'\n",
+					tmp->next->str);
+			else
+				ft_printf("syntax error near unexpected token 'newline'\n");
 			return (1);
+		}
+		tmp = tmp->next;
 	}
 	else if (tmp->type == PIPE)
 	{
-		tmp = tmp->next;
-		if (ft_syntax_pipe(tmp))
+		if (ft_syntax_pipe(tmp->next))
+		{
+			if (tmp->next)
+				ft_printf("syntax error near unexpected token '%s'\n",
+					tmp->next->str);
+			else
+				ft_printf("syntax error near unexpected token 'newline'\n");
 			return (1);
+		}
+		tmp = tmp->next;
 	}
 	return (0);
 }
@@ -110,7 +124,7 @@ int	ft_syntax(t_token **tok)
 				-1);
 		tmp = tmp->next;
 		if (ft_syntax_redir(tmp))
-			return (ft_printf("syntax error near unexpected token '>'"), -1);
+			return (ft_printf("syntax error near unexpected token '>'\n"), -1);
 		return (0);
 	}
 	else if (tmp->type == PIPE)
@@ -119,7 +133,7 @@ int	ft_syntax(t_token **tok)
 	{
 		tmp = tmp->next;
 		if (ft_syntax_word(tmp))
-			return (-1);
+			return (ft_printf("check which error message\n"), -1);
 	}
 	return (0);
 }

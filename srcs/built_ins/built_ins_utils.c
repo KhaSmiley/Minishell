@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 03:45:20 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/07 01:34:14 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/07 20:41:15 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,10 @@ int	one_built_in(char **builtin, t_token *tok, t_data *data)
 	lets_builtin_no_fork(data, builtin, &tok);
 	if (ft_strcmp(builtin[0], "unset") == 0)
 		return (free(builtin[0]), 1);
-	free_tab(builtin);
+	if (builtin)
+		free_tab(builtin);
+	// if (tok)
+	// 	free_tok(&tok);
 	dup2(data->std_fd[0], STDIN_FILENO);
 	dup2(data->std_fd[1], STDOUT_FILENO);
 	close(data->std_fd[0]);
