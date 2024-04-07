@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 22:12:21 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/07 05:40:44 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/07 18:14:42 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ char	*ft_find_value_env_new(char *str, int *i, t_data *data)
 	}
 	key[j] = '\0';
 	value = ft_find_value(key, data->env_export);
+	// i think we strdup("") twice and lose 1 bytes
 	if (!value)
 		return (free(key), ft_strdup(""));
 	return (free(key), ft_strdup(value));
@@ -110,6 +111,7 @@ char	*ft_get_new_str_for_env_y(char *str, t_data *data)
 			env_str = ft_strjoin_you(env_str, double_quote(str, &i, data));
 		if (str[i] == '$')
 		{
+			// leak here
 			env_str = ft_strjoin_you(env_str, find_new_str_env_y(str, &i,
 						data));
 			data->status = 0;

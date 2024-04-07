@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokens.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 01:06:11 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/07 04:54:41 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/07 18:29:34 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ t_token	*find_token(char *str)
 			ft_tokenizer(" ");
 		else
 			ft_stock(&tok, ft_lstnew(topositif(isaword(str, &i)), WORD));
+		// leak related to word token ^
 		if (str[i])
 			i++;
 	}

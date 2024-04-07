@@ -6,12 +6,11 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 21:55:28 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/07 00:09:50 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/07 18:14:23 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
 
 void	free_tok(t_token **tok)
 {
@@ -37,6 +36,8 @@ void	free_export(t_export *lst)
 {
 	t_export	*tmp;
 
+	if (!lst)
+		return ;
 	while (lst)
 	{
 		tmp = lst;
