@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/06 23:50:19 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/07 02:46:01 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,12 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	(void)argc;
 	tok = NULL;
+	handle_signals();
+	g_sig_return = 0;
 	ft_envp_copy_export(&data, envp);
 	data.minishell_line_no = 1;
 	while (1)
 	{
-		handle_signals();
-		g_sig_return = 0;
 		input = readline("baznboul> ");
 		if (input == NULL)
 		{
@@ -62,18 +62,20 @@ int	main(int argc, char **argv, char **envp)
 			data.status = 2;
 			continue ;
 		}
+		disable_signals();
 		init_data(argc, &data, tok);
 		if (data.nb_cmd == 1 && (to_builtin_or_not_to_builtin(find_first_cmd(&tok))))
 		{
 			if (!one_built_in((tok_to_tab(&tok, 0)), tok, &data))
 			{
-				continue ;
 				// free_tok(&tok);
 				// free(input);
+				continue ;
 			}
 			continue ;
 		}
 		exec_pipe(&data, &tok);
+		handle_signals();
 		free(input);
 		free_tok(&tok);
 		close(data.pipe_fd[0]);
