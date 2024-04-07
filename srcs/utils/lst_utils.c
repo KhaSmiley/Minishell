@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 03:40:10 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/05 04:21:36 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/07 18:25:26 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_token	*ft_lstnew(char *content, int type)
 {
 	t_token	*new;
 
-	new = malloc(sizeof(*new));
+	new = malloc(sizeof(t_token));
 	if (!new)
 		return (NULL);
 	new->str = content;
