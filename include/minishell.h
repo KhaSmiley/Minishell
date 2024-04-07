@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/06 23:53:58 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/07 02:44:20 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,8 @@ char					**ft_envp_copy_to_tab(t_data *data);
 void				handle_signals(void);
 void				sigint_handler(int signum);
 void				sigint_hd(int signum);
+void				disable_signals(void);
+void				default_signals(void);
 
 /* ------------------------- PARSING ------------------------- */
 

@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 15:43:05 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/07 02:02:31 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/07 02:47:59 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	child_process(t_data *data, t_token **tok, t_heredoc *h_docs, int i)
 	char	**tab;
 
 	(void)h_docs;
+	default_signals();
 	data->cmd = tok_to_tab(tok, i);
 	redirection(data, i);
 	if (!redir_files(*tok, i, h_docs, data))
