@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 00:49:03 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/05 21:02:27 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/07 06:26:37 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,6 +173,15 @@ int ft_exit_atoi(char *str)
 	return (1);
 }
 
+void ft_free_exit_no_fork(t_data *data, t_token **tok)
+{
+	close(data->std_fd[0]);
+	close(data->std_fd[1]);
+	free_export(data->env_export);
+	free_tok(tok);
+
+}
+
 int	ft_exit_no_fork(char **args, t_data *data, t_token **tok)
 {
 	int	i;
@@ -182,12 +191,10 @@ int	ft_exit_no_fork(char **args, t_data *data, t_token **tok)
 	i = 0;
 	tmp = *tok;
 	exit_value = 0;
+	printf("exit\n");
 	if (!args || !*args)
 	{
-		close(data->std_fd[0]);
-		close(data->std_fd[1]);
-		free_export(data->env_export);
-		free_tok(tok);
+		ft_free_exit_no_fork(data, tok);
 		exit(g_sig_return);
 	}
 	while(tmp)
@@ -216,6 +223,7 @@ int	ft_exit_no_fork(char **args, t_data *data, t_token **tok)
 	clear_exit_no_fork(data, args, tok);
 	exit(exit_value);
 }
+
 void clear_exit_no_fork(t_data *data, char **args, t_token **tok)
 {
 	close(data->std_fd[1]);

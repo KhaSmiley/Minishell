@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:38 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/06 23:32:35 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/07 05:13:24 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,36 +36,36 @@ int	ft_syntax_pipe(t_token *tok)
 	t_token	*tmp;
 
 	if (!tok)
-		return (12);
+		return (1);
 	tmp = tok;
 	if (tmp->type == PIPE)
-		return (35);
+		return (1);
 	else if (tmp->type == WORD)
 	{
 		tmp = tmp->next;
 		if (ft_syntax_word(tmp))
-			return (59);
+			return (1);
 	}
 	return (0);
 }
 
-int	ft_syntax_redir(t_token *tok)
+int	ft_syntax_redir(t_token                                                                                                                                *tok)
 {
 	t_token	*tmp;
 
 	if (!tok)
-		return (112);
+		return (1);
 	tmp = tok;
 	if (tmp->type == GREATER || tmp->type == LESS || tmp->type == DGREATER
 		|| tmp->type == DLESS)
-		return (1543);
+		return (1);
 	else if (tmp->type == PIPE)
-		return (13252);
+		return (1);
 	else if (tmp->type == WORD)
 	{
 		tmp = tmp->next;
 		if (ft_syntax_word(tmp))
-			return (154354);
+			return (1);
 	}
 	return (0);
 }
@@ -73,7 +73,6 @@ int	ft_syntax_redir(t_token *tok)
 int	ft_syntax_word(t_token *tok)
 {
 	t_token	*tmp;
-	int		error;
 
 	tmp = tok;
 	while (tmp && tmp->type == WORD)
@@ -84,16 +83,14 @@ int	ft_syntax_word(t_token *tok)
 		|| tmp->type == DLESS)
 	{
 		tmp = tmp->next;
-		error = ft_syntax_redir(tmp);
-		if (error)
-			return (error);
+		if (ft_syntax_redir(tmp))
+			return (1);
 	}
 	else if (tmp->type == PIPE)
 	{
 		tmp = tmp->next;
-		error = ft_syntax_pipe(tmp);
-		if (error)
-			return (error);
+		if (ft_syntax_pipe(tmp))
+			return (1);
 	}
 	return (0);
 }
@@ -101,10 +98,8 @@ int	ft_syntax_word(t_token *tok)
 int	ft_syntax(t_token **tok)
 {
 	t_token	*tmp;
-	int		error;
 
 	tmp = *tok;
-	// double check how to handle empty input later
 	if (!tmp)
 		return (0);
 	if ((tmp->type == GREATER || tmp->type == LESS || tmp->type == DGREATER
@@ -114,9 +109,8 @@ int	ft_syntax(t_token **tok)
 			return (ft_printf("syntax error near unexpected token `newline'\n"),
 				-1);
 		tmp = tmp->next;
-		error = ft_syntax_redir(tmp);
-		if (error)
-			return (ft_printf("Syntax Error [%i]\n", error), -1);
+		if (ft_syntax_redir(tmp))
+			return (ft_printf("syntax error near unexpected token '>'"), -1);
 		return (0);
 	}
 	else if (tmp->type == PIPE)
@@ -124,9 +118,8 @@ int	ft_syntax(t_token **tok)
 	else if (tmp->type == WORD)
 	{
 		tmp = tmp->next;
-		error = ft_syntax_word(tmp);
-		if (error)
-			return (ft_printf("Syntax Error [%i]\n", error), -1);
+		if (ft_syntax_word(tmp))
+			return (-1);
 	}
 	return (0);
 }

@@ -1,74 +1,61 @@
-// /* ************************************************************************** */
-// /*                                                                            */
-// /*                                                        :::      ::::::::   */
-// /*   here_docs_utils.c                                  :+:      :+:    :+:   */
-// /*                                                    +:+ +:+         +:+     */
-// /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
-// /*                                                +#+#+#+#+#+   +#+           */
-// /*   Created: 2024/04/02 02:28:11 by kboulkri          #+#    #+#             */
-// /*   Updated: 2024/04/05 02:59:40 by kboulkri         ###   ########.fr       */
-// /*                                                                            */
-// /* ************************************************************************** */
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   here_docs_utils.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/07 05:57:22 by kboulkri          #+#    #+#             */
+/*   Updated: 2024/04/07 06:00:22 by kboulkri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-// #include "../../include/minishell.h"
+#include "../include/minishell.h"
 
-// t_heredoc *ft_lstlast_here_doc(t_heredoc *lst)
-// {
-// 	if (!lst)
-// 		return (NULL);
-// 	while (lst->next)
-// 		lst = lst->next;
-// 	return (lst);
-// }
+void	find_nb_hdoc(t_token *tok, t_data *data)
+{
+	t_token	*tmp;
 
-// t_heredoc	*ft_lstnew_here_doc(int fd, char *content)
-// {
-// 	t_heredoc	*new;
+	data->nb_hd = 0;
+	tmp = tok;
+	while (tmp)
+	{
+		if (tmp->type == DLESS)
+		{
+			data->nb_hd++;
+		}
+		tmp = tmp->next;
+	}
+}
 
-// 	new = malloc(sizeof(*new));
-// 	if (!new)
-// 		return (NULL);
-//     new->fd = fd;
-// 	new->lim = content;
-// 	new->next = NULL;
-// 	return (new);
-// }
+void	init_here_doc(t_heredoc *h_docs, t_token **tok, t_data *data)
+{
+	t_token	*tmp;
+	int		i;
 
-// void	ft_stock_here_doc(t_heredoc **lst, t_heredoc *new_link)
-// {
-// 	if (!lst)
-// 		return ;
-// 	if (!*lst)
-// 		*lst = new_link;
-// 	else
-// 		(ft_lstlast_here_doc(*lst))->next = new_link;
-// }
+	tmp = *tok;
+	i = 0;
+	while (i < data->nb_hd)
+	{
+		if (tmp->type == DLESS)
+		{
+			h_docs[i].in_cmd = i;
+			h_docs[i].lim = tmp->next->str;
+			pipe(h_docs[i].fd);
+			i++;
+		}
+		tmp = tmp->next;
+	}
+}
+void ft_close_hd_child(t_data *data, t_heredoc *h_docs)
+{
+	int i;
 
-// void print_list_here_doc(t_heredoc *lst)
-// {
-//     if (!lst)
-// 		return ;
-//     while(lst)
-//     {
-//         printf("string: %s\nin_cmd = %d\n", lst->lim, lst->in_cmd);
-//         lst = lst->next;
-//     }
-//     return ;
-// }
-
-// int ft_lstsize_hdoc(t_heredoc *h_docs)
-// {
-// 	t_heredoc *tmp;
-// 	int i;
-
-// 	i = 0;
-// 	if (!h_docs)
-// 		return (i);
-// 	tmp = h_docs;
-// 	while(tmp)
-// 	{
-// 		i++;
-// 		tmp = tmp->next;
-// 	}
-// 	return(i);
-// }
+	i = 0;
+	while (i < data->nb_hd)
+	{
+		close(h_docs[i].fd[0]);
+		i++;
+	}
+	free(h_docs);
+}

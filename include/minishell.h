@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/06 17:01:38 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/07 06:19:34 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include "../libft/libft.h"
+# include <errno.h>
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
@@ -24,7 +25,6 @@
 # include <sys/stat.h>
 # include <sys/wait.h>
 # include <unistd.h>
-#include <errno.h>
 
 typedef struct s_token
 {
@@ -88,51 +88,61 @@ typedef struct s_data
 	t_export		*env_export;
 }					t_data;
 
-t_data	*simpleton();
+t_data				*simpleton(void);
 extern int g_sig_return ;
 
-char				*find_new_str_env(char *str, int *i, t_env *tmp);
-// char *find_new_str_env(char *str, int *i, t_data *data);
-// char *ft_strjoin_you(char *s1, char *s2);
-char				*ft_get_new_str_for_env(char *str, t_env *tmp);
+/* syntax.c */
 
-/* Y */
+int					parsing_and_stock_input(char *input, t_token **tok,
+						t_data *data);
+int					ft_syntax(t_token **tok);
+int					ft_syntax_pipe(t_token *tok);
+int					ft_syntax_redir(t_token *tok);
+int					ft_syntax_word(t_token *tok);
 
-void				ft_expand_str_y(t_token *tok, t_data *data);
-char				*to_next_double_q(char *str, int *i);
-char				*ft_find_value_env_new(char *str, int *i, t_data *data);
-char				*double_quote(char *str, int *i, t_data *data);
-char				*single_quote(char *str, int *i);
-int					ft_strl(char *str);
-char				*ft_strjoin_you(char *s1, char *s2);
-char				*find_new_str_env_y(char *str, int *i, t_data *data);
-char				*normal(char *str, int *i);
-char				*ft_get_new_str_for_env_y(char *str, t_data *data);
+/* tokens.c */
+int					ft_tokenizer(char *token);
+int					alloc_token(t_token **tok, char *longchev, char *str,
+						int i);
+char				*isaword(char *str, int *i);
+t_token				*find_token(char *str);
+
+/* tokens_utils.c */
+
+int					word_size(char *str, int i);
+int					ft_find_end(char *str, char flag_quotes, int i);
+char				*topositif(char *str);
+char				*tonegatif(char *str);
 
 /* expand.c */
 
-char				*ft_find_value(char *key, t_export *env);
-int					ft_create_env(t_token *tok, char *str, t_export *env);
-void				ft_expand_str(t_token *tok, t_data *data);
-void				check_quotes_for_env(char *quote_char, char *word,
-						int i_word);
-
-/* expand_utils.c */
-
-t_env				*ft_lstlast_env(t_env *lst);
-void				ft_stock_env(t_env **lst, t_env *new_link);
-t_env				*ft_lstnew_env(char *key, char *value);
-void				print_list_env(t_token *lst);
-void				free_list_env(t_env *tok);
+void				ft_expand_str_y(t_token *tok, t_data *data);
+char				*ft_find_value_env_new(char *str, int *i, t_data *data);
+char				*double_quote(char *str, int *i, t_data *data);
+char				*find_new_str_env_y(char *str, int *i, t_data *data);
+char				*ft_get_new_str_for_env_y(char *str, t_data *data);
 
 /* expand_utils_two.c */
 
-char				*ft_find_key(char *str, int count);
-int					ft_strlen_from_char(char *str, char c);
-int					ft_find_malloc_key(char *str, int i);
-int					ft_tablen(char **tab);
-char				**ft_envp_copy(char **envp);
 int					ft_isalnum_env(int c);
+int					ft_tablen(char **tab);
+int					ft_find_malloc_key(char *str, int i);
+char				*ft_find_key(char *str, int count);
+char				*ft_find_value(char *key, t_export *env);
+
+/* expand_utils_three.c */
+
+int					ft_strlen_from_char(char *str, char c);
+int					ft_strl(char *str);
+int					ft_find_value_malloc(char *str, int *i);
+char				*to_next_double_q(char *str, int *i);
+int					is_last(char *str, int i);
+
+/* expand_utils_four.c */
+
+char				*normal(char *str, int *i);
+char				*single_quote(char *str, int *i);
+char				*ft_strjoin_you(char *s1, char *s2);
 
 /* expand_after_quotes.c */
 
@@ -160,9 +170,9 @@ int					ft_lstsize(t_export *env);
 
 /* tab_utils.c */
 
-void					free_tab(char **tab);
-void					print_tab(char **tab);
-char					**ft_envp_copy_to_tab(t_data *data);
+void				free_tab(char **tab);
+void				print_tab(char **tab);
+char				**ft_envp_copy_to_tab(t_data *data);
 
 /* signals.c */
 
@@ -186,22 +196,6 @@ int					s_quotes_open(char *str);
 int					d_quotes_open(char *str);
 int					count_quotes(char *str, char c);
 int					check_quotes_open(char *input);
-
-/* syntax.c */
-
-int					parsing_and_stock_input(char *input, t_token **tok,
-						t_data *data);
-int					ft_syntax(t_token **tok);
-int					ft_syntax_pipe(t_token *tok);
-int					ft_syntax_redir(t_token *tok);
-int					ft_syntax_word(t_token *tok);
-
-/* tokens.c */
-int					word_size(char *str, int i);
-int					alloc_token(t_token **tok, char *longchev, char *str,
-						int i);
-t_token				*find_token(char *str);
-int					ft_tokenizer(char *token);
 
 /* --------------------- EXEC -------------------------------- */
 
@@ -236,27 +230,38 @@ int					ft_access(char *path);
 
 /* exec_prep */
 
-char				**tok_to_tab(t_token **tok, int nb_pipe);
+t_token				*find_curr_tok_pipe(t_token **tok, int nb_pipe);
 int					ft_count_pipe(t_token *tok);
-int					get_infile(t_data *data, t_token **tok, int nb_pipe);
-int					get_outfile(t_data *data, t_token **tok, int nb_pipe);
+int					find_malloc_tok_to_tab(t_token **tok, int nb_pipe);
+char				**tok_to_tab(t_token **tok, int nb_pipe);
+
+/* exec_utils.c */
+
+char				ft_get_last_char(const char *str);
 
 /* here_doc.c */
 
-void				find_nb_hdoc(t_token *tok, t_data *data);
-void				init_here_doc(t_heredoc *h_docs, t_token **tok, t_data *data);
 void				write_hdocs(char *lim, int pipe, t_data *data);
-void				exec_hdocs(t_heredoc *h_docs, t_data *data, int *i, t_token **tok);
+void				exec_hdocs(t_heredoc *h_docs, t_data *data, int *i,
+						t_token **tok);
 void				close_heredocs(t_heredoc *h_docs, int limit);
-t_heredoc			*here_doc_launch(t_data *data, t_token **tok);
 int					find_heredoc(t_heredoc *h_docs, t_data *data, t_token *tmp);
+t_heredoc			*here_doc_launch(t_data *data, t_token **tok);
+
+/* here_doc_utils.c */
+
+void				find_nb_hdoc(t_token *tok, t_data *data);
+void				init_here_doc(t_heredoc *h_docs, t_token **tok,
+						t_data *data);
+void				ft_close_hd_child(t_data *data, t_heredoc *h_docs);
 
 /* ------------------------- BUILT INS ------------------------ */
 
 /*built_ins*/
 
 int					lets_builtin(t_data *data, char **cmd, t_token **tok);
-int					lets_builtin_no_fork(t_data *data, char **cmd, t_token **tok);
+int					lets_builtin_no_fork(t_data *data, char **cmd,
+						t_token **tok);
 int					ft_pwd(void);
 int					ft_cd(char **cmd, t_data *data);
 int					ft_env(t_data *data);
@@ -292,6 +297,5 @@ t_export			*ft_lstnew_export(char *key, char *value);
 /* unset.c */
 
 void				ft_unset(t_data *data, char **args);
-
 
 #endif

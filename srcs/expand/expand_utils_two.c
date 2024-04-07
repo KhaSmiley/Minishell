@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 02:18:19 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/07 01:31:25 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/07 05:38:01 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,15 +72,7 @@ char	*ft_find_key(char *str, int count)
 	return (key);
 }
 
-int	ft_strlen_from_char(char *str, char c)
-{
-	int	i;
 
-	i = 0;
-	while (str[i] && str[i] != c)
-		i++;
-	return (i);
-}
 char	*ft_find_value(char *key, t_export *env)
 {
 	int			i;
