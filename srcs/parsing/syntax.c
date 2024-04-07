@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:38 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/05 04:21:30 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/06 23:38:39 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,10 @@ int	parsing_and_stock_input(char *input, t_token **tok, t_data *data)
 		return (1);
 	tmp = find_token(input);
 	if (ft_syntax(&tmp))
+	{
+		free_tok(&tmp);
 		return (1);
+	}
 	ft_expand_str_y(tmp, data);
 	fix_quotes_token(tmp);
 	*tok = tmp;
@@ -55,9 +58,10 @@ int	ft_syntax_redir(t_token *tok)
 	tmp = tok;
 	if (tmp->type == GREATER || tmp->type == LESS || tmp->type == DGREATER
 		|| tmp->type == DLESS)
-		return (1543);
+		return (ft_printf("syntax error near unexpected token `%s'\n",
+				tmp->str), 1);
 	else if (tmp->type == PIPE)
-		return (13252);
+		return (ft_printf("syntax error near unexpected token '|'\n"), 13252);
 	else if (tmp->type == WORD)
 	{
 		tmp = tmp->next;
@@ -113,7 +117,7 @@ int	ft_syntax(t_token **tok)
 		tmp = tmp->next;
 		error = ft_syntax_redir(tmp);
 		if (error)
-			return (ft_printf("Syntax Error [%i]\n", error), -1);
+			return (-1);
 		return (0);
 	}
 	else if (tmp->type == PIPE)

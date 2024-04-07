@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 03:45:20 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/05 19:26:53 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/07 01:34:14 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ char	*get_home_env(t_export *env)
 
 int	check_echo_option(char **args, int i, int j)
 {
+	if (!args[1] || ft_strncmp(args[1], "-n", 2) != 0)
+		return (0);
 	while (args[++i])
 	{
 		j = 0;

@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/05 18:27:47 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/06 23:53:58 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,6 @@ typedef struct s_token
 	struct s_token	*next;
 	struct s_env	*env;
 }					t_token;
-
-typedef struct s_env
-{
-	char			*key;
-	char			*value;
-	struct s_env	*next;
-}					t_env;
 
 typedef struct s_export
 {
@@ -89,11 +82,6 @@ typedef struct s_data
 t_data	*simpleton();
 extern int g_sig_return ;
 
-char				*find_new_str_env(char *str, int *i, t_env *tmp);
-// char *find_new_str_env(char *str, int *i, t_data *data);
-// char *ft_strjoin_you(char *s1, char *s2);
-char				*ft_get_new_str_for_env(char *str, t_env *tmp);
-
 /* Y */
 
 void				ft_expand_str_y(t_token *tok, t_data *data);
@@ -114,14 +102,6 @@ int					ft_create_env(t_token *tok, char *str, t_export *env);
 void				ft_expand_str(t_token *tok, t_data *data);
 void				check_quotes_for_env(char *quote_char, char *word,
 						int i_word);
-
-/* expand_utils.c */
-
-t_env				*ft_lstlast_env(t_env *lst);
-void				ft_stock_env(t_env **lst, t_env *new_link);
-t_env				*ft_lstnew_env(char *key, char *value);
-void				print_list_env(t_token *lst);
-void				free_list_env(t_env *tok);
 
 /* expand_utils_two.c */
 
@@ -144,7 +124,6 @@ char				*ft_strjoin_env(char const *s1, char const *s2);
 
 void				free_tok(t_token **tok);
 void				free_envp_cpy(char **envp_cpy);
-void				free_tok_env(t_env *my_env);
 void				free_export(t_export *lst);
 
 /* lst_utils.c */

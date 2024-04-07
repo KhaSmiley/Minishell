@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 15:43:05 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/05 21:39:40 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/07 02:02:31 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,13 @@ void	child_process(t_data *data, t_token **tok, t_heredoc *h_docs, int i)
 		return (ft_printf("minishell: %s: command not found\n", data->cmd[0]),
 			free_tab(data->cmd), free_tok(tok), free_export(data->env_export),
 			exit(127));
+	// if (access(data->cmd[0], F_OK) == 0)
+	// {
+	// 	if (access(data->cmd[0], R_OK | W_OK | X_OK) == 0)
+	// 		return (ft_printf("%s: Permission denied\n", data->cmd[0]), free_tab(data->cmd), free_export(data->env_export), exit(126));
+	// 	else
+	// 		return (ft_printf("%s: Is a directory\n", data->cmd[0]), free_tab(data->cmd), free_tok(tok), free_export(data->env_export), exit(126));
+	// }
 	tab = ft_envp_copy_to_tab(data);
 	if (path)
 		execve(path, data->cmd, tab);
