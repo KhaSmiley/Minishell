@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/07 06:31:36 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/07 18:58:40 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,9 @@ int	main(int argc, char **argv, char **envp)
 		input = readline("baznboul> ");
 		if (input == NULL)
 		{
-			printf("exit\n");			
-		{
 			ft_printf("exit\n");
 			break ;
+		}
 		if (!*input)
 			continue ;
 		add_history(input);
