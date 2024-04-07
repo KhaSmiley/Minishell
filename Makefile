@@ -14,6 +14,7 @@ DIR_OBJS		=	.objs
 SRCS_NAMES		=	minishell.c \
 					parsing/syntax.c \
 					parsing/tokens.c \
+					parsing/tokens_utils.c \
 					parsing/quotes.c \
 					parsing/quotes_utils.c \
 					utils/memory.c \
@@ -25,14 +26,19 @@ SRCS_NAMES		=	minishell.c \
 					exec/utils_exec_two.c \
 					exec/utils_exec.c \
 					exec/here_docs.c \
+					exec/here_docs_utils.c \
 					exec/redirections.c \
+					exec/exec_utils.c\
 					built_ins/built_ins.c \
 					built_ins/built_ins_utils.c \
 					built_ins/export.c \
 					built_ins/export_utils.c \
 					built_ins/unset.c \
 					expand/expand.c \
-					expand/expand_utils_two.c
+					expand/expand_utils_two.c \
+					expand/expand_utils_three.c \
+					expand/expand_utils_four.c
+
 
 OBJS_NAMES		=	${SRCS_NAMES:.c=.o}
 

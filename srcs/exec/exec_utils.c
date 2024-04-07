@@ -1,28 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_exec_two.c                                   :+:      :+:    :+:   */
+/*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/04 18:43:40 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/07 06:09:15 by kboulkri         ###   ########.fr       */
+/*   Created: 2024/04/07 06:00:10 by kboulkri          #+#    #+#             */
+/*   Updated: 2024/04/07 06:01:14 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	ft_strlen_from(int i, char *str)
+char	ft_get_last_char(const char *str)
 {
-	while (str[i])
-		i++;
-	return (i);
-}
-
-char	*ft_strdup_access(char *cmd)
-{
-	if (ft_access(cmd) == 1)
-		return (cmd);
-	else
-		return (NULL);
+	while (*(str) && *(str + 1))
+		++str;
+	return (*str);
 }
