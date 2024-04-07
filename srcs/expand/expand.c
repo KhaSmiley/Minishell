@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 22:12:21 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/05 04:21:22 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/07 02:42:52 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ft_expand_str_y(t_token *tok, t_data *data)
 	tmp = tok;
 	while (tmp)
 	{
-		if (tmp->type == WORD)
+		if (tmp->type == WORD && ft_strchr(tmp->str, '$'))
 		{
 			tmp->str = ft_get_new_str_for_env_y(tmp->str, data);
 		}
@@ -147,6 +147,7 @@ int	is_last(char *str, int i)
 
 char	*find_new_str_env_y(char *str, int *i, t_data *data)
 {
+	char *env;
 	(*i)++;
 	if (ft_isdigit(str[*i]))
 	{
@@ -164,7 +165,8 @@ char	*find_new_str_env_y(char *str, int *i, t_data *data)
 		return (ft_strdup(""));
 	if (!ft_isalpha(str[*i]) && str[*i] != '_')
 		return (ft_strdup("$"));
-	return (ft_find_value_env_new(str, i, data));
+	env = ft_find_value_env_new(str, i, data);
+	return (env);
 }
 char	*normal(char *str, int *i)
 {

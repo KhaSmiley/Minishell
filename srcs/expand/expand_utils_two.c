@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 02:18:19 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/05 06:18:19 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/07 01:31:25 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ char	*ft_find_value(char *key, t_export *env)
 	{
 		if (ft_strcmp(tmp->key, key) == 0)
 		{
-			stock = ft_strdup(tmp->value);
+			stock = tmp->value; // ft_strdup(tmp->value);
 			if (!stock)
 				return (NULL);
 			return (stock);
