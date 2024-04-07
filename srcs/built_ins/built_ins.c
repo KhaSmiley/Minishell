@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_ins.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 00:49:03 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/07 06:30:42 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/07 21:01:51 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,9 +121,16 @@ int	ft_echo(char **cmd)
 	while (cmd[num_args])
 		num_args++;
 	i = no_line + 1;
+	int j;
 	while (cmd[i])
 	{
-		printf("%s", cmd[i]);
+		j = 0;
+		while (cmd[i][j])
+		{
+			if (cmd[i][j] != '\\')
+				printf("%c", cmd[i][j]);
+			j++;
+		}
 		if (i < num_args - 1)
 			printf(" ");
 		i++;
@@ -179,7 +186,6 @@ void ft_free_exit_no_fork(t_data *data, t_token **tok)
 	close(data->std_fd[1]);
 	free_export(data->env_export);
 	free_tok(tok);
-
 }
 
 int	ft_exit_no_fork(char **args, t_data *data, t_token **tok)

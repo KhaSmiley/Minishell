@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 15:43:05 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/07 19:00:20 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/07 21:13:27 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,12 @@ void	child_process(t_data *data, t_token **tok, t_heredoc *h_docs, int i)
 		return (free_export(data->env_export), exit(1));
 	if (!data->cmd)
 		return (free_tok(tok), free_tab(data->cmd), free_export(data->env_export), exit(0));
-	data->status = ft_handle_errors(data->cmd);
 	if (to_builtin_or_not_to_builtin(data->cmd[0]))
 	{
 		lets_builtin(data, data->cmd, tok);
-		return (free_tab(data->cmd), free_tok(tok), free_tab(data->builtin),
+		// if builtin is last cmd and it fails data->status = 1
+		// in all other cases data->status = 0
+		return (free_tab(data->cmd), free_tok(tok),
 			free_export(data->env_export), exit(0));
 	}
 	path = complete_path(data, data->cmd[0]);
@@ -69,6 +70,7 @@ void	child_process(t_data *data, t_token **tok, t_heredoc *h_docs, int i)
 	tab = ft_envp_copy_to_tab(data);
 	if (path)
 		execve(path, data->cmd, tab);
+	data->status = ft_handle_errors(data->cmd);
 	if (path)
 		free(path);
 	free_tab(data->cmd);
