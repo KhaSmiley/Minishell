@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 02:18:19 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/05 06:18:19 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/08 04:12:03 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,34 +72,23 @@ char	*ft_find_key(char *str, int count)
 	return (key);
 }
 
-int	ft_strlen_from_char(char *str, char c)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] && str[i] != c)
-		i++;
-	return (i);
-}
 char	*ft_find_value(char *key, t_export *env)
 {
-	int			i;
 	char		*stock;
 	t_export	*tmp;
 
-	i = 0;
 	tmp = env;
 	while (tmp)
 	{
 		if (ft_strcmp(tmp->key, key) == 0)
 		{
-			stock = ft_strdup(tmp->value);
+			stock = tmp->value; // ft_strdup(tmp->value);
 			if (!stock)
 				return (NULL);
 			return (stock);
 		}
 		tmp = tmp->next;
 	}
-	return (ft_strdup(""));
+	// replaced the ft_strdup("") in return (return (NULL));
+	return (NULL);
 }
-// Function to copy the envp and not to use the original one so we can modify it with export and set and unset

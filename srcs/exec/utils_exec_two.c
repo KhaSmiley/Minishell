@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 18:43:40 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/05 21:41:20 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/07 22:34:18 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ int	ft_strlen_from(int i, char *str)
 char	*ft_strdup_access(char *cmd)
 {
 	if (ft_access(cmd) == 1)
-		return (cmd);
+		return (ft_strdup(cmd));
 	else
-		return (ft_printf("%s: No such file or directory\n", cmd), NULL);
-
+		return (NULL);
 }

@@ -1,22 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalpha.c                                       :+:      :+:    :+:   */
+/*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/02 21:28:41 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/08 03:55:01 by kboulkri         ###   ########.fr       */
+/*   Created: 2024/04/07 06:00:10 by kboulkri          #+#    #+#             */
+/*   Updated: 2024/04/08 04:21:57 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../include/minishell.h"
 
-int	ft_isalpha(int c)
+char	ft_get_last_char(const char *str)
 {
-	if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122))
-	{
-		return (1);
-	}
-	return (0);
+	while (*(str) && *(str + 1))
+		++str;
+	return (*str);
 }

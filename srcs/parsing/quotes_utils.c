@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   quotes_utils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/08 03:59:41 by kboulkri          #+#    #+#             */
+/*   Updated: 2024/04/08 06:35:56 by kboulkri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
 // count quotes- apart from ones inside of same type
@@ -7,14 +19,8 @@
 
 int	check_closure(char *str, int i, char quote, int flag)
 {
-	char	other;
-
 	if (!str)
 		return (-2);
-	if (quote == '\'')
-		other = '\"';
-	else
-		other = '\'';
 	i++;
 	while (str[i] != '\0')
 	{
@@ -47,8 +53,7 @@ int	s_quotes_open(char *str)
 		{
 			if (check_closure(str, i, '\'', d_flag) == -1)
 				return (printf("Error: s quotes open\n"), 0);
-			else
-				i = check_closure(str, i, '\'', d_flag);
+			i = check_closure(str, i, '\'', d_flag);
 		}
 		i++;
 	}
@@ -77,13 +82,13 @@ int	d_quotes_open(char *str)
 		{
 			if (check_closure(str, i, '\"', s_flag) == -1)
 				return (printf("Error: d quotes open\n"), 0);
-			else
-				i = check_closure(str, i, '\"', s_flag);
+			i = check_closure(str, i, '\"', s_flag);
 		}
 		i++;
 	}
 	return (1);
 }
+
 int	count_quotes(char *str, char c)
 {
 	int	i;

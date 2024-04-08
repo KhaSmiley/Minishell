@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 20:35:59 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/05 20:51:16 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/08 05:37:42 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	file_error(t_token *tok, t_data *data, char *str)
 	}
 	close_fds(data);
 }
+
 void	close_fds(t_data *data)
 {
 	if (data->tmp_fd > 0)
@@ -37,49 +38,46 @@ void	close_fds(t_data *data)
 		close(data->pipe_fd[1]);
 }
 
+int ft_dup2_in_redir_files(int fd, t_token *tmp, t_token *tok, t_data *data)
+{
+	if (fd == -1)
+	{
+		file_error(tok, data, tmp->next->str);
+		return (0);
+	}
+	if (tmp->type == GREATER || tmp->type == DGREATER)
+		dup2(fd, STDOUT_FILENO);
+	else if (tmp->type == LESS || tmp->type == DLESS)
+		dup2(fd, STDIN_FILENO);
+	if (tmp->type != DLESS)
+		close(fd);
+	return (1);
+}
+
 int	redir_files(t_token *tok, int i, t_heredoc *h_docs, t_data *data)
 {
 	int		fd;
-	int		nb_pipe;
-	t_token	*tmp;
+	t_token	*tmp_curr;
 
-	tmp = tok;
-	nb_pipe = 0;
-	while (tmp)
+	tmp_curr = find_curr_tok_pipe(&tok, i);
+	while (tmp_curr && tmp_curr->type != PIPE)
 	{
-		if (nb_pipe == i)
-			break ;
-		if (tmp->type == PIPE)
-			nb_pipe++;
-		tmp = tmp->next;
-	}
-	while (tmp && tmp->type != PIPE)
-	{
-		if (tmp->type == WORD)
+		if (tmp_curr->type == WORD)
 		{
-			tmp = tmp->next;
+			tmp_curr = tmp_curr->next;
 			continue ;
 		}
-		if (tmp->type == GREATER)
-			fd = open(tmp->next->str, O_CREAT | O_RDWR | O_TRUNC, 0666);
-		else if (tmp->type == DGREATER)
-			fd = open(tmp->next->str, O_CREAT | O_RDWR | O_APPEND, 0666);
-		else if (tmp->type == LESS)
-			fd = open(tmp->next->str, O_RDONLY);
-		else if (tmp->type == DLESS)
-			fd = find_heredoc(h_docs, data, tmp);
-		if (fd == -1)
-		{
-			file_error(tok, data, tmp->next->str);
+		if (tmp_curr->type == GREATER)
+			fd = open(tmp_curr->next->str, O_CREAT | O_RDWR | O_TRUNC, 0666);
+		else if (tmp_curr->type == DGREATER)
+			fd = open(tmp_curr->next->str, O_CREAT | O_RDWR | O_APPEND, 0666);
+		else if (tmp_curr->type == LESS)
+			fd = open(tmp_curr->next->str, O_RDONLY);
+		else if (tmp_curr->type == DLESS)
+			fd = find_heredoc(h_docs, data, tmp_curr);
+		if (!ft_dup2_in_redir_files(fd, tmp_curr, tok, data))
 			return (0);
-		}
-		if (tmp->type == GREATER || tmp->type == DGREATER)
-			dup2(fd, STDOUT_FILENO);
-		else if (tmp->type == LESS || tmp->type == DLESS)
-			dup2(fd, STDIN_FILENO);
-		if (tmp->type != DLESS)
-			close(fd);
-		tmp = tmp->next;
+		tmp_curr = tmp_curr->next;
 	}
 	close_heredocs(h_docs, data->nb_hd);
 	return (1);

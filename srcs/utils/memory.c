@@ -3,28 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   memory.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 21:55:28 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/05 18:31:33 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/08 03:49:30 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	free_tok_env(t_env *my_env)
+void	ft_free(void **ptr)
 {
-	t_env	*tmp;
-
-	if (!my_env)
-		return ;
-	while (my_env)
+	if (*ptr != NULL)
 	{
-		tmp = my_env;
-		my_env = (my_env)->next;
-		free(tmp->key);
-		free(tmp->value);
-		free(tmp);
+		free(*ptr);
+		*ptr = NULL;
 	}
 }
 
@@ -32,16 +25,17 @@ void	free_tok(t_token **tok)
 {
 	t_token	*tmp;
 
-	if (!*tok || !tok)
+	if (!tok || !*tok)
 		return ;
 	while (*tok)
 	{
 		tmp = *tok;
 		*tok = (*tok)->next;
-		free(tmp->str);
-		tmp->str = NULL;
-		free(tmp);
-		tmp = NULL;
+		if (tmp->str)
+		{
+			ft_free((void **)&tmp->str);
+		}
+		ft_free((void **)&tmp);
 	}
 }
 
@@ -49,6 +43,8 @@ void	free_export(t_export *lst)
 {
 	t_export	*tmp;
 
+	if (!lst)
+		return ;
 	while (lst)
 	{
 		tmp = lst;

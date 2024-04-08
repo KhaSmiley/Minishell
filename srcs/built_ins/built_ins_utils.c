@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_ins_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 03:45:20 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/05 19:26:53 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/08 06:43:38 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,15 +47,15 @@ char	*find_first_cmd(t_token **tok)
 	return (NULL);
 }
 
-int	one_built_in(char **builtin, t_token *tok, t_data *data)
+int	one_built_in(char **builtin, t_token **tok, t_data *data)
 {
 	t_heredoc	*h_docs;
 
 	data->std_fd[0] = dup(STDIN_FILENO);
 	data->std_fd[1] = dup(STDOUT_FILENO);
 	data->builtin = builtin;
-	h_docs = here_doc_launch(data, &tok);
-	if (!redir_files(tok, 0, h_docs, data))
+	h_docs = here_doc_launch(data, tok);
+	if (!redir_files(*tok, 0, h_docs, data))
 	{
 		dup2(data->std_fd[0], STDIN_FILENO);
 		dup2(data->std_fd[1], STDOUT_FILENO);
@@ -63,10 +63,9 @@ int	one_built_in(char **builtin, t_token *tok, t_data *data)
 		close(data->std_fd[1]);
 		return (0);
 	}
-	lets_builtin_no_fork(data, builtin, &tok);
-	if (ft_strcmp(builtin[0], "unset") == 0)
-		return (free(builtin[0]), 1);
+	lets_builtin_no_fork(data, builtin, tok);
 	free_tab(builtin);
+	free_tok(tok);
 	dup2(data->std_fd[0], STDIN_FILENO);
 	dup2(data->std_fd[1], STDOUT_FILENO);
 	close(data->std_fd[0]);
@@ -77,10 +76,8 @@ int	one_built_in(char **builtin, t_token *tok, t_data *data)
 char	*get_home_env(t_export *env)
 {
 	t_export	*tmp;
-	int			i;
 
 	tmp = env;
-	i = 0;
 	while (tmp)
 	{
 		if (!ft_strcmp(tmp->key, "HOME"))
@@ -92,6 +89,8 @@ char	*get_home_env(t_export *env)
 
 int	check_echo_option(char **args, int i, int j)
 {
+	if (!args[1] || ft_strncmp(args[1], "-n", 2) != 0)
+		return (0);
 	while (args[++i])
 	{
 		j = 0;

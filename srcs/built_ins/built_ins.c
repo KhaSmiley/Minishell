@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 00:49:03 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/05 21:02:27 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/08 06:45:28 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,12 +98,6 @@ int	ft_cd(char **cmd, t_data *data)
 	return (1);
 }
 
-int	ft_env(t_data *data)
-{
-	print_list_export(data->env_export);
-	return (1);
-}
-
 int	ft_echo(char **cmd)
 {
 	int	i;
@@ -121,9 +115,16 @@ int	ft_echo(char **cmd)
 	while (cmd[num_args])
 		num_args++;
 	i = no_line + 1;
+	int j;
 	while (cmd[i])
 	{
-		printf("%s", cmd[i]);
+		j = 0;
+		while (cmd[i][j])
+		{
+			if (cmd[i][j] != '\\')
+				printf("%c", cmd[i][j]);
+			j++;
+		}
 		if (i < num_args - 1)
 			printf(" ");
 		i++;
@@ -131,132 +132,4 @@ int	ft_echo(char **cmd)
 	if (!no_line)
 		printf("\n");
 	return (1);
-}
-
-int	check_digits(char *args)
-{
-	int	i;
-
-	i = 0;
-	while (args[i])
-	{
-		if (!ft_isdigit(args[i]) || i > 18)
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-int ft_exit_atoi(char *str)
-{
-	size_t i;
-	int sign;
-
-	sign = 1;
-	i = 0;
-	if (*str == '-')
-	{
-		sign = -sign;
-		++str;
-	}
-	else if (*str == '+')
-		++str;
-	while (*str >= '0' && *str <= '9')
-	{
-		i = i * 10 + *str - '0';
-		if ((i > LONG_MAX && sign == 1) || (i - 1 > LONG_MAX && sign == -1))
-			return (0);
-		++str;
-	}
-	if (*str)
-		return (0);
-	return (1);
-}
-
-int	ft_exit_no_fork(char **args, t_data *data, t_token **tok)
-{
-	int	i;
-	int	exit_value;
-	t_token *tmp;
-
-	i = 0;
-	tmp = *tok;
-	exit_value = 0;
-	if (!args || !*args)
-	{
-		close(data->std_fd[0]);
-		close(data->std_fd[1]);
-		free_export(data->env_export);
-		free_tok(tok);
-		exit(g_sig_return);
-	}
-	while(tmp)
-	{
-		if(tmp->type == WORD)
-			i++;
-		tmp = tmp->next;
-	}
-	if (i == 2)
-	{
-		if (!ft_exit_atoi(args[1]))
-		{
-			ft_printf("exit : %s: numeric argument required\n", args[1]);
-			clear_exit_no_fork(data, args, tok);
-			exit(2);
-		}
-	}
-	if (i > 2)
-	{
-		data->status = 1;
-		ft_printf("exit: too many arguments\n");
-		return (1);
-	}
-	if (i == 2)
-		exit_value = ft_atoi(args[1]);
-	clear_exit_no_fork(data, args, tok);
-	exit(exit_value);
-}
-void clear_exit_no_fork(t_data *data, char **args, t_token **tok)
-{
-	close(data->std_fd[1]);
-	close(data->std_fd[0]);
-	free_export(data->env_export);
-	free_tab(args);
-	free_tok(tok);
-}
-
-int	ft_exit_fork(char **args, t_data *data, t_token **tok)
-{
-	int	i;
-	int	exit_value;
-
-	i = 0;
-	if (!args || !*args)
-	{
-		free_export(data->env_export);
-		free_tok(tok);
-		exit(g_sig_return);
-	}
-	if (args[i + 1])
-	{
-		if (!ft_exit_atoi(args[1]))
-		{
-			ft_printf("exit : %s: numeric argument required\n", args[1]);
-			free_export(data->env_export);
-			free_tab(args);
-			free_tok(tok);
-			exit(2);
-		}
-	}
-	i = 0;
-	if (args[i + 2])
-	{
-		ft_printf("exit: too many arguments\n");
-		return (1);
-	}
-	exit_value = ft_atoi(args[1]);
-	free_export(data->env_export);
-	free_tab(args);
-	free_tok(tok);
-	exit(exit_value);
 }
