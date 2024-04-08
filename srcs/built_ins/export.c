@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 15:13:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/07 06:12:32 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/08 05:12:13 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,18 +42,6 @@ char	*ft_find_value_export(char *str)
 	return (ft_strdup(&str[i + 1]));
 }
 
-void	print_list_export(t_export *lst)
-{
-	if (!lst)
-		return ;
-	while (lst)
-	{
-		printf("%s=%s\n", lst->key, lst->value);
-		lst = lst->next;
-	}
-	return ;
-}
-
 void	ft_delone_export(t_export **env, char *key)
 {
 	t_export	*tmp;
@@ -64,10 +52,7 @@ void	ft_delone_export(t_export **env, char *key)
 	{
 		tmp = (*env);
 		(*env) = (*env)->next;
-		free(tmp->key);
-		free(tmp->value);
-		free(tmp);
-		free(key);
+		ft_free_in_export_func(tmp, key);
 		return ;
 	}
 	tmp = (*env)->next;
@@ -95,7 +80,7 @@ int	ft_check_syntax_key(char *str)
 		return (1);
 	if (ft_isdigit(str[0]))
 		return (1);
-	while (str[i])
+	while (str[i] && str[i] != '=')
 	{
 		if (!ft_isalnum_env(str[i]) && str[i] != '=')
 			return (1);
@@ -115,10 +100,8 @@ void	ft_export(t_data *data, char **args)
 		{
 			ft_printf("export: `%s': not a valid identifier\n", args[i]);
 			data->status = 1;
-			i++;
-			continue ;
 		}
-		if (ft_strchr(args[i], '='))
+		else if (ft_strchr(args[i], '='))
 		{
 			if (check_if_key_exist_export(data->env_export, args[i]))
 			{
@@ -129,23 +112,7 @@ void	ft_export(t_data *data, char **args)
 				ft_lstnew_export(ft_find_key_export(args[i]),
 					ft_find_value_export(args[i])));
 		}
-		else
-			break ;
 		i++;
 	}
 	return ;
-}
-
-void	ft_envp_copy_export(t_data *data, char **envp)
-{
-	int	i;
-
-	i = 0;
-	while (envp[i])
-	{
-		ft_stock_export(&data->env_export,
-			ft_lstnew_export(ft_find_key_export(envp[i]),
-				ft_find_value_export(envp[i])));
-		i++;
-	}
 }

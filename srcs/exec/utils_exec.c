@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 16:39:11 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/05 17:01:02 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/08 06:36:43 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,9 @@ char	*find_envp_path(t_export *env)
 
 char	**split_path(t_data *data)
 {
-	int		i;
-	int		j;
 	char	*path;
 	char	**split_path;
 
-	i = 0;
-	j = 0;
 	path = find_envp_path(data->env_export);
 	if (!path)
 		return (NULL);
@@ -60,13 +56,11 @@ char	**split_path(t_data *data)
 char	*complete_path(t_data *data, char *cmd)
 {
 	int		i;
-	int		j;
 	char	**tmp;
 	char	*tmp2;
 	char	*path;
 
 	i = 0;
-	j = 0;
 	tmp2 = NULL;
 	if (ft_strchr(cmd, '/') != NULL)
 		return (ft_strdup_access(cmd));
@@ -88,6 +82,8 @@ char	*complete_path(t_data *data, char *cmd)
 
 void	init_data(int argc, t_data *data, t_token *tok)
 {
+	disable_signals();
 	data->argc = argc;
 	data->nb_cmd = ft_count_pipe(tok);
+	find_nb_hdoc(tok, data);
 }

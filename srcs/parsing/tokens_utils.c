@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 04:48:21 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/07 04:55:03 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/08 04:11:10 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ char	*topositif(char *str)
 			str[i] = -str[i];
 	return (str);
 }
+
 char	*tonegatif(char *str)
 {
 	char	flag_quote;
