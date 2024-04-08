@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 16:39:11 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/08 06:36:43 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/08 18:12:45 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ char	*complete_path(t_data *data, char *cmd)
 
 void	init_data(int argc, t_data *data, t_token *tok)
 {
-	disable_signals();
 	data->argc = argc;
 	data->nb_cmd = ft_count_pipe(tok);
 	find_nb_hdoc(tok, data);

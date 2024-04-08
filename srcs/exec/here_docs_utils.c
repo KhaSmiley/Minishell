@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_docs_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 05:57:22 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/08 07:03:29 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/08 20:10:40 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	ft_close_hd_child(t_data *data, t_heredoc *h_docs)
 	}
 	free(h_docs);
 }
+
 void	ft_putstr_newline_fd(char *str, int pipe)
 {
 	int	i;

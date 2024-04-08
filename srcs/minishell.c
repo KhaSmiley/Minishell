@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/08 08:00:05 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/08 18:19:54 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	main_while(t_data *data, t_token **tok, char *input, int argc)
 {
 	while (1)
 	{
-		// handle_signals(); Should we ???? cause after a single builtin we can't catch ctrl-c
 		input = readline("baznboul> ");
 		if (input == NULL)
 		{

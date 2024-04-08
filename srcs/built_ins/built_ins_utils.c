@@ -3,48 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   built_ins_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 03:45:20 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/08 06:43:38 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/08 20:09:24 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	to_builtin_or_not_to_builtin(char *cmd)
+void	built_ins(t_data *data, t_token **tok)
 {
-	if (!cmd)
-		return (0);
-	if (!ft_strcmp(cmd, "pwd"))
-		return (1);
-	else if (!ft_strcmp(cmd, "cd"))
-		return (1);
-	else if (!ft_strcmp(cmd, "env"))
-		return (1);
-	else if (!ft_strcmp(cmd, "echo"))
-		return (1);
-	else if (!ft_strcmp(cmd, "export"))
-		return (1);
-	else if (!ft_strcmp(cmd, "unset"))
-		return (1);
-	else if (!ft_strcmp(cmd, "exit"))
-		return (1);
-	return (0);
-}
-
-char	*find_first_cmd(t_token **tok)
-{
-	t_token	*tmp;
-
-	tmp = *tok;
-	while (tmp)
+	if (to_builtin_or_not_to_builtin(data->cmd[0]))
 	{
-		if (tmp->type == WORD)
-			return (tmp->str);
-		tmp = tmp->next;
+		lets_builtin(data, data->cmd, tok);
+		// if builtin is last cmd and it fails data->status = 1
+		// in all other cases data->status = 0
+		return (free_tab(data->cmd), free_tok(tok),
+			free_export(data->env_export), exit(0));
 	}
-	return (NULL);
 }
 
 int	one_built_in(char **builtin, t_token **tok, t_data *data)
@@ -73,45 +50,30 @@ int	one_built_in(char **builtin, t_token **tok, t_data *data)
 	return (1);
 }
 
-char	*get_home_env(t_export *env)
+char	*find_first_cmd(t_token **tok)
 {
-	t_export	*tmp;
+	t_token	*tmp;
 
-	tmp = env;
+	tmp = *tok;
 	while (tmp)
 	{
-		if (!ft_strcmp(tmp->key, "HOME"))
-			return (env->value);
+		if (tmp->type == WORD)
+			return (tmp->str);
 		tmp = tmp->next;
 	}
 	return (NULL);
 }
 
-int	check_echo_option(char **args, int i, int j)
+int	check_digits(char *args)
 {
-	if (!args[1] || ft_strncmp(args[1], "-n", 2) != 0)
-		return (0);
-	while (args[++i])
+	int	i;
+
+	i = 0;
+	while (args[i])
 	{
-		j = 0;
-		while (args[i][j])
-		{
-			if (args[i][j] == '-')
-				j++;
-			if (args[i][j] != 'n')
-				return (i - 1);
-			if (args[i][j + 1] != 'n' && args[i][j + 1] != '\0' && (args[i][j
-					+ 1] != ' ' || args[i][j + 1] != '\t'))
-				return (i - 1);
-			while (args[i][j] == 'n')
-			{
-				if (args[i][j] == '\0')
-					break ;
-				j++;
-			}
-			if (args[i][j] != 'n' && args[i][j] != '\0')
-				return (i - 1);
-		}
+		if (!ft_isdigit(args[i]) || i > 18)
+			return (0);
+		i++;
 	}
-	return (i - 1);
+	return (1);
 }

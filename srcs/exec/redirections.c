@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 20:35:59 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/08 05:37:42 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/08 20:11:02 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	close_fds(t_data *data)
 		close(data->pipe_fd[1]);
 }
 
-int ft_dup2_in_redir_files(int fd, t_token *tmp, t_token *tok, t_data *data)
+int	ft_dup2_in_redir_files(int fd, t_token *tmp, t_token *tok, t_data *data)
 {
 	if (fd == -1)
 	{
