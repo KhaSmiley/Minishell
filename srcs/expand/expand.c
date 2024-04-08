@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 22:12:21 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/07 18:14:42 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/08 08:01:19 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	ft_expand_str_y(t_token *tok, t_data *data)
+void	ft_expand_str(t_token *tok, t_data *data)
 {
 	t_token	*tmp;
 
@@ -23,7 +23,7 @@ void	ft_expand_str_y(t_token *tok, t_data *data)
 	{
 		if (tmp->type == WORD && ft_strchr(tmp->str, '$'))
 		{
-			tmp->str = ft_get_new_str_for_env_y(tmp->str, data);
+			tmp->str = ft_get_new_str_for_env(tmp->str, data);
 		}
 		tmp = tmp->next;
 	}
@@ -47,7 +47,6 @@ char	*ft_find_value_env_new(char *str, int *i, t_data *data)
 	}
 	key[j] = '\0';
 	value = ft_find_value(key, data->env_export);
-	// i think we strdup("") twice and lose 1 bytes
 	if (!value)
 		return (free(key), ft_strdup(""));
 	return (free(key), ft_strdup(value));
@@ -59,22 +58,23 @@ char	*double_quote(char *str, int *i, t_data *data)
 
 	env_str = NULL;
 	(*i)++;
-	env_str = ft_strjoin_you(env_str, ft_strdup("\""));
+	env_str = ft_strjoinou(env_str, ft_strdup("\""));
 	while (str[*i] != '"')
 	{
 		if (str[*i] == '$')
-			env_str = ft_strjoin_you(env_str, find_new_str_env_y(str, i, data));
+			env_str = ft_strjoinou(env_str, find_new_str_env(str, i, data));
 		else
-			env_str = ft_strjoin_you(env_str, to_next_double_q(str, i));
+			env_str = ft_strjoinou(env_str, to_next_double_q(str, i));
 		data->status = 0;
 	}
 	(*i)++;
-	return (ft_strjoin_you(env_str, ft_strdup("\"")));
+	return (ft_strjoinou(env_str, ft_strdup("\"")));
 }
 
-char	*find_new_str_env_y(char *str, int *i, t_data *data)
+char	*find_new_str_env(char *str, int *i, t_data *data)
 {
-	char *env;
+	char	*env;
+
 	(*i)++;
 	if (ft_isdigit(str[*i]))
 	{
@@ -96,7 +96,7 @@ char	*find_new_str_env_y(char *str, int *i, t_data *data)
 	return (env);
 }
 
-char	*ft_get_new_str_for_env_y(char *str, t_data *data)
+char	*ft_get_new_str_for_env(char *str, t_data *data)
 {
 	char	*env_str;
 	int		i;
@@ -106,18 +106,17 @@ char	*ft_get_new_str_for_env_y(char *str, t_data *data)
 	while (str[i])
 	{
 		if (str[i] == '\'')
-			env_str = ft_strjoin_you(env_str, single_quote(str, &i));
+			env_str = ft_strjoinou(env_str, single_quote(str, &i));
 		if (str[i] == '\"')
-			env_str = ft_strjoin_you(env_str, double_quote(str, &i, data));
+			env_str = ft_strjoinou(env_str, double_quote(str, &i, data));
 		if (str[i] == '$')
 		{
-			// leak here
-			env_str = ft_strjoin_you(env_str, find_new_str_env_y(str, &i,
+			env_str = ft_strjoinou(env_str, find_new_str_env(str, &i,
 						data));
 			data->status = 0;
 		}
 		else
-			env_str = ft_strjoin_you(env_str, normal(str, &i));
+			env_str = ft_strjoinou(env_str, normal(str, &i));
 	}
 	free(str);
 	return (env_str);

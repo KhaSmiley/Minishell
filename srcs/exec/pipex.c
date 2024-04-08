@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 15:43:05 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/07 21:13:27 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/08 06:46:44 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,15 @@ int	ft_handle_errors(char **args)
 		return (ft_printf("minishell: %s: %s\n", args[0], strerror(errno)),
 			127);
 	}
-	else if (!access(args[0], F_OK) && (!ft_strncmp(args[0], "./", 2) && S_ISDIR(path_stat.st_mode)))
+	else if (!access(args[0], F_OK) && (!ft_strncmp(args[0], "./", 2)
+			&& S_ISDIR(path_stat.st_mode)))
 	{
 		return (ft_printf("minishell: %s: %s\n", args[0], "Is a directory"),
 			126);
 	}
 	else if (ft_strncmp(args[0], "./", 2))
-	{
 		return (ft_printf("minishell: %s: %s\n", args[0], "command not found"),
 			127);
-	}
 	return (0);
 }
 
@@ -51,9 +50,11 @@ void	child_process(t_data *data, t_token **tok, t_heredoc *h_docs, int i)
 	data->cmd = tok_to_tab(tok, i);
 	redirection(data, i);
 	if (!redir_files(*tok, i, h_docs, data))
-		return (free_export(data->env_export), exit(1));
+		return (free_export(data->env_export), free_tok(tok),
+			free_tab(data->cmd), exit(1));
 	if (!data->cmd)
-		return (free_tok(tok), free_tab(data->cmd), free_export(data->env_export), exit(0));
+		return (free_tok(tok), free_tab(data->cmd),
+			free_export(data->env_export), exit(0));
 	if (to_builtin_or_not_to_builtin(data->cmd[0]))
 	{
 		lets_builtin(data, data->cmd, tok);
@@ -71,8 +72,8 @@ void	child_process(t_data *data, t_token **tok, t_heredoc *h_docs, int i)
 	if (path)
 		execve(path, data->cmd, tab);
 	data->status = ft_handle_errors(data->cmd);
-	if (path)
-		free(path);
+	free(path);
+	path = NULL;
 	free_tab(data->cmd);
 	free_tok(tok);
 	free_tab(tab);
@@ -100,9 +101,10 @@ void	parent_process(t_data *data, int i)
 		close(data->tmp_fd);
 	data->tmp_fd = data->pipe_fd[0];
 }
-void ft_waitpid_child(t_data *data)
+
+void	ft_waitpid_child(t_data *data)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < data->nb_cmd)

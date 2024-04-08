@@ -5,18 +5,18 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/04/07 05:56:05 by kboulkri         ###   ########.fr       */
+/*   Created: 2024/04/08 04:21:07 by kboulkri          #+#    #+#             */
+/*   Updated: 2024/04/08 05:13:22 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-t_token *find_curr_tok_pipe(t_token **tok, int nb_pipe)
+t_token	*find_curr_tok_pipe(t_token **tok, int nb_pipe)
 {
-	t_token *tmp;
-	int count_pipe;
-	
+	t_token	*tmp;
+	int		count_pipe;
+
 	count_pipe = 0;
 	tmp = *tok;
 	while (tmp && count_pipe != nb_pipe)
@@ -52,17 +52,15 @@ int	ft_count_pipe(t_token *tok)
 
 int	find_malloc_tok_to_tab(t_token **tok, int nb_pipe)
 {
-	t_token	*tmp;
-	t_token *tmp_curr;
+	t_token	*tmp_curr;
 	int		size_malloc;
 
-	tmp = *tok;
 	size_malloc = 0;
 	tmp_curr = find_curr_tok_pipe(tok, nb_pipe);
 	while (tmp_curr && tmp_curr->type != PIPE)
 	{
-		if (tmp_curr->type == GREATER || tmp_curr->type == LESS || tmp_curr->type == DGREATER
-			|| tmp_curr->type == DLESS)
+		if (tmp_curr->type == GREATER || tmp_curr->type == LESS
+			|| tmp_curr->type == DGREATER || tmp_curr->type == DLESS)
 			tmp_curr = tmp_curr->next;
 		else if (tmp_curr->type == WORD)
 		{
@@ -72,8 +70,6 @@ int	find_malloc_tok_to_tab(t_token **tok, int nb_pipe)
 				if (tmp_curr->type == PIPE)
 					break ;
 			}
-			if (!tmp_curr->str)
-				size_malloc++;
 			else
 				size_malloc++;
 		}
@@ -84,10 +80,9 @@ int	find_malloc_tok_to_tab(t_token **tok, int nb_pipe)
 
 char	**tok_to_tab(t_token **tok, int nb_pipe)
 {
-	t_token	*tmp;
-	t_token *tmp_curr;
+	t_token	*tmp_curr;
 	char	**tab;
-	int		i;  
+	int		i;
 	int		size;
 
 	i = 0;
@@ -97,12 +92,11 @@ char	**tok_to_tab(t_token **tok, int nb_pipe)
 	tab = malloc(sizeof(char *) * (size + 1));
 	if (!tab)
 		return (NULL);
-	tmp = *tok;
 	tmp_curr = find_curr_tok_pipe(tok, nb_pipe);
 	while (tmp_curr && tmp_curr->type != PIPE)
 	{
-		if (tmp_curr->type == GREATER || tmp_curr->type == LESS || tmp_curr->type == DGREATER
-			|| tmp_curr->type == DLESS)
+		if (tmp_curr->type == GREATER || tmp_curr->type == LESS
+			|| tmp_curr->type == DGREATER || tmp_curr->type == DLESS)
 			tmp_curr = tmp_curr->next;
 		else if (tmp_curr->type == WORD)
 		{

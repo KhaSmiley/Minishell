@@ -31,6 +31,9 @@ SRCS_NAMES		=	minishell.c \
 					exec/exec_utils.c\
 					built_ins/built_ins.c \
 					built_ins/built_ins_utils.c \
+					built_ins/built_ins_utils_two.c \
+					built_ins/built_ins_utils_third.c \
+					built_ins/ft_exit.c\
 					built_ins/export.c \
 					built_ins/export_utils.c \
 					built_ins/unset.c \

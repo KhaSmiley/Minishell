@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils_two.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 02:18:19 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/07 19:00:49 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/08 04:12:03 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,14 +72,11 @@ char	*ft_find_key(char *str, int count)
 	return (key);
 }
 
-
 char	*ft_find_value(char *key, t_export *env)
 {
-	int			i;
 	char		*stock;
 	t_export	*tmp;
 
-	i = 0;
 	tmp = env;
 	while (tmp)
 	{
@@ -92,7 +89,6 @@ char	*ft_find_value(char *key, t_export *env)
 		}
 		tmp = tmp->next;
 	}
-	// replaced the ft_strdup("") in return
+	// replaced the ft_strdup("") in return (return (NULL));
 	return (NULL);
 }
-// Function to copy the envp and not to use the original one so we can modify it with export and set and unset

@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 05:39:43 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/07 05:45:10 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/08 08:01:19 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*single_quote(char *str, int *i)
 	return (ft_substr(str, start, *i - start));
 }
 
-char	*ft_strjoin_you(char *s1, char *s2)
+char	*ft_strjoinou(char *s1, char *s2)
 {
 	int		i;
 	char	*res;

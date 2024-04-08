@@ -3,14 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   memory.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 21:55:28 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/07 18:14:23 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/08 03:49:30 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+void	ft_free(void **ptr)
+{
+	if (*ptr != NULL)
+	{
+		free(*ptr);
+		*ptr = NULL;
+	}
+}
 
 void	free_tok(t_token **tok)
 {
@@ -24,11 +33,9 @@ void	free_tok(t_token **tok)
 		*tok = (*tok)->next;
 		if (tmp->str)
 		{
-			free(tmp->str);
-			tmp->str = NULL;
+			ft_free((void **)&tmp->str);
 		}
-		free(tmp);
-		tmp = NULL;
+		ft_free((void **)&tmp);
 	}
 }
 

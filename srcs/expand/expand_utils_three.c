@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 05:37:45 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/07 05:45:17 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/08 04:13:12 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int	ft_strlen_from_char(char *str, char c)
 		i++;
 	return (i);
 }
+
 int	ft_strl(char *str)
 {
 	int	i;
@@ -33,12 +34,12 @@ int	ft_strl(char *str)
 	return (i);
 }
 
-int ft_find_value_malloc(char *str, int *i)
+int	ft_find_value_malloc(char *str, int *i)
 {
-	int start;
+	int	start;
 
 	start = *i;
-	while(str[start] && (ft_isalnum(str[start]) || str[start] != '_'))
+	while (str[start] && (ft_isalnum(str[start]) || str[start] != '_'))
 		start++;
 	return (start);
 }

@@ -6,13 +6,13 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 06:00:30 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/07 06:11:46 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/08 03:50:55 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void ft_free_unset(t_export *tmp)
+void	ft_free_unset(t_export *tmp)
 {
 	free(tmp->key);
 	free(tmp->value);
