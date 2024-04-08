@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokens.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 01:06:11 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/07 18:29:34 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/08 04:05:05 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,8 @@ int	ft_tokenizer(char *token)
 
 int	alloc_token(t_token **tok, char *longchev, char *str, int i)
 {
-	int		j;
 	char	*redirection;
 
-	j = 0;
 	if (str[i + 1] == longchev[0])
 	{
 		redirection = ft_strdup(longchev);
@@ -91,7 +89,6 @@ t_token	*find_token(char *str)
 			ft_tokenizer(" ");
 		else
 			ft_stock(&tok, ft_lstnew(topositif(isaword(str, &i)), WORD));
-		// leak related to word token ^
 		if (str[i])
 			i++;
 	}

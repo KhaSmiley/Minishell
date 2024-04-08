@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/07 06:30:55 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/08 06:33:43 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@
 # include <sys/stat.h>
 # include <sys/wait.h>
 # include <unistd.h>
+
+# define E "warning: here-document at line"
+# define F "%d delimited by end-of-file (wanted `%s')\n"
 
 typedef struct s_token
 {
@@ -81,8 +84,8 @@ typedef struct s_data
 	t_export		*env_export;
 }					t_data;
 
+extern int	g_sig_return ;
 t_data				*simpleton(void);
-extern int g_sig_return ;
 
 /* syntax.c */
 
@@ -253,31 +256,51 @@ void				ft_close_hd_child(t_data *data, t_heredoc *h_docs);
 
 /*built_ins*/
 
-int					lets_builtin(t_data *data, char **cmd, t_token **tok);
 int					lets_builtin_no_fork(t_data *data, char **cmd,
 						t_token **tok);
+int					lets_builtin(t_data *data, char **cmd, t_token **tok);
 int					ft_pwd(void);
 int					ft_cd(char **cmd, t_data *data);
-int					ft_env(t_data *data);
 int					ft_echo(char **cmd);
-int					ft_exit_no_fork(char **args, t_data *data, t_token **tok);
-int					ft_exit_fork(char **args, t_data *data, t_token **tok);
 
 /* built_ins_utils.c */
 
 int					to_builtin_or_not_to_builtin(char *cmd);
 char				*find_first_cmd(t_token **tok);
-int					one_built_in(char **builtin, t_token *tok, t_data *data);
-int					check_echo_option(char **args, int i, int j);
+int					one_built_in(char **builtin, t_token **tok, t_data *data);
 char				*get_home_env(t_export *env);
-void				clear_exit_no_fork(t_data *data, char **args,
+int					check_echo_option(char **args, int i, int j);
+
+/* built_ins_utils_third.c */
+
+void				clear_exit_no_fork(t_data *data, char **args, t_token **tok,
+						int i);
+void				ft_free_exit_no_fork(t_data *data, t_token **tok);
+void				ft_free_in_export_func(t_export *tmp, char *key);
+
+/* built_ins_utils_two.c */
+
+int					check_digits(char *args);
+int					ft_env(t_data *data);
+void				print_list_export(t_export *lst);
+void				ft_envp_copy_export(t_data *data, char **envp);
+int					ft_find_nb_args_exit(t_token **tok);
+
+/* ft_exit.c */
+
+void				ft_check_atoi_exit(t_data *data, char **args,
 						t_token **tok);
+int					ft_exit_atoi(char *str);
+int					ft_exit_fork(char **args, t_data *data, t_token **tok);
+int					ft_exit_no_fork(char **args, t_data *data, t_token **tok);
 
 /* export */
 
+char				*ft_find_key_export(char *str);
+char				*ft_find_value_export(char *str);
+void				ft_delone_export(t_export **env, char *key);
+int					ft_check_syntax_key(char *str);
 void				ft_export(t_data *data, char **args);
-void				ft_envp_copy_export(t_data *data, char **envp);
-void				print_list_export(t_export *lst);
 
 /* export_utils.c */
 

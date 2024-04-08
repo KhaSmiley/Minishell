@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:38 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/07 22:01:58 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/08 06:48:17 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,16 @@ int	parsing_and_stock_input(char *input, t_token **tok, t_data *data)
 
 	tmp = *tok;
 	if (!manage_quote_errors(input))
+	{
+		free(input);
+		free_tok(tok);
+		data->status = 2;
 		return (1);
+	}
 	tmp = find_token(input);
 	if (ft_syntax(&tmp))
 	{
+		free(input);
 		free_tok(&tmp);
 		return (1);
 	}
@@ -44,6 +50,20 @@ int	ft_syntax_pipe(t_token *tok)
 	{
 		tmp = tmp->next;
 		if (ft_syntax_word(tmp->next))
+			return (1);
+	}
+	else if (tmp->type == GREATER || tmp->type == LESS || tmp->type == DGREATER
+		|| tmp->type == DLESS)
+	{
+		tmp = tmp->next;
+		if (ft_syntax_redir(tmp))
+			return (1);
+	}
+	else if (tmp->type == GREATER || tmp->type == LESS || tmp->type == DGREATER
+		|| tmp->type == DLESS)
+	{
+		tmp = tmp->next;
+		if (ft_syntax_redir(tmp))
 			return (1);
 	}
 	return (0);
@@ -120,12 +140,11 @@ int	ft_syntax(t_token **tok)
 			|| tmp->type == DLESS))
 	{
 		if (tmp->next == NULL)
-			return (ft_printf("syntax error near unexpected token `newline'\n"),
+			return (ft_printf("syntax error near unexpected token `newxline'\n"),
 				-1);
 		tmp = tmp->next;
 		if (ft_syntax_redir(tmp))
 			return (ft_printf("syntax error near unexpected token '>'\n"), -1);
-		return (0);
 	}
 	else if (tmp->type == PIPE)
 		return (ft_printf("syntax error near unexpected token '|'\n"), -1);

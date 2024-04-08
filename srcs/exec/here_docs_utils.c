@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 05:57:22 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/07 06:00:22 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/08 04:23:25 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,10 @@ void	init_here_doc(t_heredoc *h_docs, t_token **tok, t_data *data)
 		tmp = tmp->next;
 	}
 }
-void ft_close_hd_child(t_data *data, t_heredoc *h_docs)
+
+void	ft_close_hd_child(t_data *data, t_heredoc *h_docs)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < data->nb_hd)
