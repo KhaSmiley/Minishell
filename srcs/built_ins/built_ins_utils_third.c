@@ -6,13 +6,13 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 04:24:59 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/08 07:35:55 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/08 07:51:00 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	clear_exit_no_fork(t_data *data, char **args, t_token **tok, int exit_value, int i)
+void	clear_exit_no_fork(t_data *data, char **args, t_token **tok, int i)
 {
 	if (i == 0)
 	{
@@ -24,7 +24,7 @@ void	clear_exit_no_fork(t_data *data, char **args, t_token **tok, int exit_value
 		free_export(data->env_export);
 		free_tab(args);
 		free_tok(tok);
-		exit(exit_value);
+		exit(data->status);
 	}
 	free_export(data->env_export);
 	free_tab(args);
