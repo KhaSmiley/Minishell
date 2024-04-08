@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/08 06:48:44 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/08 07:42:03 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	main_while(t_data *data, t_token **tok, char *input, int argc)
 		input = readline("baznboul> ");
 		if (input == NULL)
 		{
-			ft_printf("exit\n");
+			printf("exit\n");
 			data->status = 0;
 			break ;
 		}
