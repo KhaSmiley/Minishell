@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/08 07:52:56 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/08 08:01:19 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,11 +112,11 @@ char				*tonegatif(char *str);
 
 /* expand.c */
 
-void				ft_expand_str_y(t_token *tok, t_data *data);
+void				ft_expand_str(t_token *tok, t_data *data);
 char				*ft_find_value_env_new(char *str, int *i, t_data *data);
 char				*double_quote(char *str, int *i, t_data *data);
-char				*find_new_str_env_y(char *str, int *i, t_data *data);
-char				*ft_get_new_str_for_env_y(char *str, t_data *data);
+char				*find_new_str_env(char *str, int *i, t_data *data);
+char				*ft_get_new_str_for_env(char *str, t_data *data);
 
 /* expand_utils_two.c */
 
@@ -138,7 +138,7 @@ int					is_last(char *str, int i);
 
 char				*normal(char *str, int *i);
 char				*single_quote(char *str, int *i);
-char				*ft_strjoin_you(char *s1, char *s2);
+char				*ft_strjoinou(char *s1, char *s2);
 
 /* expand_after_quotes.c */
 
