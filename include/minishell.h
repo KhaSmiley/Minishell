@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/08 06:33:43 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/08 07:03:34 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ typedef struct s_data
 	t_export		*env_export;
 }					t_data;
 
-extern int	g_sig_return ;
+extern int g_sig_return ;
 t_data				*simpleton(void);
 
 /* syntax.c */
@@ -251,6 +251,7 @@ void				find_nb_hdoc(t_token *tok, t_data *data);
 void				init_here_doc(t_heredoc *h_docs, t_token **tok,
 						t_data *data);
 void				ft_close_hd_child(t_data *data, t_heredoc *h_docs);
+void				ft_putstr_newline_fd(char *str, int pipe);
 
 /* ------------------------- BUILT INS ------------------------ */
 

@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 05:57:22 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/08 04:23:25 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/08 07:03:29 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,18 @@ void	ft_close_hd_child(t_data *data, t_heredoc *h_docs)
 		i++;
 	}
 	free(h_docs);
+}
+void	ft_putstr_newline_fd(char *str, int pipe)
+{
+	int	i;
+
+	i = 0;
+	if (!str)
+		return ;
+	while (str[i] != '\0')
+	{
+		write(pipe, &str[i], 1);
+		i++;
+	}
+	write(pipe, "\n", 1);
 }
