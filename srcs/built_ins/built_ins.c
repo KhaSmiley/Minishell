@@ -3,14 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   built_ins.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 00:49:03 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/08 06:45:28 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/08 19:36:47 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+int	to_builtin_or_not_to_builtin(char *cmd)
+{
+	if (!cmd)
+		return (0);
+	if (!ft_strcmp(cmd, "pwd"))
+		return (1);
+	else if (!ft_strcmp(cmd, "cd"))
+		return (1);
+	else if (!ft_strcmp(cmd, "env"))
+		return (1);
+	else if (!ft_strcmp(cmd, "echo"))
+		return (1);
+	else if (!ft_strcmp(cmd, "export"))
+		return (1);
+	else if (!ft_strcmp(cmd, "unset"))
+		return (1);
+	else if (!ft_strcmp(cmd, "exit"))
+		return (1);
+	return (0);
+}
 
 int	lets_builtin_no_fork(t_data *data, char **cmd, t_token **tok)
 {
@@ -95,41 +116,5 @@ int	ft_cd(char **cmd, t_data *data)
 		data->status = 1;
 		return (0);
 	}
-	return (1);
-}
-
-int	ft_echo(char **cmd)
-{
-	int	i;
-	int	num_args;
-	int	no_line;
-
-	i = 1;
-	num_args = 1;
-	no_line = check_echo_option(cmd, 0, 0);
-	if (!cmd[i] && !no_line)
-	{
-		printf("\n");
-		return (1);
-	}
-	while (cmd[num_args])
-		num_args++;
-	i = no_line + 1;
-	int j;
-	while (cmd[i])
-	{
-		j = 0;
-		while (cmd[i][j])
-		{
-			if (cmd[i][j] != '\\')
-				printf("%c", cmd[i][j]);
-			j++;
-		}
-		if (i < num_args - 1)
-			printf(" ");
-		i++;
-	}
-	if (!no_line)
-		printf("\n");
 	return (1);
 }

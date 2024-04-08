@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 05:03:23 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/08 07:55:34 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/08 18:58:39 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,32 +20,6 @@ void	ft_check_atoi_exit(t_data *data, char **args, t_token **tok)
 		clear_exit_no_fork(data, args, tok, 0);
 		exit(2);
 	}
-}
-
-int	ft_exit_atoi(char *str)
-{
-	size_t	i;
-	int		sign;
-
-	sign = 1;
-	i = 0;
-	if (*str == '-')
-	{
-		sign = -sign;
-		++str;
-	}
-	else if (*str == '+')
-		++str;
-	while (*str >= '0' && *str <= '9')
-	{
-		i = i * 10 + *str - '0';
-		if ((i > LONG_MAX && sign == 1) || (i - 1 > LONG_MAX && sign == -1))
-			return (0);
-		++str;
-	}
-	if (*str)
-		return (0);
-	return (1);
 }
 
 int	ft_exit_fork(char **args, t_data *data, t_token **tok)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils_two.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 02:18:19 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/08 04:12:03 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/08 20:12:56 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,12 @@ char	*ft_find_value(char *key, t_export *env)
 	{
 		if (ft_strcmp(tmp->key, key) == 0)
 		{
-			stock = tmp->value; // ft_strdup(tmp->value);
+			stock = tmp->value;
 			if (!stock)
 				return (NULL);
 			return (stock);
 		}
 		tmp = tmp->next;
 	}
-	// replaced the ft_strdup("") in return (return (NULL));
 	return (NULL);
 }

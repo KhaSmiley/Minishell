@@ -21,6 +21,7 @@ SRCS_NAMES		=	minishell.c \
 					utils/tab_utils.c \
 					utils/lst_utils.c \
 					utils/signals.c \
+					utils/errors.c \
 					exec/pipex.c \
 					exec/exec_prep.c \
 					exec/utils_exec_two.c \
@@ -28,15 +29,16 @@ SRCS_NAMES		=	minishell.c \
 					exec/here_docs.c \
 					exec/here_docs_utils.c \
 					exec/redirections.c \
-					exec/exec_utils.c\
 					built_ins/built_ins.c \
 					built_ins/built_ins_utils.c \
-					built_ins/built_ins_utils_two.c \
-					built_ins/built_ins_utils_third.c \
+					built_ins/ft_env.c \
+					built_ins/ft_echo.c \
+					built_ins/ft_unset.c \
 					built_ins/ft_exit.c\
+					built_ins/ft_exit_utils.c \
 					built_ins/export.c \
 					built_ins/export_utils.c \
-					built_ins/unset.c \
+					built_ins/export_lst_utils.c \
 					expand/expand.c \
 					expand/expand_utils_two.c \
 					expand/expand_utils_three.c \

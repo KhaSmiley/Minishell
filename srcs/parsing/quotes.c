@@ -3,17 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 23:15:53 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/08 04:09:19 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/08 20:07:18 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-// del char " or ' from string and move rest of string forwards in memory
-// merci bilel
 void	del_char(char *address, char char_to_del)
 {
 	while (*address != '\0' && *address != char_to_del)
@@ -28,38 +26,39 @@ void	del_char(char *address, char char_to_del)
 	}
 }
 
+void	set_in_quotes_flag(int *flag)
+{
+	if (!(*flag))
+		(*flag) = 1;
+	else
+		(*flag) = 0;
+}
+
 int	remove_quotes(char *str)
 {
 	int	i;
 	int	in_d_quotes;
 	int	in_s_quotes;
 
-	i = 0;
+	i = -1;
 	in_d_quotes = 0;
 	in_s_quotes = 0;
 	if (!str)
 		return (0);
-	while (str[i])
+	while (str[++i])
 	{
 		if (str[i] == '\"' && !in_s_quotes)
 		{
-			if (!in_d_quotes)
-				in_d_quotes = 1;
-			else
-				in_d_quotes = 0;
+			set_in_quotes_flag(&in_d_quotes);
 			del_char(&str[i], '\"');
 			i--;
 		}
 		else if (str[i] == '\'' && !in_d_quotes)
 		{
-			if (!in_s_quotes)
-				in_s_quotes = 1;
-			else
-				in_s_quotes = 0;
+			set_in_quotes_flag(&in_s_quotes);
 			del_char(&str[i], '\'');
 			i--;
 		}
-		i++;
 	}
 	return (1);
 }

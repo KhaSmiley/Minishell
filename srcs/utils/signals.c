@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 20:38:15 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/08 03:59:06 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/08 18:22:46 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	sigint_handler(int signum)
 {
 	(void)signum;
-	// printf("signum = %d\n", signum);
 	write(1, "\n", 1);
 	rl_replace_line("", 0);
 	rl_on_new_line();
@@ -30,7 +29,6 @@ void	sigint_hd(int signum)
 {
 	(void)signum;
 	// data = simpleton();
-	// ft_printf("quitting hd ctrl c\n");
 	write(1, "\n", 1);
 	// use data to free/ close everything
 	exit(130);
