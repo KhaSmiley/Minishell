@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:38 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/08 08:01:19 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/09 03:01:02 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	parsing_and_stock_input(char *input, t_token **tok, t_data *data)
 	}
 	ft_expand_str(tmp, data);
 	fix_quotes_token(tmp);
-	*tok = tmp;
+	data->tok = tmp;
 	return (0);
 }
 

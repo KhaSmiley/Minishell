@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 20:38:15 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/08 18:22:46 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/09 07:46:07 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,28 @@ void	sigint_handler(int signum)
 	rl_on_new_line();
 	rl_redisplay();
 	if (!g_sig_return)
-		g_sig_return = 130;
+		g_sig_return (= 130);
 	else
-		g_sig_return = 0;
+		g_sig_return (= 0);
 }
 
 void	sigint_hd(int signum)
 {
+	t_data	*data;
+	int		i;
+
+	i = -1;
 	(void)signum;
-	// data = simpleton();
+	data = simpleton();
 	write(1, "\n", 1);
-	// use data to free/ close everything
+	while (++i < data->nb_hd)
+	{
+		close(data->here_docs[i].fd[1]);
+		close(data->here_docs[i].fd[0]);
+	}
+	free_export(data->env_export);
+	free_tok(&data->tok);
+	free(data->here_docs);
 	exit(130);
 }
 

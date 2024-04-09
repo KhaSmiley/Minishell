@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 15:43:05 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/08 20:09:20 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/09 05:06:04 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,21 @@ void	end_child_process(char *path, t_data *data, t_token **tok, char **tab)
 {
 	free(path);
 	path = NULL;
-	free_tab(data->cmd);
-	free_tok(tok);
 	free_tab(tab);
+	free_tok(tok);
+	free_tab(data->cmd);
 	free_export(data->env_export);
 }
 
-void	child_process(t_data *data, t_token **tok, t_heredoc *h_docs, int i)
+void	child_process(t_data *data, t_token **tok, int i)
 {
 	char	*path;
 	char	**tab;
 
-	(void)h_docs;
 	default_signals();
 	data->cmd = tok_to_tab(tok, i);
 	redirection(data, i);
-	if (!redir_files(*tok, i, h_docs, data))
+	if (!redir_files(*tok, i, data))
 		return (free_export(data->env_export), free_tok(tok),
 			free_tab(data->cmd), exit(1));
 	if (!data->cmd)
@@ -76,9 +75,8 @@ void	ft_waitpid_child(t_data *data)
 int	exec_pipe(t_data *data, t_token **tok)
 {
 	int			i;
-	t_heredoc	*here_docs;
 
-	here_docs = here_doc_launch(data, tok);
+	here_doc_launch(data, tok);
 	i = -1;
 	disable_signals();
 	while (++i < data->nb_cmd)
@@ -90,12 +88,12 @@ int	exec_pipe(t_data *data, t_token **tok)
 		if (data->pid[i] == -1)
 			return (perror("Error fork"), 0);
 		if (data->pid[i] == 0)
-			child_process(data, tok, here_docs, i);
+			child_process(data, tok, i);
 		else
 			parent_process(data, i);
 	}
 	ft_waitpid_child(data);
-	ft_close_hd_child(data, here_docs);
+	ft_close_hd_child(data);
 	close(data->pipe_fd[0]);
 	return (0);
 }

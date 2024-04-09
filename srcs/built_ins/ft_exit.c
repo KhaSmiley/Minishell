@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 05:03:23 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/08 18:58:39 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/09 04:46:25 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	ft_exit_fork(char **args, t_data *data, t_token **tok)
 		clear_exit_no_fork(data, args, tok, 2);
 	}
 	clear_exit_no_fork(data, args, tok, 1);
-	exit(0);
+	exit(data->status);
 }
 
 int	ft_exit_no_fork(char **args, t_data *data, t_token **tok)

@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 02:59:29 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/08 07:04:25 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/09 03:08:15 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,56 +50,54 @@ void	exec_hdocs(t_heredoc *h_docs, t_data *data, int *i, t_token **tok)
 	exit(0);
 }
 
-void	close_heredocs(t_heredoc *h_docs, int limit)
+void	close_heredocs(t_data *data, int limit)
 {
 	int	i;
 
 	i = 0;
 	while (i < limit)
 	{
-		close(h_docs[i].fd[0]);
+		close(data->here_docs[i].fd[0]);
 		i++;
 	}
 	if (limit)
-		free(h_docs);
+		free(data->here_docs);
 }
 
-int	find_heredoc(t_heredoc *h_docs, t_data *data, t_token *tmp)
+int	find_heredoc(t_data *data, t_token *tmp)
 {
 	int	i;
 
 	i = -1;
 	while (++i < data->nb_hd)
 	{
-		if (!ft_strcmp(h_docs[i].lim, tmp->next->str))
-			return (h_docs[i].fd[0]);
+		if (!ft_strcmp(data->here_docs[i].lim, tmp->next->str))
+			return (data->here_docs[i].fd[0]);
 	}
 	return (-1);
 }
 
-t_heredoc	*here_doc_launch(t_data *data, t_token **tok)
+void	here_doc_launch(t_data *data, t_token **tok)
 {
 	int			i;
-	t_heredoc	*h_docs;
 	int			pid;
 
 	i = 0;
 	if (data->nb_hd == 0)
-		return (NULL);
-	h_docs = ft_calloc(sizeof(t_heredoc), data->nb_hd);
-	if (!h_docs)
-		return (NULL);
-	init_here_doc(h_docs, tok, data);
+		return ;
+	data->here_docs = ft_calloc(sizeof(t_heredoc), data->nb_hd);
+	if (!data->here_docs)
+		return ;
+	init_here_doc(data->here_docs, tok, data);
 	signal(SIGINT, SIG_IGN);
 	pid = fork();
 	if (pid == 0)
-		exec_hdocs(h_docs, data, &i, tok);
+		exec_hdocs(data->here_docs, data, &i, tok);
 	else if (pid > 0)
 	{
 		while (i < data->nb_hd)
-			close(h_docs[i++].fd[1]);
+			close(data->here_docs[i++].fd[1]);
 	}
+	signal(SIGINT, &sigint_hd);
 	waitpid(pid, 0, 0);
-	signal(SIGINT, &sigint_handler);
-	return (h_docs);
 }

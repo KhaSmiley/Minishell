@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 20:35:59 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/08 20:11:02 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/09 01:50:48 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	ft_dup2_in_redir_files(int fd, t_token *tmp, t_token *tok, t_data *data)
 	return (1);
 }
 
-int	redir_files(t_token *tok, int i, t_heredoc *h_docs, t_data *data)
+int	redir_files(t_token *tok, int i, t_data *data)
 {
 	int		fd;
 	t_token	*tmp_curr;
@@ -74,12 +74,12 @@ int	redir_files(t_token *tok, int i, t_heredoc *h_docs, t_data *data)
 		else if (tmp_curr->type == LESS)
 			fd = open(tmp_curr->next->str, O_RDONLY);
 		else if (tmp_curr->type == DLESS)
-			fd = find_heredoc(h_docs, data, tmp_curr);
+			fd = find_heredoc(data, tmp_curr);
 		if (!ft_dup2_in_redir_files(fd, tmp_curr, tok, data))
 			return (0);
 		tmp_curr = tmp_curr->next;
 	}
-	close_heredocs(h_docs, data->nb_hd);
+	close_heredocs(data, data->nb_hd);
 	return (1);
 }
 
