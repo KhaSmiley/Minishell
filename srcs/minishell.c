@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/09 07:45:50 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/09 09:10:40 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	main_while(t_data *data, t_token **tok, char *input, int argc)
 		if (data->nb_cmd == 1
 			&& (to_builtin_or_not_to_builtin(find_first_cmd(&data->tok))))
 		{
-			one_built_in((tok_to_tab(&data->tok, 0)), &data->tok, data);
+			one_built_in((tok_to_tab(&data->tok, 0, data)), &data->tok, data);
 			continue ;
 		}
 		end_while_main(data, input, &data->tok);

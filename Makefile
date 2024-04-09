@@ -12,7 +12,8 @@ DIR_SUBDIRS		=	built_ins \
 DIR_OBJS		=	.objs
 
 SRCS_NAMES		=	minishell.c \
-					parsing/syntax.c \
+					parsing/ft_syntax.c \
+					parsing/ft_syntax_utils.c \
 					parsing/tokens.c \
 					parsing/tokens_utils.c \
 					parsing/quotes.c \

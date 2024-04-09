@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 15:43:05 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/09 05:06:04 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/09 09:06:16 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,11 @@ void	child_process(t_data *data, t_token **tok, int i)
 {
 	char	*path;
 	char	**tab;
+	int		x;
 
+	x = 0;
 	default_signals();
-	data->cmd = tok_to_tab(tok, i);
+	data->cmd = tok_to_tab(tok, i, data);
 	redirection(data, i);
 	if (!redir_files(*tok, i, data))
 		return (free_export(data->env_export), free_tok(tok),

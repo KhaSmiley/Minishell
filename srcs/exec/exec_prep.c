@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 04:21:07 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/09 07:57:35 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/09 09:08:17 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ int	ft_count_pipe(t_token *tok)
 		count = 1;
 	return (count);
 }
+
 int	find_malloc_tok_to_tab(t_token **tok, int nb_pipe)
 {
 	t_token	*tmp_curr;
@@ -81,20 +82,15 @@ int	is_redir(int a)
 	return (a == GREATER || a == LESS || a == DLESS || a == DGREATER);
 }
 
-char	**tok_to_tab(t_token **tok, int nb_pipe)
+char	**tok_to_tab(t_token **tok, int nb_pipe, t_data *data)
 {
 	t_token	*tmp_curr;
 	char	**tab;
-	int		i;
-	int		size;
 
-	i = 0;
-	size = find_malloc_tok_to_tab(tok, nb_pipe);
-	if (size == 0)
+	data->x = 0;
+	if (find_malloc_tok_to_tab(tok, nb_pipe) == 0)
 		return (NULL);
-	tab = malloc(sizeof(char *) * (size + 1));
-	if (!tab)
-		return (NULL);
+	tab = malloc(sizeof(char *) * (find_malloc_tok_to_tab(tok, nb_pipe) + 1));
 	tmp_curr = find_curr_tok_pipe(tok, nb_pipe);
 	while (tmp_curr && tmp_curr->type != PIPE)
 	{
@@ -108,9 +104,9 @@ char	**tok_to_tab(t_token **tok, int nb_pipe)
 				if (tmp_curr->type == PIPE)
 					break ;
 			}
-			tab[i++] = ft_strdup(tmp_curr->str);
+			tab[data->x++] = ft_strdup(tmp_curr->str);
 		}
 		tmp_curr = tmp_curr->next;
 	}
-	return (tab[i] = NULL, tab);
+	return (tab[data->x] = NULL, tab);
 }

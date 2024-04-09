@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/09 07:58:31 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/09 09:05:52 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 
 # define E "warning: here-document at line"
 # define F "%d delimited by end-of-file (wanted `%s')\n"
+# define L "syntax error near unexpected token `newline'\n"
 
 typedef struct s_token
 {
@@ -81,6 +82,7 @@ typedef struct s_data
 	char			**cmd;
 	int				status;
 	int				std_fd[2];
+	int				x;
 	t_export		*env_export;
 	t_heredoc		*here_docs;
 	t_token			*tok;
@@ -163,7 +165,7 @@ void				default_signals(void);
 
 /* ------------------------- PARSING ------------------------- */
 
-/* syntax.c */
+/* ft_syntax.c */
 
 int					parsing_and_stock_input(char *input, t_token **tok,
 						t_data *data);
@@ -171,6 +173,11 @@ int					ft_syntax(t_token **tok);
 int					ft_syntax_pipe(t_token *tok, int *error);
 int					ft_syntax_redir(t_token *tok, int *error);
 int					ft_syntax_word(t_token *tok, int *error);
+
+/* ft_syntax_utils.c */
+
+void				ft_syntax_error_message(int error);
+void				choose_error_value(t_token *tmp, int *error);
 
 /* tokens.c */
 int					ft_tokenizer(char *token);
@@ -223,7 +230,7 @@ void				file_error(t_token *tok, t_data *data, char *str);
 t_token				*find_curr_tok_pipe(t_token **tok, int nb_pipe);
 int					ft_count_pipe(t_token *tok);
 int					find_malloc_tok_to_tab(t_token **tok, int nb_pipe);
-char				**tok_to_tab(t_token **tok, int nb_pipe);
+char				**tok_to_tab(t_token **tok, int nb_pipe, t_data *data);
 
 /* utils_exec.c */
 
