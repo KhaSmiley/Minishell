@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/08 20:10:13 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/09 01:31:36 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,9 +167,9 @@ void				default_signals(void);
 int					parsing_and_stock_input(char *input, t_token **tok,
 						t_data *data);
 int					ft_syntax(t_token **tok);
-int					ft_syntax_pipe(t_token *tok);
-int					ft_syntax_redir(t_token *tok);
-int					ft_syntax_word(t_token *tok);
+int					ft_syntax_pipe(t_token *tok, int *error);
+int					ft_syntax_redir(t_token *tok, int *error);
+int					ft_syntax_word(t_token *tok, int *error);
 
 /* tokens.c */
 int					ft_tokenizer(char *token);
