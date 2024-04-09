@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 04:21:07 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/09 07:44:21 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/09 07:57:35 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ int	ft_count_pipe(t_token *tok)
 		count = 1;
 	return (count);
 }
-
 int	find_malloc_tok_to_tab(t_token **tok, int nb_pipe)
 {
 	t_token	*tmp_curr;
