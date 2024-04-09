@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 05:03:23 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/09 04:46:25 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/09 19:06:01 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,11 @@
 
 void	ft_check_atoi_exit(t_data *data, char **args, t_token **tok)
 {
+	if (ft_exit_atoi(args[1]) == -1)
+	{
+		clear_exit_no_fork(data, args, tok, 0);
+		exit(214);
+	}
 	if (!ft_exit_atoi(args[1]))
 	{
 		ft_printf("exit : %s: numeric argument required\n", args[1]);
@@ -57,7 +62,7 @@ int	ft_exit_no_fork(char **args, t_data *data, t_token **tok)
 		exit(g_sig_return);
 	}
 	i = ft_find_nb_args_exit(tok);
-	if (i == 2)
+	if (i <= 2)
 		ft_check_atoi_exit(data, args, tok);
 	if (i > 2)
 	{

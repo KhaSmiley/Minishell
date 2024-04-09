@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 00:49:03 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/08 19:36:47 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/09 16:35:49 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	lets_builtin_no_fork(t_data *data, char **cmd, t_token **tok)
 	if (!cmd[0])
 		return (0);
 	if (!ft_strncmp(cmd[0], "pwd", 3))
-		return (ft_pwd(), 1);
+		return (ft_pwd(data), 1);
 	else if (!ft_strncmp(cmd[0], "cd", 2))
 		return (ft_cd(cmd, data), 1);
 	else if (!ft_strncmp(cmd[0], "env", 3))
@@ -59,7 +59,7 @@ int	lets_builtin(t_data *data, char **cmd, t_token **tok)
 	if (!cmd[0])
 		return (0);
 	if (!ft_strncmp(cmd[0], "pwd", 3))
-		return (ft_pwd(), 1);
+		return (ft_pwd(data), 1);
 	else if (!ft_strncmp(cmd[0], "cd", 2))
 		return (ft_cd(cmd, data), 1);
 	else if (!ft_strncmp(cmd[0], "env", 3))
@@ -75,14 +75,14 @@ int	lets_builtin(t_data *data, char **cmd, t_token **tok)
 	return (0);
 }
 
-int	ft_pwd(void)
+int	ft_pwd(t_data *data)
 {
 	char	*pwd;
 
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 	{
-		printf("getcwd error\n");
+		data->status = 1;
 		return (0);
 	}
 	printf("%s\n", pwd);
@@ -95,11 +95,16 @@ int	ft_cd(char **cmd, t_data *data)
 	int		ret;
 	char	*path;
 
-	if (cmd[1] == NULL)
+	if (!check_cd_args(data, cmd))
+		return (0);
+	if (!cmd[1])
 	{
 		path = get_home_env(data->env_export);
 		if (!path)
-			return (ft_printf("cd no args, HOME not found\n"), 0);
+		{
+			data->status = 1;
+			return (0);
+		}
 	}
 	else
 		path = cmd[1];
@@ -107,12 +112,6 @@ int	ft_cd(char **cmd, t_data *data)
 	if (ret == -1)
 	{
 		ft_printf("cd: %s: No such file or directory\n", cmd[1]);
-		data->status = 1;
-		return (0);
-	}
-	if (cmd[2])
-	{
-		ft_printf("cd : too many arguments");
 		data->status = 1;
 		return (0);
 	}

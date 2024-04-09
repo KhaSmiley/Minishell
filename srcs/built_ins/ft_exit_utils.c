@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 18:58:11 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/08 18:59:29 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/09 18:46:07 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	ft_exit_atoi(char *str)
 {
-	size_t	i;
-	int		sign;
+	long long int	i;
+	long long int	sign;
 
 	sign = 1;
 	i = 0;
@@ -29,8 +29,8 @@ int	ft_exit_atoi(char *str)
 	while (*str >= '0' && *str <= '9')
 	{
 		i = i * 10 + *str - '0';
-		if ((i > LONG_MAX && sign == 1) || (i - 1 > LONG_MAX && sign == -1))
-			return (0);
+		if ((i > LONG_MAX && sign == 1) || (i * sign > LONG_MIN && sign == -1))
+			return (-1);
 		++str;
 	}
 	if (*str)

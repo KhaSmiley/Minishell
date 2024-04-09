@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 22:12:21 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/08 08:01:19 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/09 17:22:35 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ char	*double_quote(char *str, int *i, t_data *data)
 char	*find_new_str_env(char *str, int *i, t_data *data)
 {
 	char	*env;
+	int 	ret;
 
 	(*i)++;
 	if (ft_isdigit(str[*i]))
@@ -84,9 +85,8 @@ char	*find_new_str_env(char *str, int *i, t_data *data)
 	if (str[*i] == '?')
 	{
 		(*i)++;
-		if (g_sig_return)
-			return (ft_itoa(g_sig_return));
-		return (ft_itoa(data->status));
+		ret = choose_return(data);
+		return (ft_itoa(ret));
 	}
 	if ((str[*i] == '\'' || str[*i] == '"') && !is_last(str, *i))
 		return (ft_strdup(""));

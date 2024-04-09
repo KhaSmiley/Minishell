@@ -3,14 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils_four.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 05:39:43 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/08 08:01:19 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/09 17:22:52 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+int	choose_return(t_data *data)
+{
+	int	ret;
+
+	if (g_sig_return)
+	{
+		ret = g_sig_return;
+		g_sig_return = 0;
+		return (ret);
+	}
+	return (data->status);
+}
 
 char	*normal(char *str, int *i)
 {

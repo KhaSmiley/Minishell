@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_ins_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 03:45:20 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/09 07:42:40 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/09 16:35:59 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,22 @@ int	check_digits(char *args)
 		if (!ft_isdigit(args[i]) || i > 18)
 			return (0);
 		i++;
+	}
+	return (1);
+}
+
+int	check_cd_args(t_data *data, char **cmd)
+{
+	int	i;
+
+	i = 0;
+	while (cmd[i])
+		i++;
+	if (i > 2)
+	{
+		ft_printf("cd : too many arguments\n");
+		data->status = 1;
+		return (0);
 	}
 	return (1);
 }

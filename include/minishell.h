@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/09 09:05:52 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/09 16:53:18 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ enum
 	PIPE,
 	WHITE_SPACE,
 	WORD,
-	EMPTY,
 };
 
 typedef struct s_data
@@ -122,11 +121,7 @@ int					is_last(char *str, int i);
 char				*normal(char *str, int *i);
 char				*single_quote(char *str, int *i);
 char				*ft_strjoinou(char *s1, char *s2);
-
-/* expand_after_quotes.c */
-
-void				find_str_to_expand(t_token **tok);
-char				*ft_strjoin_env(char const *s1, char const *s2);
+int					choose_return(t_data *data);
 
 /* -------------------------- UTILS -------------------------- */
 
@@ -180,6 +175,7 @@ void				ft_syntax_error_message(int error);
 void				choose_error_value(t_token *tmp, int *error);
 
 /* tokens.c */
+
 int					ft_tokenizer(char *token);
 int					alloc_token(t_token **tok, char *longchev, char *str,
 						int i);
@@ -272,7 +268,7 @@ int					lets_builtin_no_fork(t_data *data, char **cmd,
 						t_token **tok);
 int					lets_builtin(t_data *data, char **cmd, t_token **tok);
 int					to_builtin_or_not_to_builtin(char *cmd);
-int					ft_pwd(void);
+int					ft_pwd(t_data *data);
 int					ft_cd(char **cmd, t_data *data);
 
 /* built_ins_utils.c */
@@ -281,6 +277,7 @@ void				built_ins(t_data *data, t_token **tok);
 int					one_built_in(char **builtin, t_token **tok, t_data *data);
 char				*find_first_cmd(t_token **tok);
 int					check_digits(char *args);
+int					check_cd_args(t_data *data, char **cmd);
 
 /* ft_env.c */
 

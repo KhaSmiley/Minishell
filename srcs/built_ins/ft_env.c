@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_ins_utils_two.c                              :+:      :+:    :+:   */
+/*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 04:30:53 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/08 19:19:22 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/09 16:07:38 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*get_home_env(t_export *env)
 	while (tmp)
 	{
 		if (!ft_strcmp(tmp->key, "HOME"))
-			return (env->value);
+			return ((tmp->value));
 		tmp = tmp->next;
 	}
 	return (NULL);
