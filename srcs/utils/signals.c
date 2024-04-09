@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 20:38:15 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/09 07:46:07 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/09 07:54:03 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ void	sigint_handler(int signum)
 	rl_on_new_line();
 	rl_redisplay();
 	if (!g_sig_return)
-		g_sig_return (= 130);
+		g_sig_return = 130;
 	else
-		g_sig_return (= 0);
+		g_sig_return = 0;
 }
 
 void	sigint_hd(int signum)
