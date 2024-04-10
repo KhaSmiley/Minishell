@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 15:43:05 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/09 09:06:16 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/10 16:25:24 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,10 @@ void	parent_process(t_data *data, int i)
 void	ft_waitpid_child(t_data *data)
 {
 	int	i;
+	int	print_flag;
 
 	i = 0;
+	print_flag = 0;
 	while (i < data->nb_cmd)
 	{
 		waitpid(data->pid[i++], &data->status, 0);
@@ -68,7 +70,11 @@ void	ft_waitpid_child(t_data *data)
 			data->status = WEXITSTATUS(data->status);
 		else if (WIFSIGNALED(data->status) && WTERMSIG(data->status) == SIGQUIT)
 		{
-			ft_printf("Quit (core dumped)\n");
+			if (!print_flag)
+			{
+				print_flag = 1;
+				ft_printf("Quit (core dumped)\n");;
+			}
 			g_sig_return = 131;
 		}
 	}
