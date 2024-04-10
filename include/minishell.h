@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/09 16:53:18 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/10 21:09:57 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -302,8 +302,7 @@ int					ft_exit_no_fork(char **args, t_data *data, t_token **tok);
 
 int					ft_exit_atoi(char *str);
 void				ft_free_exit_no_fork(t_data *data, t_token **tok);
-void				clear_exit_no_fork(t_data *data, char **args, t_token **tok,
-						int i);
+void				clear_exit(t_data *data, char **args, t_token **tok, int i);
 int					ft_find_nb_args_exit(t_token **tok);
 
 /* export.c */

@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 19:05:04 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/10 19:32:09 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/10 21:24:55 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	echo_print(char **cmd, int i, int num_args)
 	int	j;
 	int	printed;
 
+	printed = 0;
 	while (cmd[i])
 	{
 		j = 0;

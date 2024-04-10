@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 18:58:11 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/10 19:11:16 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/10 21:29:09 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	ft_exit_atoi(char *str)
 {
-	long int	i;
-	int			sign;
+	size_t	i;
+	int		sign;
 
 	sign = 1;
 	i = 0;
@@ -29,7 +29,7 @@ int	ft_exit_atoi(char *str)
 	while (*str >= '0' && *str <= '9')
 	{
 		i = i * 10 + *str - '0';
-		if ((i > LONG_MAX && sign == 1) || (i - 1 < LONG_MIN && sign == -1))
+		if ((i > LONG_MAX && sign == 1) || (i - 1 > LONG_MAX && sign == -1))
 			return (0);
 		++str;
 	}
@@ -42,11 +42,10 @@ void	ft_free_exit_no_fork(t_data *data, t_token **tok)
 {
 	close(data->std_fd[0]);
 	close(data->std_fd[1]);
-	free_export(data->env_export);
 	free_tok(tok);
 }
 
-void	clear_exit_no_fork(t_data *data, char **args, t_token **tok, int i)
+void	clear_exit(t_data *data, char **args, t_token **tok, int i)
 {
 	if (i == 0)
 	{
@@ -72,7 +71,7 @@ int	ft_find_nb_args_exit(t_token **tok)
 
 	tmp = *tok;
 	i = 0;
-	while (tmp)
+	while (tmp && tmp->type != PIPE)
 	{
 		if (tmp->type == WORD)
 			i++;
