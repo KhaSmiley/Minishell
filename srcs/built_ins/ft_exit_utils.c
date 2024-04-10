@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 18:58:11 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/09 18:46:07 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/10 19:11:16 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	ft_exit_atoi(char *str)
 {
-	long long int	i;
-	long long int	sign;
+	long int	i;
+	int			sign;
 
 	sign = 1;
 	i = 0;
@@ -29,8 +29,8 @@ int	ft_exit_atoi(char *str)
 	while (*str >= '0' && *str <= '9')
 	{
 		i = i * 10 + *str - '0';
-		if ((i > LONG_MAX && sign == 1) || (i * sign > LONG_MIN && sign == -1))
-			return (-1);
+		if ((i > LONG_MAX && sign == 1) || (i - 1 < LONG_MIN && sign == -1))
+			return (0);
 		++str;
 	}
 	if (*str)
@@ -78,5 +78,5 @@ int	ft_find_nb_args_exit(t_token **tok)
 			i++;
 		tmp = tmp->next;
 	}
-	return (i);
+	return (i - 1);
 }

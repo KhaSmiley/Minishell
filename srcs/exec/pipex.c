@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 15:43:05 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/10 16:25:24 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/10 19:34:11 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	ft_waitpid_child(t_data *data)
 			if (!print_flag)
 			{
 				print_flag = 1;
-				ft_printf("Quit (core dumped)\n");;
+				ft_printf("Quit (core dumped)\n");
 			}
 			g_sig_return = 131;
 		}

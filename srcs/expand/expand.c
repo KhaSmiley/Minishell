@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 22:12:21 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/09 17:22:35 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/10 19:34:44 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char	*double_quote(char *str, int *i, t_data *data)
 char	*find_new_str_env(char *str, int *i, t_data *data)
 {
 	char	*env;
-	int 	ret;
+	int		ret;
 
 	(*i)++;
 	if (ft_isdigit(str[*i]))
