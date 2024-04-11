@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_docs.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 02:59:29 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/09 03:08:15 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/11 15:08:47 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,14 @@ void	exec_hdocs(t_heredoc *h_docs, t_data *data, int *i, t_token **tok)
 		close(h_docs[*i].fd[0]);
 		write_hdocs(h_docs[*i].lim, h_docs[*i].fd[1], data);
 		(*i)++;
+	}
+	if (data->flag_hd == 1)
+	{
+		dup2(data->std_fd[0], STDIN_FILENO);
+		dup2(data->std_fd[1], STDOUT_FILENO);
+		close(data->std_fd[0]);
+		close(data->std_fd[1]);
+		free_tab(data->builtin);
 	}
 	free(h_docs);
 	free_export(data->env_export);
@@ -98,6 +106,6 @@ void	here_doc_launch(t_data *data, t_token **tok)
 		while (i < data->nb_hd)
 			close(data->here_docs[i++].fd[1]);
 	}
-	signal(SIGINT, &sigint_hd);
+	signal(SIGINT, &sigint_handler);
 	waitpid(pid, 0, 0);
 }

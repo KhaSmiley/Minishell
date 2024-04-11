@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_syntax.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:38 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/09 09:06:08 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/11 15:01:42 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	parsing_and_stock_input(char *input, t_token **tok, t_data *data)
 {
 	t_token	*tmp;
 
+	data->flag_hd = 0;
 	tmp = *tok;
 	if (!manage_quote_errors(input))
 	{

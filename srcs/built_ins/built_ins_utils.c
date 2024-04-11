@@ -6,14 +6,12 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 03:45:20 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/09 16:35:59 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/11 15:02:13 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-// if builtin is last cmd and it fails data->status = 1
-// in all other cases data->status = 0
 void	built_ins(t_data *data, t_token **tok)
 {
 	if (to_builtin_or_not_to_builtin(data->cmd[0]))
@@ -29,6 +27,7 @@ int	one_built_in(char **builtin, t_token **tok, t_data *data)
 	data->std_fd[0] = dup(STDIN_FILENO);
 	data->std_fd[1] = dup(STDOUT_FILENO);
 	data->builtin = builtin;
+	data->flag_hd = 1;
 	here_doc_launch(data, tok);
 	if (!redir_files(*tok, 0, data))
 	{
@@ -36,6 +35,8 @@ int	one_built_in(char **builtin, t_token **tok, t_data *data)
 		dup2(data->std_fd[1], STDOUT_FILENO);
 		close(data->std_fd[0]);
 		close(data->std_fd[1]);
+		free_tab(builtin);
+		free_tok(tok);
 		return (0);
 	}
 	lets_builtin_no_fork(data, builtin, tok);

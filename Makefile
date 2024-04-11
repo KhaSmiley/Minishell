@@ -69,7 +69,7 @@ all:	${NAME}
 $(NAME): $(DIR_OBJS) $(OBJS)
 	make -C libft
 	$(CC) $(CFLAGS) ${INC} $(CDFLAGS) $(OBJS) $(LIB) -lreadline -o $(NAME)
-	@ echo "GOD HELP US"  | toilet -f future -F border --gay
+	@ echo "MINISHELL"  | toilet -f future -F border --gay
 
 $(OBJS): | $(DIR_OBJS)
 
@@ -96,9 +96,6 @@ fclean:	clean
 	rm -rf ${NAME}
 
 re:	fclean all
-
-leaks: all
-	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --suppressions=del.supp  ./minishell
 
 .PHONY:	all clean fclean re
 # .SILENT:

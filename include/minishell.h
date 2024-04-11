@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/11 12:51:37 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/11 15:01:26 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ typedef struct s_data
 {
 	char			*input;
 	int				minishell_line_no;
+	int				flag_hd;
 	char			**envp_cpy;
 	int				nb_hd;
 	int				only_hd;

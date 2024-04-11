@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 20:38:15 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/10 16:18:06 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/11 15:03:53 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,14 @@ void	sigint_hd(int signum)
 	{
 		close(data->here_docs[i].fd[1]);
 		close(data->here_docs[i].fd[0]);
+	}
+	if (data->flag_hd == 1)
+	{
+		dup2(data->std_fd[0], STDIN_FILENO);
+		dup2(data->std_fd[1], STDOUT_FILENO);
+		close(data->std_fd[0]);
+		close(data->std_fd[1]);
+		free_tab(data->builtin);
 	}
 	free_export(data->env_export);
 	free_tok(&data->tok);

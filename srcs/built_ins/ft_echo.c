@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 19:05:04 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/10 21:24:55 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/11 14:31:15 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,15 +47,13 @@ void	echo_print(char **cmd, int i, int num_args)
 		while (cmd[i][j])
 		{
 			if (cmd[i][j] != '\\')
-				printed = write(1, &cmd[i][j], 1);
+				printed = printf("%c", cmd[i][j]);
 			j++;
 		}
 		if (i < num_args - 1)
 			printf(" ");
 		i++;
 	}
-	if (printed == -1)
-		ft_printf("echo: write error: No space left on device\n");
 }
 
 int	check_echo_option(char **args, int i, int j)
