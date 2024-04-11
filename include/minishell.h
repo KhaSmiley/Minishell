@@ -6,7 +6,7 @@
 /*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/10 21:09:57 by lbarry           ###   ########.fr       */
+/*   Updated: 2024/04/11 12:51:37 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-# define E "warning: here-document at line"
+# define E "warning: here-document at line "
 # define F "%d delimited by end-of-file (wanted `%s')\n"
 # define L "syntax error near unexpected token `newline'\n"
 
