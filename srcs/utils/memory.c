@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 21:55:28 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/08 03:49:30 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/09 07:46:45 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,11 @@ void	free_export(t_export *lst)
 		free(tmp->value);
 		free(tmp);
 	}
+}
+
+t_data	*simpleton(void)
+{
+	static t_data	data;
+
+	return (&data);
 }

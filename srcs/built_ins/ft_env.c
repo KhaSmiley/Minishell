@@ -1,45 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_ins_utils_two.c                              :+:      :+:    :+:   */
+/*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 04:30:53 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/08 05:09:48 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/09 16:07:38 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	ft_find_nb_args_exit(t_token **tok)
+char	*get_home_env(t_export *env)
 {
-	int		i;
-	t_token	*tmp;
+	t_export	*tmp;
 
-	tmp = *tok;
-	i = 0;
+	tmp = env;
 	while (tmp)
 	{
-		if (tmp->type == WORD)
-			i++;
+		if (!ft_strcmp(tmp->key, "HOME"))
+			return ((tmp->value));
 		tmp = tmp->next;
 	}
-	return (i);
-}
-
-int	check_digits(char *args)
-{
-	int	i;
-
-	i = 0;
-	while (args[i])
-	{
-		if (!ft_isdigit(args[i]) || i > 18)
-			return (0);
-		i++;
-	}
-	return (1);
+	return (NULL);
 }
 
 int	ft_env(t_data *data)
@@ -60,16 +44,4 @@ void	ft_envp_copy_export(t_data *data, char **envp)
 				ft_find_value_export(envp[i])));
 		i++;
 	}
-}
-
-void	print_list_export(t_export *lst)
-{
-	if (!lst)
-		return ;
-	while (lst)
-	{
-		printf("%s=%s\n", lst->key, lst->value);
-		lst = lst->next;
-	}
-	return ;
 }

@@ -12,7 +12,8 @@ DIR_SUBDIRS		=	built_ins \
 DIR_OBJS		=	.objs
 
 SRCS_NAMES		=	minishell.c \
-					parsing/syntax.c \
+					parsing/ft_syntax.c \
+					parsing/ft_syntax_utils.c \
 					parsing/tokens.c \
 					parsing/tokens_utils.c \
 					parsing/quotes.c \
@@ -21,6 +22,7 @@ SRCS_NAMES		=	minishell.c \
 					utils/tab_utils.c \
 					utils/lst_utils.c \
 					utils/signals.c \
+					utils/errors.c \
 					exec/pipex.c \
 					exec/exec_prep.c \
 					exec/utils_exec_two.c \
@@ -28,15 +30,16 @@ SRCS_NAMES		=	minishell.c \
 					exec/here_docs.c \
 					exec/here_docs_utils.c \
 					exec/redirections.c \
-					exec/exec_utils.c\
 					built_ins/built_ins.c \
 					built_ins/built_ins_utils.c \
-					built_ins/built_ins_utils_two.c \
-					built_ins/built_ins_utils_third.c \
+					built_ins/ft_env.c \
+					built_ins/ft_echo.c \
+					built_ins/ft_unset.c \
 					built_ins/ft_exit.c\
+					built_ins/ft_exit_utils.c \
 					built_ins/export.c \
 					built_ins/export_utils.c \
-					built_ins/unset.c \
+					built_ins/export_lst_utils.c \
 					expand/expand.c \
 					expand/expand_utils_two.c \
 					expand/expand_utils_three.c \
@@ -66,7 +69,7 @@ all:	${NAME}
 $(NAME): $(DIR_OBJS) $(OBJS)
 	make -C libft
 	$(CC) $(CFLAGS) ${INC} $(CDFLAGS) $(OBJS) $(LIB) -lreadline -o $(NAME)
-	@ echo "GOD HELP US"  | toilet -f future -F border --gay
+	@ echo "MINISHELL"  | toilet -f future -F border --gay
 
 $(OBJS): | $(DIR_OBJS)
 
@@ -93,9 +96,6 @@ fclean:	clean
 	rm -rf ${NAME}
 
 re:	fclean all
-
-leaks: all
-	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --suppressions=del.supp  ./minishell
 
 .PHONY:	all clean fclean re
 # .SILENT:

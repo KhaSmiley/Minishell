@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_exec_two.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 18:43:40 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/07 22:34:18 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/08 19:30:27 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,11 @@ char	*ft_strdup_access(char *cmd)
 		return (ft_strdup(cmd));
 	else
 		return (NULL);
+}
+
+char	ft_get_last_char(const char *str)
+{
+	while (*(str) && *(str + 1))
+		++str;
+	return (*str);
 }

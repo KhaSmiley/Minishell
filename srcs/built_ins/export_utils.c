@@ -3,14 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 04:21:27 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/08 04:36:02 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/08 19:17:51 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+char	*ft_find_key_export(char *str)
+{
+	int		i;
+	int		j;
+	char	*key;
+
+	key = NULL;
+	i = 0;
+	j = 0;
+	key = ft_calloc(sizeof(char), ft_find_malloc_key(str, i) + 1);
+	while (str[i] && (ft_isalnum_env(str[i])))
+		key[j++] = str[i++];
+	key[j] = '\0';
+	return (key);
+}
 
 int	check_if_key_exist_export(t_export *lst, char *key)
 {
@@ -23,39 +39,44 @@ int	check_if_key_exist_export(t_export *lst, char *key)
 	return (0);
 }
 
-t_export	*ft_lstlast_export(t_export *lst)
-{
-	if (!lst)
-		return (NULL);
-	while (lst->next)
-		lst = lst->next;
-	return (lst);
-}
-
-void	ft_stock_export(t_export **lst, t_export *new_link)
-{
-	if (!lst)
-		return ;
-	if (!*lst)
-		*lst = new_link;
-	else
-		(ft_lstlast_export(*lst))->next = new_link;
-}
-
-t_export	*ft_lstnew_export(char *key, char *value)
-{
-	t_export	*new;
-
-	new = malloc(sizeof(*new));
-	if (!new)
-		return (NULL);
-	new->key = key;
-	new->value = value;
-	new->next = NULL;
-	return (new);
-}
-
 void	free_key_export(void *delete)
 {
 	free(delete);
+}
+
+void	ft_free_in_export_func(t_export *tmp, char *key)
+{
+	free(tmp->key);
+	free(tmp->value);
+	free(tmp);
+	free(key);
+}
+
+void	ft_delone_export(t_export **env, char *key)
+{
+	t_export	*tmp;
+	t_export	*prev;
+
+	prev = *env;
+	if (env && !ft_strcmp((*env)->key, key))
+	{
+		tmp = (*env);
+		(*env) = (*env)->next;
+		ft_free_in_export_func(tmp, key);
+		return ;
+	}
+	tmp = (*env)->next;
+	while (tmp && ft_strcmp(tmp->key, key))
+	{
+		prev = prev->next;
+		tmp = tmp->next;
+	}
+	if (tmp && ft_strcmp(tmp->key, key) == 0)
+	{
+		prev->next = tmp->next;
+		free(tmp->key);
+		free(tmp->value);
+		free(tmp);
+	}
+	free(key);
 }

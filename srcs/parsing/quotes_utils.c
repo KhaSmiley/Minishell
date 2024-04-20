@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 03:59:41 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/08 06:35:56 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/08 19:40:36 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	s_quotes_open(char *str)
 		if (str[i] && str[i] == '\'' && d_flag == 0)
 		{
 			if (check_closure(str, i, '\'', d_flag) == -1)
-				return (printf("Error: s quotes open\n"), 0);
+				return (0);
 			i = check_closure(str, i, '\'', d_flag);
 		}
 		i++;
@@ -81,7 +81,7 @@ int	d_quotes_open(char *str)
 		if (str[i] && str[i] == '\"' && s_flag == 0)
 		{
 			if (check_closure(str, i, '\"', s_flag) == -1)
-				return (printf("Error: d quotes open\n"), 0);
+				return (0);
 			i = check_closure(str, i, '\"', s_flag);
 		}
 		i++;
@@ -112,7 +112,6 @@ int	check_quotes_open(char *input)
 
 	if (!input)
 		return (1);
-	// check for syntax error when only 1 type of quotes
 	if (!ft_strchr(input, '\"') || !ft_strchr(input, '\''))
 	{
 		s_quotes = count_quotes(input, '\'');
@@ -120,7 +119,6 @@ int	check_quotes_open(char *input)
 		if (s_quotes % 2 != 0 || d_quotes % 2 != 0)
 			return (0);
 	}
-	// check for syntax error when both types of quotes
 	else
 	{
 		if (!s_quotes_open(input))

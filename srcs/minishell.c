@@ -6,7 +6,7 @@
 /*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:49:36 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/08 08:00:05 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/09 09:10:40 by kboulkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	empty_str(char *str)
 
 void	end_while_main(t_data *data, char *input, t_token **tok)
 {
+	exec_pipe(data, &data->tok);
 	handle_signals();
 	free(input);
 	free_tok(tok);
@@ -39,7 +40,6 @@ void	main_while(t_data *data, t_token **tok, char *input, int argc)
 {
 	while (1)
 	{
-		// handle_signals(); Should we ???? cause after a single builtin we can't catch ctrl-c
 		input = readline("baznboul> ");
 		if (input == NULL)
 		{
@@ -54,35 +54,37 @@ void	main_while(t_data *data, t_token **tok, char *input, int argc)
 			continue ;
 		if (parsing_and_stock_input(input, tok, data))
 			continue ;
-		init_data(argc, data, *tok);
+		init_data(argc, data, data->tok);
 		if (data->nb_cmd == 1
-			&& (to_builtin_or_not_to_builtin(find_first_cmd(tok))))
+			&& (to_builtin_or_not_to_builtin(find_first_cmd(&data->tok))))
 		{
-			one_built_in((tok_to_tab(tok, 0)), tok, data);
+			one_built_in((tok_to_tab(&data->tok, 0, data)), &data->tok, data);
 			continue ;
 		}
-		exec_pipe(data, tok);
-		end_while_main(data, input, tok);
+		end_while_main(data, input, &data->tok);
 	}
 }
 
 int	main(int argc, char **argv, char **envp)
 {
-	static t_data	data = {0};
-	t_token			*tok;
-	char			*input;
+	t_data	*data;
+	t_token	*tok;
+	char	*input;
 
 	(void)argv;
 	(void)argc;
 	tok = NULL;
 	input = NULL;
+	if (!isatty(0))
+		return (1);
+	data = simpleton();
 	handle_signals();
 	g_sig_return = 0;
-	ft_envp_copy_export(&data, envp);
-	data.minishell_line_no = 1;
-	main_while(&data, &tok, input, argc);
-	free_export(data.env_export);
-	free_tok(&tok);
+	ft_envp_copy_export(data, envp);
+	data->minishell_line_no = 1;
+	main_while(data, &tok, input, argc);
+	free_export(data->env_export);
+	free_tok(&data->tok);
 	rl_clear_history();
-	return (data.status);
+	return (data->status);
 }

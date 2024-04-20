@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 20:38:15 by lbarry            #+#    #+#             */
-/*   Updated: 2024/04/08 03:59:06 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/11 15:03:53 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	sigint_handler(int signum)
 {
 	(void)signum;
-	// printf("signum = %d\n", signum);
 	write(1, "\n", 1);
 	rl_replace_line("", 0);
 	rl_on_new_line();
@@ -28,11 +27,29 @@ void	sigint_handler(int signum)
 
 void	sigint_hd(int signum)
 {
+	t_data	*data;
+	int		i;
+
+	i = -1;
 	(void)signum;
-	// data = simpleton();
-	// ft_printf("quitting hd ctrl c\n");
+	data = simpleton();
 	write(1, "\n", 1);
-	// use data to free/ close everything
+	while (++i < data->nb_hd)
+	{
+		close(data->here_docs[i].fd[1]);
+		close(data->here_docs[i].fd[0]);
+	}
+	if (data->flag_hd == 1)
+	{
+		dup2(data->std_fd[0], STDIN_FILENO);
+		dup2(data->std_fd[1], STDOUT_FILENO);
+		close(data->std_fd[0]);
+		close(data->std_fd[1]);
+		free_tab(data->builtin);
+	}
+	free_export(data->env_export);
+	free_tok(&data->tok);
+	free(data->here_docs);
 	exit(130);
 }
 
@@ -45,6 +62,7 @@ void	handle_signals(void)
 	sigemptyset(&sa.sa_mask);
 	sigaction(SIGINT, &sa, NULL);
 	signal(SIGQUIT, SIG_IGN);
+	signal(SIGTSTP, SIG_IGN);
 }
 
 void	disable_signals(void)

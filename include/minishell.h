@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kboulkri <kboulkri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbarry <lbarry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:48:09 by kboulkri          #+#    #+#             */
-/*   Updated: 2024/04/08 08:01:19 by kboulkri         ###   ########.fr       */
+/*   Updated: 2024/04/11 15:01:26 by lbarry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,9 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-# define E "warning: here-document at line"
+# define E "warning: here-document at line "
 # define F "%d delimited by end-of-file (wanted `%s')\n"
+# define L "syntax error near unexpected token `newline'\n"
 
 typedef struct s_token
 {
@@ -60,13 +61,13 @@ enum
 	PIPE,
 	WHITE_SPACE,
 	WORD,
-	EMPTY,
 };
 
 typedef struct s_data
 {
 	char			*input;
 	int				minishell_line_no;
+	int				flag_hd;
 	char			**envp_cpy;
 	int				nb_hd;
 	int				only_hd;
@@ -81,34 +82,16 @@ typedef struct s_data
 	char			**cmd;
 	int				status;
 	int				std_fd[2];
+	int				x;
 	t_export		*env_export;
+	t_heredoc		*here_docs;
+	t_token			*tok;
 }					t_data;
 
-extern int g_sig_return ;
+extern int	g_sig_return ;
 t_data				*simpleton(void);
 
-/* syntax.c */
-
-int					parsing_and_stock_input(char *input, t_token **tok,
-						t_data *data);
-int					ft_syntax(t_token **tok);
-int					ft_syntax_pipe(t_token *tok);
-int					ft_syntax_redir(t_token *tok);
-int					ft_syntax_word(t_token *tok);
-
-/* tokens.c */
-int					ft_tokenizer(char *token);
-int					alloc_token(t_token **tok, char *longchev, char *str,
-						int i);
-char				*isaword(char *str, int *i);
-t_token				*find_token(char *str);
-
-/* tokens_utils.c */
-
-int					word_size(char *str, int i);
-int					ft_find_end(char *str, char flag_quotes, int i);
-char				*topositif(char *str);
-char				*tonegatif(char *str);
+/* -------------------------- EXPAND -------------------------- */
 
 /* expand.c */
 
@@ -139,14 +122,13 @@ int					is_last(char *str, int i);
 char				*normal(char *str, int *i);
 char				*single_quote(char *str, int *i);
 char				*ft_strjoinou(char *s1, char *s2);
-
-/* expand_after_quotes.c */
-
-void				find_str_to_expand(t_token **tok);
-// char					*ft_get_new_str_for_env(char *str, t_token *tok);
-char				*ft_strjoin_env(char const *s1, char const *s2);
+int					choose_return(t_data *data);
 
 /* -------------------------- UTILS -------------------------- */
+
+/* errors.c */
+
+int					ft_handle_errors(char **args);
 
 /* memory.c */
 
@@ -179,6 +161,35 @@ void				default_signals(void);
 
 /* ------------------------- PARSING ------------------------- */
 
+/* ft_syntax.c */
+
+int					parsing_and_stock_input(char *input, t_token **tok,
+						t_data *data);
+int					ft_syntax(t_token **tok);
+int					ft_syntax_pipe(t_token *tok, int *error);
+int					ft_syntax_redir(t_token *tok, int *error);
+int					ft_syntax_word(t_token *tok, int *error);
+
+/* ft_syntax_utils.c */
+
+void				ft_syntax_error_message(int error);
+void				choose_error_value(t_token *tmp, int *error);
+
+/* tokens.c */
+
+int					ft_tokenizer(char *token);
+int					alloc_token(t_token **tok, char *longchev, char *str,
+						int i);
+char				*isaword(char *str, int *i);
+t_token				*find_token(char *str);
+
+/* tokens_utils.c */
+
+int					word_size(char *str, int i);
+int					ft_find_end(char *str, char flag_quotes, int i);
+char				*topositif(char *str);
+char				*tonegatif(char *str);
+
 /* quotes.c */
 
 void				del_char(char *address, char char_to_del);
@@ -198,24 +209,25 @@ int					check_quotes_open(char *input);
 
 /* pipex.c */
 
-void				child_process(t_data *data, t_token **tok,
-						t_heredoc *h_docs, int i);
+void				child_process(t_data *data, t_token **tok, int i);
 int					exec_pipe(t_data *data, t_token **tok);
 void				parent_process(t_data *data, int i);
+void				end_child_process(char *path, t_data *data, t_token **tok,
+						char **tab);
 
 /* redirections.c */
 
 void				redirection(t_data *data, int i);
-int					redir_files(t_token *tok, int i, t_heredoc *h_docs,
-						t_data *data);
+int					redir_files(t_token *tok, int i, t_data *data);
 void				close_fds(t_data *data);
 void				file_error(t_token *tok, t_data *data, char *str);
 
-/* utils_exec_two.c */
+/* exec_prep */
 
-char				*ft_strdup_access(char *cmd);
-int					ft_strlen_from(int i, char *str);
-int					open_fd(t_data *data, int i);
+t_token				*find_curr_tok_pipe(t_token **tok, int nb_pipe);
+int					ft_count_pipe(t_token *tok);
+int					find_malloc_tok_to_tab(t_token **tok, int nb_pipe);
+char				**tok_to_tab(t_token **tok, int nb_pipe, t_data *data);
 
 /* utils_exec.c */
 
@@ -225,15 +237,11 @@ char				*complete_path(t_data *data, char *cmd);
 void				init_data(int argc, t_data *data, t_token *tok);
 int					ft_access(char *path);
 
-/* exec_prep */
+/* utils_exec_two.c */
 
-t_token				*find_curr_tok_pipe(t_token **tok, int nb_pipe);
-int					ft_count_pipe(t_token *tok);
-int					find_malloc_tok_to_tab(t_token **tok, int nb_pipe);
-char				**tok_to_tab(t_token **tok, int nb_pipe);
-
-/* exec_utils.c */
-
+char				*ft_strdup_access(char *cmd);
+int					ft_strlen_from(int i, char *str);
+int					open_fd(t_data *data, int i);
 char				ft_get_last_char(const char *str);
 
 /* here_doc.c */
@@ -241,16 +249,16 @@ char				ft_get_last_char(const char *str);
 void				write_hdocs(char *lim, int pipe, t_data *data);
 void				exec_hdocs(t_heredoc *h_docs, t_data *data, int *i,
 						t_token **tok);
-void				close_heredocs(t_heredoc *h_docs, int limit);
-int					find_heredoc(t_heredoc *h_docs, t_data *data, t_token *tmp);
-t_heredoc			*here_doc_launch(t_data *data, t_token **tok);
+void				close_heredocs(t_data *data, int limit);
+int					find_heredoc(t_data *data, t_token *tmp);
+void				here_doc_launch(t_data *data, t_token **tok);
 
 /* here_doc_utils.c */
 
 void				find_nb_hdoc(t_token *tok, t_data *data);
 void				init_here_doc(t_heredoc *h_docs, t_token **tok,
 						t_data *data);
-void				ft_close_hd_child(t_data *data, t_heredoc *h_docs);
+void				ft_close_hd_child(t_data *data);
 void				ft_putstr_newline_fd(char *str, int pipe);
 
 /* ------------------------- BUILT INS ------------------------ */
@@ -260,58 +268,69 @@ void				ft_putstr_newline_fd(char *str, int pipe);
 int					lets_builtin_no_fork(t_data *data, char **cmd,
 						t_token **tok);
 int					lets_builtin(t_data *data, char **cmd, t_token **tok);
-int					ft_pwd(void);
+int					to_builtin_or_not_to_builtin(char *cmd);
+int					ft_pwd(t_data *data);
 int					ft_cd(char **cmd, t_data *data);
-int					ft_echo(char **cmd);
 
 /* built_ins_utils.c */
 
-int					to_builtin_or_not_to_builtin(char *cmd);
-char				*find_first_cmd(t_token **tok);
+void				built_ins(t_data *data, t_token **tok);
 int					one_built_in(char **builtin, t_token **tok, t_data *data);
-char				*get_home_env(t_export *env);
-int					check_echo_option(char **args, int i, int j);
-
-/* built_ins_utils_third.c */
-
-void				clear_exit_no_fork(t_data *data, char **args, t_token **tok, int i);
-void				ft_free_exit_no_fork(t_data *data, t_token **tok);
-void				ft_free_in_export_func(t_export *tmp, char *key);
-
-/* built_ins_utils_two.c */
-
+char				*find_first_cmd(t_token **tok);
 int					check_digits(char *args);
+int					check_cd_args(t_data *data, char **cmd);
+
+/* ft_env.c */
+
+char				*get_home_env(t_export *env);
 int					ft_env(t_data *data);
-void				print_list_export(t_export *lst);
 void				ft_envp_copy_export(t_data *data, char **envp);
-int					ft_find_nb_args_exit(t_token **tok);
+
+/* ft_echo.c */
+
+int					ft_echo(char **cmd);
+int					check_echo_option(char **args, int i, int j);
+void				echo_print(char **cmd, int i, int num_args);
 
 /* ft_exit.c */
 
-void				ft_check_atoi_exit(t_data *data, char **args, t_token **tok);
-int					ft_exit_atoi(char *str);
+void				ft_check_atoi_exit(t_data *data, char **args,
+						t_token **tok);
 int					ft_exit_fork(char **args, t_data *data, t_token **tok);
 int					ft_exit_no_fork(char **args, t_data *data, t_token **tok);
 
-/* export */
+/* ft_exit_utils.c */
 
-char				*ft_find_key_export(char *str);
+int					ft_exit_atoi(char *str);
+void				ft_free_exit_no_fork(t_data *data, t_token **tok);
+void				clear_exit(t_data *data, char **args, t_token **tok, int i);
+int					ft_find_nb_args_exit(t_token **tok);
+
+/* export.c */
+
 char				*ft_find_value_export(char *str);
-void				ft_delone_export(t_export **env, char *key);
 int					ft_check_syntax_key(char *str);
 void				ft_export(t_data *data, char **args);
 
 /* export_utils.c */
 
-int					check_if_key_exist_export(t_export *lst, char *key);
 void				free_key_export(void *delete);
+int					check_if_key_exist_export(t_export *lst, char *key);
 char				*ft_find_key_export(char *str);
 void				ft_delone_export(t_export **env, char *key);
+void				ft_free_in_export_func(t_export *tmp, char *key);
+
+/* export_lst_utils.c */
+
+void				print_list_export(t_export *lst);
 void				ft_stock_export(t_export **lst, t_export *new_link);
+t_export			*ft_lstlast_export(t_export *lst);
 t_export			*ft_lstnew_export(char *key, char *value);
 
-/* unset.c */
+/* ft_unset.c */
 
 void				ft_unset(t_data *data, char **args);
+void				ft_delone_unset(t_export **env, char *key);
+void				ft_free_unset(t_export *tmp);
 
 #endif
